@@ -44,3 +44,4 @@ mongo_data/
 # Logs
 *.log
 logs/
+v-env

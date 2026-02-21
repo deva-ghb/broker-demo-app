@@ -86,3 +86,8 @@ app.include_router(persona_router)
 app.include_router(microsite_router)
 app.include_router(engagement_router)
 app.include_router(trigger_router)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

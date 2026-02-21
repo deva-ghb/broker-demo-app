@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ property.get('name', 'Property') }} | {{ broker_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand: {{ brand_color }};
+            --brand-light: {{ brand_color }}15;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Sticky CTA Bar */
+        .sticky-cta {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--brand);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+        }
+
+        .sticky-cta a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sticky-cta a:hover { opacity: 0.9; }
+
+        .sticky-cta .broker-badge {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Content Container */
+        .content {
+            margin-top: 56px;
+            padding: 16px;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 80px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--brand), color-mix(in srgb, var(--brand) 70%, #000));
+            color: #fff;
+            padding: 48px 24px 36px;
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            opacity: 0.85;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .hero .angle {
+            background: rgba(255,255,255,0.15);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 400;
+            margin-top: 16px;
+        }
+
+        /* Cards / Sections */
+        .section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-1px);
+        }
+
+        .section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--brand);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        /* Image Assets */
+        .asset-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            object-fit: cover;
+            max-height: 300px;
+        }
+
+        .asset-caption {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 0 4px;
+        }
+
+        /* Tags */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--brand-light);
+            color: var(--brand);
+            padding: 6px 14px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
+        }
+
+        .bottom-cta a {
+            display: block;
+            background: var(--brand);
+            color: #fff;
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: opacity 0.2s;
+        }
+
+        .bottom-cta a:hover { opacity: 0.9; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section, .hero {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.15s; }
+        .section:nth-child(4) { animation-delay: 0.2s; }
+    </style>
+</head>
+<body>
+    <!-- Sticky Top CTA -->
+    <div class="sticky-cta" data-section="top_cta">
+        <a href="tel:{{ broker_phone }}" id="cta-call-top">
+            <span>📞</span> Talk to {{ broker_name }}
+        </a>
+        <span class="broker-badge">Your Broker</span>
+    </div>
+
+    <div class="content">
+        <!-- Hero -->
+        <div class="hero" data-section="hero">
+            <h1>{{ property.get('name', 'Exclusive Property') }}</h1>
+            <p class="subtitle">
+                {% if property.get('location') %}{{ property['location'] }}{% endif %}
+                {% if property.get('developer') %} · {{ property['developer'] }}{% endif %}
+                {% if property.get('property_type') %} · {{ property['property_type'] }}{% endif %}
+            </p>
+            {% if persona.get('ai_recommended_angle') %}
+            <div class="angle">💡 {{ persona['ai_recommended_angle'] }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Property Assets -->
+        {% for asset in assets %}
+        <div class="section" data-section="{{ asset.get('description', 'section') | replace(' ', '_') | lower }}">
+            {% if asset.get('type') == 'image' %}
+                <img src="{{ asset.get('url', '') }}" alt="{{ asset.get('description', '') }}" 
+                     class="asset-img" loading="lazy">
+                <p class="asset-caption">{{ asset.get('contextual_caption', asset.get('description', '')) }}</p>
+            {% else %}
+                <h2>{{ asset.get('description', 'Details') }}</h2>
+                <p>{{ asset.get('content', '') }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Key Highlights -->
+        {% if property.get('usps') %}
+        <div class="section" data-section="key_highlights">
+            <h2>✨ Key Highlights</h2>
+            <div class="tags-container">
+                {% for usp in property.get('usps', []) %}
+                <span class="tag">{{ usp }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Financial Info -->
+        {% if property.get('price_range') or property.get('projected_roi') or property.get('payment_plans') %}
+        <div class="section" data-section="financials">
+            <h2>📊 Financial Details</h2>
+            {% if property.get('price_range') %}
+            <p><strong>Price Range:</strong> {{ property['price_range'] }}</p>
+            {% endif %}
+            {% if property.get('projected_roi') %}
+            <p style="margin-top: 8px;"><strong>Projected ROI:</strong> {{ property['projected_roi'] }}</p>
+            {% endif %}
+            {% if property.get('payment_plans') %}
+            <p style="margin-top: 8px;"><strong>Payment Plans:</strong> {{ property['payment_plans'] }}</p>
+            {% endif %}
+            {% if property.get('golden_visa_eligible') %}
+            <p style="margin-top: 8px; color: var(--brand); font-weight: 600;">🏛️ Golden Visa Eligible</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="bottom-cta" data-section="bottom_cta">
+        <a href="tel:{{ broker_phone }}" id="cta-call-bottom">
+            Schedule a Viewing with {{ broker_name }}
+        </a>
+    </div>
+
+    <!-- Tracking Meta -->
+    <meta name="tracking-id" content="{{ tracking_id }}">
+    <meta name="persona-id" content="{{ persona.get('persona_id', '') }}">
+
+    <!-- Engagement Tracker Script -->
+    <script src="{{ base_url }}/static/tracker.js"></script>
+</body>
+</html>

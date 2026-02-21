@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+venv/
+.venv/
+env/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+webapp/node_modules/
+webapp/dist/
+
+# Docker
+docker-compose.override.yml
+
+# Qdrant data
+qdrant_data/
+
+# MongoDB data
+mongo_data/
+
+# Logs
+*.log
+logs/

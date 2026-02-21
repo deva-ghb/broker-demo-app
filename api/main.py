@@ -69,9 +69,11 @@ from api.microsite_router import router as microsite_router
 from api.engagement_router import router as engagement_router
 from api.trigger_router import router as trigger_router
 from api.recommendation_router import router as recommendation_router
+from api.property_router import router as property_router
 
 app.include_router(persona_router)
 app.include_router(microsite_router)
 app.include_router(engagement_router)
 app.include_router(trigger_router)
 app.include_router(recommendation_router)
+app.include_router(property_router)

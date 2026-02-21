@@ -2,15 +2,27 @@ import { useState, useEffect } from 'react'
 
 export default function MicrositeBuilder({ apiBase }) {
   const [personas, setPersonas] = useState([])
+  const [properties, setProperties] = useState([])
   const [selectedPersona, setSelectedPersona] = useState('')
-  const [propertyId, setPropertyId] = useState('prop_dubai_creek')
+  const [propertyId, setPropertyId] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     fetchPersonas()
+    fetchProperties()
   }, [])
+
+  const fetchProperties = async () => {
+    try {
+      const res = await fetch(`${apiBase}/api/v1/properties/`)
+      const data = await res.json()
+      setProperties(data.properties || [])
+    } catch (e) {
+      console.error('Failed to fetch properties', e)
+    }
+  }
 
   const fetchPersonas = async () => {
     try {
@@ -23,7 +35,7 @@ export default function MicrositeBuilder({ apiBase }) {
   }
 
   const buildMicrosite = async () => {
-    if (!selectedPersona || !propertyId) return
+    if (!selectedPersona) return
     setLoading(true)
     setError(null)
     setResult(null)
@@ -34,7 +46,7 @@ export default function MicrositeBuilder({ apiBase }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           persona_id: selectedPersona,
-          property_id: propertyId,
+          property_id: propertyId || null,
         }),
       })
 
@@ -85,22 +97,28 @@ export default function MicrositeBuilder({ apiBase }) {
           </div>
 
           <div className="form-group">
-            <label>Property ID</label>
-            <input
-              className="input"
-              placeholder="e.g. prop_dubai_creek"
+            <label>Property Selection</label>
+            <select
+              className="input select"
               value={propertyId}
               onChange={e => setPropertyId(e.target.value)}
-            />
+            >
+              <option value="">✨ Auto-Select (AI Recommendation)</option>
+              {properties.map(p => (
+                <option key={p.property_id} value={p.property_id}>
+                  {p.name} ({p.property_id})
+                </option>
+              ))}
+            </select>
             <span style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px', display: 'block' }}>
-              Available: prop_dubai_creek, prop_palm_villa
+              Leave on Auto-Select to let the AI natively match the best property for the persona.
             </span>
           </div>
 
           <button
             className="btn btn-primary"
             onClick={buildMicrosite}
-            disabled={loading || !selectedPersona || !propertyId}
+            disabled={loading || !selectedPersona}
             style={{ width: '100%', justifyContent: 'center' }}
           >
             {loading ? (

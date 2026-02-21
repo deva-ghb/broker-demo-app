@@ -56,7 +56,9 @@ async def get_embedding(text: str) -> List[float]:
 
 async def _extract_filters(persona_data: Dict[str, Any]) -> Dict[str, Any]:
     """Use LLM to extract hard filters and semantic query from Persona."""
-    persona_str = json.dumps(persona_data, indent=2)
+    # Remove non-serializable fields for JSON
+    clean_persona = {k: v for k, v in persona_data.items() if k not in ['created_at', '_id']}
+    persona_str = json.dumps(clean_persona, indent=2, default=str)
     messages = [
         {"role": "system", "content": "You are a helpful assistant that outputs JSON."},
         {"role": "user", "content": FILTER_EXTRACTION_PROMPT.format(persona_json=persona_str)}

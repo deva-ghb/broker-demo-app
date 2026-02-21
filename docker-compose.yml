@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   mongodb:
-    image: mongo:7.0
+    image: mongodb/mongodb-atlas-local:latest
     container_name: smartsell-mongodb
     ports:
       - "27017:27017"
@@ -49,6 +49,7 @@ services:
 volumes:
   mongo_data:
   qdrant_data:
+
 
 networks:
   smartsell-net:

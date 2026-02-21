@@ -8,7 +8,7 @@ from typing import Optional, Dict, Any
 class MicrositeBuildRequest(BaseModel):
     """Request to build a microsite."""
     persona_id: str
-    property_id: str
+    property_id: Optional[str] = None
 
 
 class MicrositeBuildResponse(BaseModel):

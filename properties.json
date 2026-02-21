@@ -1,0 +1,415 @@
+[
+    {
+        "property_id": "prop_treppan_serenique",
+        "assets": [
+            {
+                "type": "text",
+                "content": "Treppan Serenique is a wellness-focused residential sanctuary on Dubai Islands featuring 2-3 bedroom residences designed for longevity, balance, and inspired island living. The development offers 53+ resort-style amenities including hyperbaric oxygen therapy, cryotherapy, red light therapy, infinity pools, meditation zones, and AI-enabled smart homes.",
+                "description": "Property Overview",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Starting from AED 2.9M for 2-bedroom residences (980-1,483 sq ft) and 3-bedroom residences (1,808-1,902 sq ft). Flexible payment plans available through Fakhruddin Properties.",
+                "description": "Pricing & Payment Plans",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Dubai Islands waterfront location with strong rental demand. Properties above AED 2M qualify for UAE Golden Visa. Tax-free environment enhances net investment returns.",
+                "description": "ROI & Investment Returns",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "serenique_exterior.jpg",
+                "description": "Twin tower exterior with coastal architecture on Dubai Islands",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "serenique_amenities.jpg",
+                "description": "Resort-style wellness amenities including infinity pool and meditation zones",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "serenique_interior.jpg",
+                "description": "Modern furnished living area with sea views and smart home features",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "53+ amenities including hyperbaric oxygen therapy, red light therapy, cryotherapy, Himalayan salt sauna, cold/hot plunge, infinity pools, aqua gym, meditation pods, kids adventure wall, outdoor cinema, rooftop sea view pool, smart robot delivery, greenhouse cafe, and hydroponics.",
+                "description": "Amenities & Facilities",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Properties above AED 2M qualify for the UAE Golden Visa (10-year residency) for investors and families. Fakhruddin Properties provides application support.",
+                "description": "Golden Visa Eligibility",
+                "url": null
+            }
+        ],
+        "brand_color": "#2e7d32",
+        "broker_email": "info@fakhruddinproperties.com",
+        "broker_logo_url": null,
+        "broker_name": "Fakhruddin Properties",
+        "broker_phone": "+971-4-xxx-xxxx",
+        "created_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "developer": "Fakhruddin Properties",
+        "golden_visa_eligible": true,
+        "location": "Dubai Islands, Dubai, UAE",
+        "name": "Treppan Serenique",
+        "payment_plans": "Flexible payment plans available",
+        "price_start_aed_in_million": 2.9,
+        "price_end_aed_in_million": 5.5,
+        "projected_roi": "Strong rental demand in Dubai Islands waterfront location, tax-free returns",
+        "property_type": "Apartment",
+        "updated_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "usps": [
+            "53+ Wellness Amenities",
+            "Dubai Islands Beachfront",
+            "Hyperbaric & Cryotherapy",
+            "AI Smart Homes",
+            "Golden Visa Eligible",
+            "Resort-Style Living"
+        ]
+    },
+    {
+        "property_id": "prop_treppan_tower",
+        "assets": [
+            {
+                "type": "text",
+                "content": "Treppan Tower is a serene sanctuary in Jumeirah Village Triangle designed for families and communities. Features AI-enabled smart homes, sustainable systems, wellness-focused design, and fully furnished residences with breathtaking views of JLT and Dubai skyline.",
+                "description": "Property Overview",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Starting from AED 1.15M. Unit types: 1 Bedroom (628-1,165 sq ft), 2 Bedroom (1,028-1,571 sq ft), 3 Bedroom Skyvilla (2,640-2,915 sq ft). Flexible payment options available.",
+                "description": "Pricing & Payment Plans",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "JVT location offers strong connectivity to Dubai Marina, Business Bay, and airports. Properties above AED 2M qualify for UAE Golden Visa. Tax-free environment maximizes investment returns.",
+                "description": "ROI & Investment Returns",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "tower_exterior.jpg",
+                "description": "Modern tower exterior in Jumeirah Village Triangle with green landscaping",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "tower_pool.jpg",
+                "description": "Infinity pool and wellness deck with city views",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "tower_living.jpg",
+                "description": "Fully furnished living area with floor-to-ceiling windows",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "14+ amenities including infinity pool, gym, outdoor calisthenics, yoga deck, greenhouse cafe, kids play area, outdoor theatre, party deck, BBQ area, pergola seating, library, green lounge, swimming pool, and kids pool.",
+                "description": "Amenities & Facilities",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Properties above AED 2M qualify for the UAE Golden Visa (10-year residency). Fakhruddin Properties assists with documentation and application process.",
+                "description": "Golden Visa Eligibility",
+                "url": null
+            }
+        ],
+        "brand_color": "#1565c0",
+        "broker_email": "info@fakhruddinproperties.com",
+        "broker_logo_url": null,
+        "broker_name": "Fakhruddin Properties",
+        "broker_phone": "+971-4-xxx-xxxx",
+        "created_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "developer": "Fakhruddin Properties",
+        "golden_visa_eligible": true,
+        "location": "Jumeirah Village Triangle, Dubai, UAE",
+        "name": "Treppan Tower",
+        "payment_plans": "Flexible payment plans available",
+        "price_start_aed_in_million": 1.15,
+        "price_end_aed_in_million": 3.5,
+        "projected_roi": "Strong demand in family-friendly JVT location, tax-free returns",
+        "property_type": "Apartment",
+        "updated_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "usps": [
+            "AI Smart Homes",
+            "Fully Furnished",
+            "14+ Community Amenities",
+            "JVT Prime Location",
+            "Golden Visa Eligible",
+            "Wellness-Focused Design"
+        ]
+    },
+    {
+        "property_id": "prop_hatimi_residences",
+        "assets": [
+            {
+                "type": "text",
+                "content": "Hatimi Residences offers luxurious seaside living on the west coast of Dubai Islands with uninterrupted Arabian Gulf views. Features hi-tech sustainable solutions, wellness-focused lifestyle, and proximity to Dubai Islands Beach, Marina, and Deira Mall.",
+                "description": "Property Overview",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Starting from AED 7.02M. Unit types: 1, 3, and 4-bedroom residences with coastal views. Premium waterfront positioning with exclusive beach access.",
+                "description": "Pricing & Payment Plans",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Prime Dubai Islands waterfront location with limited residential inventory. Properties above AED 2M qualify for UAE Golden Visa. Tax-free environment and beach proximity drive premium value.",
+                "description": "ROI & Investment Returns",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "hatimi_waterfront.jpg",
+                "description": "Waterfront tower with uninterrupted Arabian Gulf views",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "hatimi_beach.jpg",
+                "description": "Direct access to Dubai Islands Beach (2 minutes away)",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "hatimi_interior.jpg",
+                "description": "Luxury coastal-inspired interior with sea views",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "12+ amenities tailored for coastal living including beach access, marina proximity, wellness facilities, and sustainable design features. Close to Dubai Islands Beach (2 mins), Marina (2 mins), and Deira Mall (4 mins).",
+                "description": "Amenities & Facilities",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Properties above AED 2M qualify for the UAE Golden Visa (10-year residency). Fakhruddin Properties provides end-to-end visa application support.",
+                "description": "Golden Visa Eligibility",
+                "url": null
+            }
+        ],
+        "brand_color": "#0288d1",
+        "broker_email": "info@fakhruddinproperties.com",
+        "broker_logo_url": null,
+        "broker_name": "Fakhruddin Properties",
+        "broker_phone": "+971-4-xxx-xxxx",
+        "created_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "developer": "Fakhruddin Properties",
+        "golden_visa_eligible": true,
+        "location": "Dubai Islands (West Coast), Dubai, UAE",
+        "name": "Hatimi Residences",
+        "payment_plans": "Flexible payment plans available",
+        "price_start_aed_in_million": 7.02,
+        "price_end_aed_in_million": 15,
+        "projected_roi": "Exclusive waterfront location with limited supply, tax-free returns",
+        "property_type": "Apartment",
+        "updated_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "usps": [
+            "West Coast Dubai Islands",
+            "Uninterrupted Sea Views",
+            "2 Mins to Beach & Marina",
+            "Sustainable Wellness Design",
+            "Golden Visa Eligible",
+            "Limited Luxury Inventory"
+        ]
+    },
+    {
+        "property_id": "prop_maimoon_gardens",
+        "assets": [
+            {
+                "type": "text",
+                "content": "Maimoon Gardens is a purposefully crafted sustainable community in Jumeirah Village Circle balancing nature, innovation, and comfort. Features green architecture, NASA-grade purified air systems, mineralized drinking water, AI-enabled smart homes, and a winding lazy river anchoring wellness amenities.",
+                "description": "Property Overview",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Starting from AED 1.4M. Unit types: Studio, 1, 2, and 3-bedroom fully furnished residences. Move-in ready elegance with intelligent design.",
+                "description": "Pricing & Payment Plans",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "JVC location offers strong connectivity to Dubai landmarks. Properties above AED 2M qualify for UAE Golden Visa. Sustainable design and wellness amenities support long-term value retention.",
+                "description": "ROI & Investment Returns",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "maimoon_exterior.jpg",
+                "description": "Green architecture exterior with landscaped gardens in JVC",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "maimoon_lazyriver.jpg",
+                "description": "Signature lazy river amenity with wellness zones",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "maimoon_interior.jpg",
+                "description": "Fully furnished smart home interior with wellness features",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "17+ amenities including lazy river, greenhouse cafe, infinity pool, kids pool with slide, paddle tennis court, zen garden, mist lounge, outdoor gym, kids play area, BBQ zones, and community gathering spaces. Features NASA-grade SAHU air purification and mineralized drinking water systems.",
+                "description": "Amenities & Facilities",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Properties above AED 2M qualify for the UAE Golden Visa (10-year residency). Fakhruddin Properties assists with the complete application process.",
+                "description": "Golden Visa Eligibility",
+                "url": null
+            }
+        ],
+        "brand_color": "#388e3c",
+        "broker_email": "info@fakhruddinproperties.com",
+        "broker_logo_url": null,
+        "broker_name": "Fakhruddin Properties",
+        "broker_phone": "+971-4-xxx-xxxx",
+        "created_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "developer": "Fakhruddin Properties",
+        "golden_visa_eligible": true,
+        "location": "Jumeirah Village Circle, Dubai, UAE",
+        "name": "Maimoon Gardens",
+        "payment_plans": "Flexible payment plans available",
+        "price_start_aed_in_million": 1.4,
+        "price_end_aed_in_million": 3.2,
+        "projected_roi": "Strong family-community demand in JVC, sustainable design value",
+        "property_type": "Apartment",
+        "updated_at": {
+            "$date": "2026-02-22T11:00:00.000Z"
+        },
+        "usps": [
+            "Lazy River Amenity",
+            "NASA-Grade Air Purification",
+            "Mineralized Drinking Water",
+            "AI Smart Homes",
+            "Golden Visa Eligible",
+            "Fully Furnished Move-In Ready"
+        ]
+    },
+    {
+        "property_id": "prop_treppan_living_prive",
+        "assets": [
+            {
+                "type": "text",
+                "content": "Treppan Living Privé is a wellness-focused residential project by Fakhruddin Properties featuring 65 exclusive beachfront residences on Dubai Islands. The development offers 46+ biohacking-focused amenities including cryotherapy, hyperbaric chamber, red light therapy, infinity pools, and AI-enabled smart homes designed for comfort, privacy, and a calmer pace of living.",
+                "description": "Property Overview",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Starting from AED 3.6M for 1-bedroom suites. Units include 1-Bed Suites (1,028-1,103 sq ft), 2-Bed Suites (1,617-2,127 sq ft), and exclusive 4-Bed Penthouses (3,592-3,647 sq ft). Flexible 60/40 payment plan available.",
+                "description": "Pricing & Payment Plans",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Strong rental demand in Dubai Islands waterfront location. Properties above AED 2M qualify for UAE Golden Visa. Tax-free environment maximizes net returns. Beach proximity and unique wellness amenities drive premium rental yields.",
+                "description": "ROI & Investment Returns",
+                "url": null
+            },
+            {
+                "type": "image",
+                "content": "exterior_waterfront_view.jpg",
+                "description": "Stunning waterfront tower exterior with curved architecture and beach access",
+                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/57bfeb302-fa23-488e-8785-b5652d09f7612733.png"
+            },
+            {
+                "type": "image",
+                "content": "wellness_amenities.jpg",
+                "description": "Outdoor wellness and fitness area with state-of-the-art equipment",
+                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/37bfeb302-fa23-488e-8785-b5652d09f7615991.png"
+            },
+            {
+                "type": "image",
+                "content": "penthouse_exterior.jpg",
+                "description": "Luxury penthouse with panoramic sea views and private terraces",
+                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/67bfeb302-fa23-488e-8785-b5652d09f7616670.png"
+            },
+            {
+                "type": "image",
+                "content": "interior_living.jpg",
+                "description": "Modern furnished living area with floor-to-ceiling windows and sea views",
+                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/27bfeb302-fa23-488e-8785-b5652d09f7616044.png"
+            },
+            {
+                "type": "text",
+                "content": "46+ world-class amenities including infinity pool, endless pool, hot plunge, sauna, steam room, cryotherapy, red light therapy, hyperbaric chamber, gym, outdoor gym, aqua gym, kids play area, sand pit playground, kids adventure wall, zip lines, clubhouse, working pods, greenhouse cafe, BBQ seating, misting majlis, water loungers, roof deck sun beds, cabanas, and AI-enabled smart home features with clean air and mineralized water systems.",
+                "description": "Amenities & Facilities",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Properties above AED 2M qualify for the UAE Golden Visa (10-year residency) for investors and their families. Fakhruddin Properties assists with the entire application process.",
+                "description": "Golden Visa Eligibility",
+                "url": null
+            }
+        ],
+        "brand_color": "#1e88e5",
+        "broker_email": "info@fakhruddinproperties.com",
+        "broker_logo_url": null,
+        "broker_name": "Fakhruddin Properties",
+        "broker_phone": "+971-4-xxx-xxxx",
+        "created_at": {
+            "$date": "2026-02-22T10:30:00.000Z"
+        },
+        "developer": "Fakhruddin Properties",
+        "golden_visa_eligible": true,
+        "location": "Dubai Islands, Dubai, UAE",
+        "name": "Treppan Living Privé",
+        "payment_plans": "60/40 split payment plan",
+        "price_start_aed_in_million": 3.6,
+        "price_end_aed_in_million": 15,
+        "projected_roi": "Strong rental demand in waterfront location, tax-free returns",
+        "property_type": "Apartment",
+        "updated_at": {
+            "$date": "2026-02-22T10:30:00.000Z"
+        },
+        "usps": [
+            "46+ Wellness Amenities",
+            "Beachfront Location",
+            "Biohacking Features",
+            "AI Smart Homes",
+            "Golden Visa Eligible",
+            "Limited 65 Residences",
+            "Cryotherapy & Hyperbaric Chamber",
+            "Flexible Payment Plan"
+        ]
+    }
+]

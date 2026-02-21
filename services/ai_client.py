@@ -19,6 +19,12 @@ class AIClient:
             azure_deployment=settings.AZURE_OPENAI_DEPLOYMENT_NAME,
             api_version=settings.AZURE_OPENAI_API_VERSION,
         )
+        self.embedding_client = AzureOpenAI(
+            api_key=settings.AZURE_OPENAI_API_KEY,
+            azure_endpoint=settings.AZURE_OPENAI_ENDPOINT,
+            azure_deployment=settings.AZURE_OPENAI_EMBEDDING_MODEL,
+            api_version=settings.AZURE_OPENAI_API_VERSION,
+        )
 
     def completion(
         self,
@@ -73,7 +79,7 @@ class AIClient:
 
     def get_embedding(self, text: str) -> List[float]:
         """Generate embedding for text using Azure OpenAI."""
-        response = self.client.embeddings.create(
+        response = self.embedding_client.embeddings.create(
             input=text,
             model=settings.AZURE_OPENAI_EMBEDDING_MODEL,
         )

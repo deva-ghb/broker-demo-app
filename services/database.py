@@ -10,7 +10,8 @@ _client: AsyncIOMotorClient = None
 async def connect_db():
     """Initialize the MongoDB connection."""
     global _client
-    _client = AsyncIOMotorClient(settings.MONGODB_URI)
+    # MongoDB Atlas Local requires directConnection to avoid routing to internal docker hostnames
+    _client = AsyncIOMotorClient(settings.MONGODB_URI, directConnection=True)
     # Ping to verify connection
     await _client.admin.command("ping")
     print(f"✅ Connected to MongoDB at {settings.MONGODB_URI}")

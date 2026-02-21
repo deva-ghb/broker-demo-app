@@ -28,8 +28,13 @@ class PropertyDocument(BaseModel):
 
     # USPs and metadata for knowledge base
     usps: List[str] = Field(default_factory=list)
-    price_range: Optional[str] = None
+    price_start_aed_in_million: Optional[float] = None
+    price_end_aed_in_million: Optional[float] = None
     payment_plans: Optional[str] = None
+    
+    # Vector fields for Qdrant named vectors
+    description_vector: Optional[List[float]] = None
+    amenities_vector: Optional[List[float]] = None
     golden_visa_eligible: bool = False
     projected_roi: Optional[str] = None
 

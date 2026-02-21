@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 
 from schemas.microsite_schemas import MicrositeBuildRequest, MicrositeBuildResponse
 from services.microsite_service import build_microsite, get_microsite_html
+from services.recommendation_service import recommend_properties
 
 router = APIRouter(tags=["Microsite Builder"])
 
@@ -14,12 +15,18 @@ router = APIRouter(tags=["Microsite Builder"])
 async def build_microsite_endpoint(request: MicrositeBuildRequest):
     """
     Generate a personalized microsite for a persona + property combination.
+    If property_id is None, uses Recommendation Service to find best match.
     Returns the unique URL and tracking ID.
     """
     try:
+        prop_id = request.property_id
+        if not prop_id:
+            recommended_ids, _ = await recommend_properties(persona_id=request.persona_id)
+            prop_id = recommended_ids[0]
+            
         result = await build_microsite(
             persona_id=request.persona_id,
-            property_id=request.property_id,
+            property_id=prop_id,
         )
         return MicrositeBuildResponse(**result)
     except ValueError as e:

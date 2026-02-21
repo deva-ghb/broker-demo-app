@@ -1,10 +1,9 @@
 """
-Knowledge Base service — retrieves property context from MongoDB and Qdrant
-for the Persona Builder's AI-driven Q&A session.
+Knowledge Base service — retrieves property context from MongoDB.
+Uses native Atlas Search $vectorSearch for semantic relevance.
 """
 from typing import List, Dict, Any, Optional
 from services.database import get_collection
-from services.qdrant_client import get_qdrant, PROPERTY_COLLECTION as QDRANT_PROPERTY_COLLECTION
 from services.ai_client import ai_client
 from models.property import PROPERTY_COLLECTION
 
@@ -25,27 +24,40 @@ async def get_property_context(property_id: str) -> Dict[str, Any]:
 
 async def search_relevant_properties(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
     """
-    Semantic search for relevant properties using Qdrant embeddings.
+    Semantic search for relevant properties using MongoDB vectors and cosine similarity.
     """
     try:
-        embedding = ai_client.get_embedding(query)
-        qdrant = get_qdrant()
-        results = qdrant.search(
-            collection_name=QDRANT_PROPERTY_COLLECTION,
-            query_vector=embedding,
-            limit=top_k,
-        )
-        property_ids = [hit.payload.get("property_id") for hit in results if hit.payload]
-
-        # Fetch full docs from MongoDB
+        query_vector = ai_client.get_embedding(query)
         collection = get_collection(PROPERTY_COLLECTION)
+        
+        pipeline = [
+            {
+                "$vectorSearch": {
+                    "index": "description_vector_index",
+                    "path": "description_vector",
+                    "queryVector": query_vector,
+                    "numCandidates": 10,
+                    "limit": top_k
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "description_vector": 0,
+                    "amenities_vector": 0
+                }
+            }
+        ]
+        
         properties = []
-        async for prop in collection.find({"property_id": {"$in": property_ids}}):
-            prop.pop("_id", None)
+        cursor = collection.aggregate(pipeline)
+        async for prop in cursor:
             properties.append(prop)
+            
         return properties
+        
     except Exception as e:
-        print(f"⚠️ Knowledge base search failed: {e}")
+        print(f"⚠️ Knowledge base $vectorSearch failed: {e}")
         return []
 
 

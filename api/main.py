@@ -7,7 +7,6 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
 from services.database import connect_db, close_db
-from services.qdrant_client import init_qdrant_collections, close_qdrant
 
 
 @asynccontextmanager
@@ -15,11 +14,9 @@ async def lifespan(app: FastAPI):
     """Application lifecycle: startup and shutdown."""
     # Startup
     await connect_db()
-    await init_qdrant_collections()
     print("🚀 SellSmart API is ready")
     yield
     # Shutdown
-    close_qdrant()
     await close_db()
     print("👋 SellSmart API shutting down")
 
@@ -51,7 +48,6 @@ if os.path.exists(static_dir):
 async def health_check():
     """Health check endpoint."""
     from services.database import get_db
-    from services.qdrant_client import get_qdrant
 
     # Check MongoDB
     try:
@@ -61,18 +57,9 @@ async def health_check():
     except Exception as e:
         db_status = f"error: {str(e)}"
 
-    # Check Qdrant
-    try:
-        qdrant = get_qdrant()
-        qdrant.get_collections()
-        qdrant_status = "connected"
-    except Exception as e:
-        qdrant_status = f"error: {str(e)}"
-
     return {
-        "status": "ok" if db_status == "connected" and qdrant_status == "connected" else "degraded",
-        "db": db_status,
-        "qdrant": qdrant_status,
+        "status": "ok" if db_status == "connected" else "degraded",
+        "db": db_status
     }
 
 
@@ -81,8 +68,10 @@ from api.persona_router import router as persona_router
 from api.microsite_router import router as microsite_router
 from api.engagement_router import router as engagement_router
 from api.trigger_router import router as trigger_router
+from api.recommendation_router import router as recommendation_router
 
 app.include_router(persona_router)
 app.include_router(microsite_router)
 app.include_router(engagement_router)
 app.include_router(trigger_router)
+app.include_router(recommendation_router)

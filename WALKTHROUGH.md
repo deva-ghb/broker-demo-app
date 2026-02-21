@@ -4,38 +4,25 @@ Welcome to the SellSmart platform. This guide explains how to get the applicatio
 
 ## Prerequisites
 - Docker & Docker Compose
-- Conda / Python environment manager
+- Python 3.9+ (no conda needed)
 - Node.js & npm
 - An Azure OpenAI Endpoint & Key
 
-## 1. Setup & Installation
+## 1. Setup & Installation (One-Click Start)
 
-### Infrastructure
-Ensure you have the `.env` file populated with your Azure OpenAI credentials. Start the supporting databases (MongoDB and Qdrant):
-```bash
-docker-compose up -d mongodb qdrant
-```
+We have created an automated startup script that handles the entire setup process for you seamlessly: it starts your database containers, clears any stuck ports, creates your backend python environment if missing, and boots up both the backend and frontend at the same time.
 
-### Backend (FastAPI)
-Activate the provided conda environment, install dependencies, and seed the mock real estate data:
+From your project root directory (`broker-demo-app`), simply run:
 ```bash
-conda activate smartsell
-pip install -r requirements.txt
-python scripts/seed_data.py
-```
-Start the backend server on `localhost:8000`:
-```bash
-uvicorn api.main:app --reload
+./run.sh
 ```
 
-### Frontend (React + Vite)
-In a separate terminal window, start the frontend development server:
-```bash
-cd webapp
-npm install
-npm run dev
-```
-Navigate to `http://localhost:5173`. The Vite proxy will automatically route `/api/*` and `/m/*` requests to your backend on port 8000.
+**That's it!**
+
+- **Backend** will be live at: `http://localhost:8000`
+- **Frontend** will be live at: `http://localhost:5173` (or `http://localhost:5174` if `5173` is busy)
+
+*When you are done, simply press `Ctrl+C` in that terminal, and it will cleanly shut down all services.*
 
 ---
 

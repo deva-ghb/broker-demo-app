@@ -77,3 +77,8 @@ app.include_router(engagement_router)
 app.include_router(trigger_router)
 app.include_router(recommendation_router)
 app.include_router(property_router)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

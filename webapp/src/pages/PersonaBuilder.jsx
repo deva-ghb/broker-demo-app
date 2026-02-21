@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
+import VoiceInterface from '../components/VoiceInterface'
 
 export default function PersonaBuilder({ apiBase, onNavigate }) {
+  const [mode, setMode] = useState('voice') // 'text' or 'voice'
   const [sessionId, setSessionId] = useState(null)
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
@@ -73,11 +75,43 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
     setPersona(null)
   }
 
+  // If in voice mode, render VoiceInterface
+  if (mode === 'voice') {
+    return (
+      <div>
+        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1>🎙️ Persona Builder</h1>
+            <p>Conversational AI-driven lead profiling — speak or type to build personas</p>
+          </div>
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => setMode('text')}
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            ⌨️ Switch to Text
+          </button>
+        </div>
+        <VoiceInterface apiBase={apiBase} onNavigate={onNavigate} />
+      </div>
+    )
+  }
+
+  // Text mode UI
   return (
     <div>
-      <div className="page-header">
-        <h1>🧠 Persona Builder</h1>
-        <p>Conversational AI-driven lead profiling — describe your buyer and we'll build the persona</p>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1>🧠 Persona Builder</h1>
+          <p>Conversational AI-driven lead profiling — describe your buyer and we'll build the persona</p>
+        </div>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={() => setMode('voice')}
+          style={{ whiteSpace: 'nowrap' }}
+        >
+          🎙️ Switch to Voice
+        </button>
       </div>
 
       {/* Config Row */}

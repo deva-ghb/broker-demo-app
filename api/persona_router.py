@@ -2,7 +2,9 @@
 Persona Builder API router.
 """
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi.responses import StreamingResponse
 from typing import Optional
+import logging
 
 from schemas.persona_schemas import (
     TextChatRequest,
@@ -11,7 +13,10 @@ from schemas.persona_schemas import (
     PersonaListResponse,
 )
 from services.persona_service import handle_text_chat, get_persona, list_personas
+from services.stt_service import speech_to_text
+from services.tts_service import text_to_speech_stream
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/persona", tags=["Persona Builder"])
 
 
@@ -40,25 +45,66 @@ async def audio_chat(
 ):
     """
     Audio-based persona building chat.
-    Accepts audio input, returns audio response + transcript.
-    
-    NOTE: Full audio STT/TTS integration requires Azure Speech Services.
-    Currently falls back to text processing with a placeholder.
+    Accepts audio input, returns JSON with transcript and text response.
+    Use /tts endpoint to convert the reply to speech.
+
+    Flow: Audio → STT (Whisper) → Text Chat → Reply
     """
-    # Read audio data
-    audio_data = await audio_blob.read()
+    try:
+        # Read audio data
+        audio_data = await audio_blob.read()
 
-    # TODO: Integrate Azure Speech STT here
-    # For now, return a placeholder indicating audio support is pending
-    # In production: audio_data → Azure STT → text → AI → Azure TTS → audio response
+        # Convert speech to text using Whisper
+        logger.info(f"Transcribing audio (size: {len(audio_data)} bytes)")
+        transcript = await speech_to_text(audio_data, audio_blob.filename or "audio.webm")
+        logger.info(f"Transcript: {transcript}")
 
-    return {
-        "session_id": session_id or "new_session",
-        "transcript": "Audio processing is being set up. Please use text chat for now.",
-        "session_status": "collecting",
-        "persona_id": None,
-        "message": "Audio-to-audio support requires Azure Speech Services configuration. Use /text-chat endpoint.",
-    }
+        # Process via text chat
+        result = await handle_text_chat(
+            message=transcript,
+            session_id=session_id,
+            broker_id=broker_id,
+            property_id=property_id,
+        )
+
+        # Return transcript + chat response
+        return {
+            "session_id": result["session_id"],
+            "transcript": transcript,
+            "reply": result["reply"],
+            "session_status": result["session_status"],
+            "persona_id": result.get("persona_id"),
+        }
+
+    except Exception as e:
+        logger.error(f"Audio chat error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Audio processing failed: {str(e)}"
+        )
+
+
+@router.post("/tts")
+async def text_to_speech_endpoint(text: str = Form(...)):
+    """
+    Convert text to speech using Pocket TTS.
+    Returns streaming audio response.
+    """
+    try:
+        return StreamingResponse(
+            text_to_speech_stream(text),
+            media_type="audio/mpeg",
+            headers={
+                "Content-Disposition": "inline",
+                "Cache-Control": "no-cache",
+            }
+        )
+    except Exception as e:
+        logger.error(f"TTS error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Text-to-speech failed: {str(e)}"
+        )
 
 
 @router.get("/{persona_id}", response_model=PersonaResponse)

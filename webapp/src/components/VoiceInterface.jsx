@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import ReactMarkdown from 'react-markdown'
 import './VoiceInterface.css'
 
 export default function VoiceInterface({ apiBase, onNavigate }) {
@@ -279,12 +280,11 @@ export default function VoiceInterface({ apiBase, onNavigate }) {
 
       {/* Status Badge */}
       <div className="status-row">
-        <span className={`badge ${
-          status === 'complete' ? 'badge-success' :
+        <span className={`badge ${status === 'complete' ? 'badge-success' :
           status === 'collecting' ? 'badge-warning' : 'badge-info'
-        }`}>
+          }`}>
           {status === 'complete' ? '✅ Persona Complete' :
-           status === 'collecting' ? '🔄 Collecting Information' : '🎤 Ready to Start'}
+            status === 'collecting' ? '🔄 Collecting Information' : '🎤 Ready to Start'}
         </span>
         {sessionId && (
           <span className="session-id">Session: {sessionId}</span>
@@ -376,7 +376,13 @@ export default function VoiceInterface({ apiBase, onNavigate }) {
                   <div className="message-sender">
                     {msg.role === 'user' ? '👤 You' : '🤖 AI'}
                   </div>
-                  <div className="message-content">{msg.content}</div>
+                  <div className="message-content">
+                    {msg.role === 'assistant' ? (
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
+                  </div>
                 </div>
               ))}
               <div ref={messagesEndRef} />
@@ -391,8 +397,13 @@ export default function VoiceInterface({ apiBase, onNavigate }) {
           <div className="persona-header">
             <div className="persona-avatar">👤</div>
             <div>
-              <h2>{persona.persona_type || 'Buyer'} Persona</h2>
+              <h2>{persona.ai_recommended_persona_type || 'Buyer'} Persona</h2>
               <span className="persona-id">{persona.persona_id}</span>
+              {persona.ai_persona_label && (
+                <div style={{ fontSize: '13px', color: 'var(--primary-light)', marginTop: '4px' }}>
+                  {persona.ai_persona_label}
+                </div>
+              )}
             </div>
             <div className="trust-score">
               <div className="score-value">{persona.trust_level_score}</div>
@@ -403,31 +414,55 @@ export default function VoiceInterface({ apiBase, onNavigate }) {
           <div className="persona-grid">
             <div className="persona-field">
               <div className="field-label">Primary Motivation</div>
-              <div className="field-value">{persona.primary_motivation || '—'}</div>
+              <div className="field-value">{persona.motivation?.primary_goal || '—'}</div>
             </div>
             <div className="persona-field">
               <div className="field-label">Nationality</div>
-              <div className="field-value">{persona.demographic_context?.nationality || '—'}</div>
+              <div className="field-value">{persona.identity?.nationality || '—'}</div>
             </div>
             <div className="persona-field">
-              <div className="field-label">Key Interests</div>
+              <div className="field-label">Budget</div>
               <div className="field-value">
-                {(persona.key_interests || []).map((k, i) => (
-                  <span key={i} className="badge badge-primary">
-                    {k}
-                  </span>
-                ))}
+                {persona.financial?.budget_min || persona.financial?.budget_max
+                  ? `${persona.financial.budget_min?.toLocaleString() || '—'} – ${persona.financial.budget_max?.toLocaleString() || '—'} AED`
+                  : '—'}
               </div>
             </div>
             <div className="persona-field">
-              <div className="field-label">Ignored Features</div>
+              <div className="field-label">Urgency</div>
+              <div className="field-value">{persona.motivation?.urgency || '—'}</div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">Lifestyle & Interests</div>
               <div className="field-value">
-                {(persona.ignored_features || []).map((k, i) => (
-                  <span key={i} className="badge badge-danger">
-                    {k}
-                  </span>
-                ))}
+                {(persona.lifestyle?.lifestyle_tags || []).length > 0
+                  ? persona.lifestyle.lifestyle_tags.map((k, i) => (
+                    <span key={i} className="badge badge-primary">
+                      {k}
+                    </span>
+                  ))
+                  : '—'}
               </div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">Deal Breakers</div>
+              <div className="field-value">
+                {(persona.lifestyle?.deal_breaker_features || []).length > 0
+                  ? persona.lifestyle.deal_breaker_features.map((k, i) => (
+                    <span key={i} className="badge badge-danger">
+                      {k}
+                    </span>
+                  ))
+                  : '—'}
+              </div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">Property Type</div>
+              <div className="field-value">{persona.property_fit?.unit_type || '—'}</div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">View Preference</div>
+              <div className="field-value">{persona.property_fit?.view_preference || '—'}</div>
             </div>
           </div>
 

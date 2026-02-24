@@ -31,19 +31,26 @@ class AudioChatResponse(BaseModel):
 
 
 class PersonaResponse(BaseModel):
-    """Full persona response for GET endpoint."""
+    """Full persona response for GET endpoint — aligned with PersonaDocument."""
     persona_id: str
     broker_id: Optional[str] = None
     created_at: datetime
-    persona_type: Optional[str] = None
-    demographic_context: Dict = {}
-    primary_motivation: Optional[str] = None
-    key_interests: List[str] = []
-    ignored_features: List[str] = []
-    engagement_signals: Dict = {}
+
+    # 7 Dimensions (matching PersonaDocument storage)
+    identity: Dict = {}
+    motivation: Dict = {}
+    financial: Dict = {}
+    lifestyle: Dict = {}
+    engagement: Dict = {}
+    property_fit: Dict = {}
+    communication: Dict = {}
+
+    # AI-generated insights
+    ai_persona_label: Optional[str] = None
     ai_recommended_angle: Optional[str] = None
-    trust_level_score: int = 50
+    ai_recommended_persona_type: Optional[str] = None
     next_best_action: Optional[str] = None
+    trust_level_score: int = 50
     session_status: str = "collecting"
 
 

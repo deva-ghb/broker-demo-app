@@ -48,6 +48,7 @@ if os.path.exists(static_dir):
 async def health_check():
     """Health check endpoint."""
     from services.database import get_db
+    from services.qdrant_client import get_qdrant
 
     # Check MongoDB
     try:
@@ -57,9 +58,20 @@ async def health_check():
     except Exception as e:
         db_status = f"error: {str(e)}"
 
+    # Check Qdrant
+    try:
+        client = get_qdrant()
+        client.get_collections()
+        qdrant_status = "connected"
+    except Exception as e:
+        qdrant_status = f"error: {str(e)}"
+
+    overall = "ok" if db_status == "connected" and qdrant_status == "connected" else "degraded"
+
     return {
-        "status": "ok" if db_status == "connected" else "degraded",
-        "db": db_status
+        "status": overall,
+        "db": db_status,
+        "qdrant": qdrant_status
     }
 
 

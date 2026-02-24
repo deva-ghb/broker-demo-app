@@ -328,50 +328,188 @@
         "assets": [
             {
                 "type": "text",
-                "content": "Treppan Living Privé is a wellness-focused residential project by Fakhruddin Properties featuring 65 exclusive beachfront residences on Dubai Islands. The development offers 46+ biohacking-focused amenities including cryotherapy, hyperbaric chamber, red light therapy, infinity pools, and AI-enabled smart homes designed for comfort, privacy, and a calmer pace of living.",
+                "content": "Treppan Living Privé is a wellness home with resort living built in, featuring 65 exclusive beachfront residences on Dubai Islands by Fakhruddin Properties. Performance isn't an act, but a lifestyle shaped by intention and balance. More than a collaboration of names, this is a meeting of values, where mindful choices and intelligent design create environments where performance meets life, defining a smarter, more thoughtful way of modern living. The development offers 46+ biohacking-focused amenities, fully furnished residences, à la carte hospitality services, and a cohesive AI-enabled ecosystem.",
                 "description": "Property Overview",
                 "url": null
             },
             {
                 "type": "text",
-                "content": "Starting from AED 3.6M for 1-bedroom suites. Units include 1-Bed Suites (1,028-1,103 sq ft), 2-Bed Suites (1,617-2,127 sq ft), and exclusive 4-Bed Penthouses (3,592-3,647 sq ft). Flexible 60/40 payment plan available.",
-                "description": "Pricing & Payment Plans",
+                "content": "Units include 1-Bed Suites (1,028-1,103 sq ft), 2-Bed Suites (1,617-2,127 sq ft), and exclusive 4-Bed Penthouses (3,592-3,647 sq ft). Flexible 60/40 payment plan available. Located on Dubai Islands with longevity, wellness and biohacking amenities, fully furnished residences, and à la carte hospitality services.",
+                "description": "Pricing & Unit Types",
                 "url": null
             },
             {
                 "type": "text",
-                "content": "Strong rental demand in Dubai Islands waterfront location. Properties above AED 2M qualify for UAE Golden Visa. Tax-free environment maximizes net returns. Beach proximity and unique wellness amenities drive premium rental yields.",
+                "content": "Strong rental demand in Dubai Islands waterfront location. Properties above AED 2M qualify for UAE Golden Visa. Tax-free environment maximizes net returns. Beach proximity (90 seconds to Dubai Islands Beach) and unique wellness amenities drive premium rental yields. Only 65 exclusive residences ensure limited supply and high value retention.",
                 "description": "ROI & Investment Returns",
                 "url": null
             },
             {
-                "type": "image",
-                "content": "exterior_waterfront_view.jpg",
-                "description": "Stunning waterfront tower exterior with curved architecture and beach access",
-                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/57bfeb302-fa23-488e-8785-b5652d09f7612733.png"
+                "type": "video",
+                "content": "treppan_living_prive_video",
+                "description": "Treppan Living Privé project walkthrough showcasing the beachfront residences, amenities, and lifestyle",
+                "url": "https://www.youtube.com/embed/bciVaSX1QvY"
             },
             {
                 "type": "image",
-                "content": "wellness_amenities.jpg",
-                "description": "Outdoor wellness and fitness area with state-of-the-art equipment",
-                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/37bfeb302-fa23-488e-8785-b5652d09f7615991.png"
+                "content": "prive_general_view.webp",
+                "description": "Treppan Living Privé waterfront tower general view with coastal architecture on Dubai Islands",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView.webp"
             },
             {
                 "type": "image",
-                "content": "penthouse_exterior.jpg",
-                "description": "Luxury penthouse with panoramic sea views and private terraces",
-                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/67bfeb302-fa23-488e-8785-b5652d09f7616670.png"
+                "content": "prive_general_view_dusk.webp",
+                "description": "Treppan Living Privé tower at dusk with illuminated facade and blue hour sky",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView05-Bluehour-1-480x300.webp"
             },
             {
                 "type": "image",
-                "content": "interior_living.jpg",
-                "description": "Modern furnished living area with floor-to-ceiling windows and sea views",
-                "url": "https://image.qwenlm.ai/public_source/1da3335c-2e20-417d-bb4a-e6b0edd01627/27bfeb302-fa23-488e-8785-b5652d09f7616044.png"
+                "content": "prive_general_view_03.webp",
+                "description": "Treppan Living Privé aerial view showing the tower and surrounding Dubai Islands landscape",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-GeneralView03-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_general_view_04.webp",
+                "description": "Treppan Living Privé exterior view showcasing curved architecture and landscape design",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView04-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_portrait_general.webp",
+                "description": "Treppan Living Privé portrait view of the residential tower",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-PORTRAIL-GENERAL-02-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_rooftop_pool.webp",
+                "description": "Rooftop infinity pool with panoramic sea views and sun loungers",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-RoofTop-Pool03.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_aqua_gym.webp",
+                "description": "Aqua gym facility with pool-based fitness equipment",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-AquaGym.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_indoor_gym.webp",
+                "description": "State-of-the-art indoor gym with modern fitness equipment",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Indorr-Gym1.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_outdoor_gym.webp",
+                "description": "Outdoor gym area with beachfront views for open-air workouts",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-OutdoorGym.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_pool_lounge.webp",
+                "description": "Pool lounge area with cabanas and water features",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Pool_Lounge.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_kids_area.webp",
+                "description": "Kids play area with adventure wall and recreational features",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsArea01.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_kids_pool.webp",
+                "description": "Dedicated kids pool with water play features",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsPool.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_lounge_pods.webp",
+                "description": "Working pods and lounge areas for remote work and relaxation",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Lounge-Pods.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_green_cafe.webp",
+                "description": "Greenhouse cafe with lush greenery and casual dining area",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-greencafe01.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_treatment_room.webp",
+                "description": "Wellness treatment room for cryotherapy, red light therapy, and hyperbaric chamber",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Public-Area-Treatment-room.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_penthouse_living_01.webp",
+                "description": "Penthouse living room with panoramic sea views and luxury furnishings",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Living-room-view-01-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_penthouse_living_02.webp",
+                "description": "Penthouse living room alternate view with floor-to-ceiling windows",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Living-room-view-02-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_penthouse_kitchen.webp",
+                "description": "Penthouse kitchen with premium finishes and modern appliances",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Kitchen-view-01-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_master_bedroom.webp",
+                "description": "2BR apartment master bedroom with sea views and contemporary design",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-2BR-Apartment-Master-bedroom-view-01-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_standard_bedroom.webp",
+                "description": "Penthouse standard bedroom with elegant furnishings and natural light",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/PRIVE-Apartment-units-Penthouse-Standard-bedroom-view-01-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_balcony_dusk.webp",
+                "description": "Private balcony at dusk with stunning sunset views over the Gulf",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-BalconyDusk02.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_beach_view_wide.webp",
+                "description": "Wide panoramic view of Dubai Islands Beach from the property",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-BEACH-VIEW_WIDE-480x300.webp"
+            },
+            {
+                "type": "image",
+                "content": "prive_beach_view_portrait.webp",
+                "description": "Portrait view of the beachfront with the tower in background",
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TN-PRIVE-BEACH-VIEW_PORTRAIT-480x300.webp"
             },
             {
                 "type": "text",
-                "content": "46+ world-class amenities including infinity pool, endless pool, hot plunge, sauna, steam room, cryotherapy, red light therapy, hyperbaric chamber, gym, outdoor gym, aqua gym, kids play area, sand pit playground, kids adventure wall, zip lines, clubhouse, working pods, greenhouse cafe, BBQ seating, misting majlis, water loungers, roof deck sun beds, cabanas, and AI-enabled smart home features with clean air and mineralized water systems.",
+                "content": "46+ world-class amenities including Club House, Hangout Area/Seating Area, Working Pods, Green House Cafe, BBQ Seating, Misting Majlis, Infinity Pool, Pool, Kids Pool, Endless Pool, Water Loungers, Rooftop Water Lounger, Hot Plunge, Sauna, Steam, Cryotherapy, Red Light Therapy, Hyperbaric Chamber, Open Shower, Common Massage Bed, Gym, Outdoor Gym, Aqua Gym, Sun Beds, Roof Deck Sun Beds, Cabanas, Kids Play Area, Sand Pit Playground, Kids Adventure Wall, and Zip Lines. All residences feature AI-enabled smart home systems, clean air purification, and mineralized water.",
                 "description": "Amenities & Facilities",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "À la carte services available on demand: Chauffeur Driven Rolls Royce, Private Boating With Captain, In-House Island Transfers, Vehicle Care And Refuelling, In-Residence Maintenance, In-Home Massage Services, Health Consultations, Grocery And Shopping Assistance, Childcare Assistance, Pet Services, and 24-Hour Emergency Repair.",
+                "description": "À La Carte Services",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Premium living services included: 24/7 Security, Common Area Maintenance, Common Area Housekeeping, Utilities for Common Areas, Property Insurance, Residence Bellboy Services, General & Admin Support, Residence Lounge WiFi, Lobby Coffee Machine, and Clubhouse/Lounge Staff.",
+                "description": "Premium Living Services",
+                "url": null
+            },
+            {
+                "type": "text",
+                "content": "Beachside address with everyday city connections. Dubai Islands Beach: 90 seconds (500m). Dubai Islands Marina: 4 min (2.1km). Waterfront Market: 2 min (500m). Water Sports & Scuba Diving: 2 min (500m). Centara Mirage Beach Resort: 3 min (1.2km). Dubai Islands Mall: 5 min (3km). Golf Course & Country Club: 5 min (3km). Gold Souq Metro: 12 min (7.6km). Downtown Dubai & DIFC: 20 min (21km). Dubai International Airport: 23 min (21km).",
+                "description": "Location & Proximity",
                 "url": null
             },
             {
@@ -383,9 +521,9 @@
         ],
         "brand_color": "#1e88e5",
         "broker_email": "info@fakhruddinproperties.com",
-        "broker_logo_url": null,
+        "broker_logo_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/treppan-living-prive-logo.png",
         "broker_name": "Fakhruddin Properties",
-        "broker_phone": "+971-4-xxx-xxxx",
+        "broker_phone": "800 5253",
         "created_at": {
             "$date": "2026-02-22T10:30:00.000Z"
         },
@@ -396,20 +534,314 @@
         "payment_plans": "60/40 split payment plan",
         "price_start_aed_in_million": 3.6,
         "price_end_aed_in_million": 15,
-        "projected_roi": "Strong rental demand in waterfront location, tax-free returns",
+        "projected_roi": "Strong rental demand in Dubai Islands waterfront location with only 65 exclusive residences, tax-free returns, beach proximity drives premium rental yields",
         "property_type": "Apartment",
         "updated_at": {
-            "$date": "2026-02-22T10:30:00.000Z"
+            "$date": "2026-02-24T12:00:00.000Z"
         },
         "usps": [
-            "46+ Wellness Amenities",
-            "Beachfront Location",
-            "Biohacking Features",
-            "AI Smart Homes",
+            "46+ Wellness & Biohacking Amenities",
+            "Beachfront Dubai Islands Location",
+            "Cryotherapy, Red Light Therapy & Hyperbaric Chamber",
+            "AI-Enabled Smart Homes",
             "Golden Visa Eligible",
-            "Limited 65 Residences",
-            "Cryotherapy & Hyperbaric Chamber",
-            "Flexible Payment Plan"
-        ]
+            "Limited 65 Exclusive Residences",
+            "À La Carte Hospitality Services",
+            "Chauffeur Driven Rolls Royce",
+            "Fully Furnished Residences",
+            "60/40 Flexible Payment Plan"
+        ],
+        "hero_video_url": "https://www.youtube.com/embed/bciVaSX1QvY",
+        "hero_logo_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/treppan-prive-logo.png",
+        "brand_ambassador": {
+            "name": "John Abraham",
+            "title": "Global Brand Ambassador for Tréppan Living",
+            "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/John-Treppan-Living.webp",
+            "description": "Performance isn't an act, but a lifestyle shaped by intention and balance. A globally renowned Indian actor and producer, John is a recipient of a National Film Award. Coming from a family of architects, John brings a genuine passion for architecture, playing an active role in shaping Tréppan Living's design and architectural vision."
+        },
+        "usp_cards": [
+            {
+                "title": "Dubai Islands",
+                "category": "location",
+                "icon": "location"
+            },
+            {
+                "title": "Longevity, Wellness & Biohacking Amenities",
+                "category": "wellness",
+                "icon": "wellness"
+            },
+            {
+                "title": "Fully Furnished Residences",
+                "category": "lifestyle",
+                "icon": "furnished"
+            },
+            {
+                "title": "A La Carte Hospitality Services",
+                "category": "services",
+                "icon": "hospitality"
+            },
+            {
+                "title": "46+ Curated Amenities & Experiences",
+                "category": "amenities",
+                "icon": "amenities"
+            },
+            {
+                "title": "Cohesive AI-enabled Ecosystem",
+                "category": "technology",
+                "icon": "technology"
+            }
+        ],
+        "a_la_carte_services": [
+            "Chauffeur Driven Rolls Royce",
+            "Private Boating With Captain",
+            "In-House Island Transfers",
+            "Vehicle Care And Refuelling",
+            "In-Residence Maintenance",
+            "In-Home Massage Services",
+            "Health Consultations",
+            "Grocery And Shopping Assistance",
+            "Childcare Assistance",
+            "Pet Services",
+            "24-Hour Emergency Repair"
+        ],
+        "wellness_features": [
+            {
+                "title": "AI-Enabled Smart Homes",
+                "category": "technology",
+                "icon": "smart-home"
+            },
+            {
+                "title": "Purest Indoor Air Quality",
+                "category": "wellness",
+                "icon": "air-quality"
+            },
+            {
+                "title": "Mineralised Drinking Water",
+                "category": "wellness",
+                "icon": "water"
+            },
+            {
+                "title": "Efficient Waste Management",
+                "category": "sustainability",
+                "icon": "waste"
+            },
+            {
+                "title": "Radiant Cooled Greenhouse Cafe",
+                "category": "lifestyle",
+                "icon": "greenhouse"
+            },
+            {
+                "title": "Master Control Mobile App",
+                "category": "technology",
+                "icon": "app"
+            },
+            {
+                "title": "Robot Delivery And Facial Access",
+                "category": "technology",
+                "icon": "robot"
+            },
+            {
+                "title": "Service-Led Living",
+                "category": "services",
+                "icon": "service"
+            }
+        ],
+        "premium_living_services": [
+            "24/7 Security",
+            "Common Area Maintenance",
+            "Common Area Housekeeping",
+            "Utilities for Common Areas",
+            "Property Insurance",
+            "Residence Bellboy Services",
+            "General & Admin Support",
+            "Residence Lounge WiFi",
+            "Lobby Coffee Machine",
+            "Clubhouse/Lounge Staff"
+        ],
+        "amenities_grid": [
+            {
+                "name": "Club House",
+                "category": "social"
+            },
+            {
+                "name": "Hangout Area/Seating Area",
+                "category": "social"
+            },
+            {
+                "name": "Working Pods",
+                "category": "work"
+            },
+            {
+                "name": "Green House Cafe",
+                "category": "social"
+            },
+            {
+                "name": "BBQ Seating",
+                "category": "social"
+            },
+            {
+                "name": "Misting Majlis",
+                "category": "social"
+            },
+            {
+                "name": "Infinity Pool",
+                "category": "recreation"
+            },
+            {
+                "name": "Pool",
+                "category": "recreation"
+            },
+            {
+                "name": "Kids Pool",
+                "category": "family"
+            },
+            {
+                "name": "Endless Pool",
+                "category": "recreation"
+            },
+            {
+                "name": "Water Loungers",
+                "category": "recreation"
+            },
+            {
+                "name": "Rooftop Water Lounger",
+                "category": "recreation"
+            },
+            {
+                "name": "Hot Plunge",
+                "category": "wellness"
+            },
+            {
+                "name": "Sauna",
+                "category": "wellness"
+            },
+            {
+                "name": "Steam",
+                "category": "wellness"
+            },
+            {
+                "name": "Cryotherapy",
+                "category": "wellness"
+            },
+            {
+                "name": "Red Light Therapy",
+                "category": "wellness"
+            },
+            {
+                "name": "Hyperbaric Chamber",
+                "category": "wellness"
+            },
+            {
+                "name": "Open Shower",
+                "category": "wellness"
+            },
+            {
+                "name": "Common Massage Bed",
+                "category": "wellness"
+            },
+            {
+                "name": "Gym",
+                "category": "fitness"
+            },
+            {
+                "name": "Outdoor Gym",
+                "category": "fitness"
+            },
+            {
+                "name": "Aqua Gym",
+                "category": "fitness"
+            },
+            {
+                "name": "Sun Beds",
+                "category": "recreation"
+            },
+            {
+                "name": "Roof Deck Sun Beds",
+                "category": "recreation"
+            },
+            {
+                "name": "Cabanas",
+                "category": "recreation"
+            },
+            {
+                "name": "Kids Play Area",
+                "category": "family"
+            },
+            {
+                "name": "Sand Pit",
+                "category": "family"
+            },
+            {
+                "name": "Playground",
+                "category": "family"
+            },
+            {
+                "name": "Kids Adventure Wall",
+                "category": "family"
+            },
+            {
+                "name": "Zip Lines",
+                "category": "family"
+            }
+        ],
+        "location_map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2545.7010023971175!2d55.295560599999995!3d25.2987926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f45908dbc6bbf%3A0xe060b60b7d7d8fcd!2sTreppan%20Living%20Prive!5e1!3m2!1sen!2sin!4v1770724804985!5m2!1sen!2sin",
+        "proximity": {
+            "landmarks": [
+                {
+                    "name": "Dubai Islands Beach",
+                    "time": "90 seconds",
+                    "distance": "500m"
+                },
+                {
+                    "name": "Dubai Islands Marina",
+                    "time": "4 min",
+                    "distance": "2.1km"
+                },
+                {
+                    "name": "Centara Mirage Beach Resort",
+                    "time": "3 min",
+                    "distance": "1.2km"
+                },
+                {
+                    "name": "Dubai Islands Mall",
+                    "time": "5 min",
+                    "distance": "3km"
+                },
+                {
+                    "name": "Downtown Dubai & DIFC",
+                    "time": "20 min",
+                    "distance": "21km"
+                }
+            ],
+            "amenities": [
+                {
+                    "name": "Waterfront Market",
+                    "time": "2 min",
+                    "distance": "500m"
+                },
+                {
+                    "name": "Water Sports & Scuba Diving",
+                    "time": "2 min",
+                    "distance": "500m"
+                },
+                {
+                    "name": "Golf Course & Country Club",
+                    "time": "5 min",
+                    "distance": "3km"
+                }
+            ],
+            "transport": [
+                {
+                    "name": "Gold Souq Metro",
+                    "time": "12 min",
+                    "distance": "7.6km"
+                },
+                {
+                    "name": "Dubai International Airport",
+                    "time": "23 min",
+                    "distance": "21km"
+                }
+            ]
+        }
     }
 ]

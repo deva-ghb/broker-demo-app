@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ property.get('name', 'Property') }} | {{ broker_name }}</title>
+    <meta name="description"
+        content="{{ enriched.get('hero_subheadline', property.get('name', '') + ' - ' + property.get('location', '')) }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── Reset & Base ─────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Typography ───────────────────────────────────── */
+        .heading-serif {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        .heading-sans {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        /* ── Color Palette ────────────────────────────────── */
+        :root {
+            --navy: #1B2A4A;
+            --navy-light: #2a3d66;
+            --rose-gold: #C9A87C;
+            --rose-gold-light: #d4b88f;
+            --cream: #F5F0EB;
+            --off-white: #FAFAF8;
+            --dark-bg: #1a1a2e;
+            --dark-card: #252540;
+            --text-primary: #1B2A4A;
+            --text-secondary: #5a6a85;
+            --text-light: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ── Preview Banner ───────────────────────────────── */
+            {
+            % if preview %
+        }
+
+        .preview-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: #fff;
+            text-align: center;
+            padding: 6px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        body {
+            padding-top: 30px;
+        }
+
+            {
+            % endif %
+        }
+
+        /* ── Header / Navbar ──────────────────────────────── */
+        .site-header {
+            position: fixed;
+
+            top: {
+                % if preview %
+            }
+
+            30px {
+                % else %
+            }
+
+            0 {
+                % endif %
+            }
+
+            ;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--navy);
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s;
+        }
+
+        .site-header.scrolled {
+            background: rgba(27, 42, 74, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-logo img {
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--rose-gold);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        .header-cta:hover {
+            background: var(--rose-gold-light);
+            transform: translateY(-1px);
+        }
+
+        /* ── Section: Hero ─────────────────────────────────── */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-video-bg iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(27, 42, 74, 0.7) 0%, rgba(27, 42, 74, 0.3) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 60px;
+            max-width: 700px;
+        }
+
+        .hero-logo {
+            width: 380px;
+            max-width: 80vw;
+            margin-bottom: 20px;
+        }
+
+        .hero-headline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 300;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .hero-subheadline {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--rose-gold);
+            color: #fff;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        .hero-cta:hover {
+            background: var(--rose-gold-light);
+            transform: translateY(-2px);
+        }
+
+        .hero-cta svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            z-index: 2;
+            color: rgba(255, 255, 255, 0.7);
+            animation: bounce 2s infinite;
+            font-size: 28px;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        /* ── Section: Brand Vision ────────────────────────── */
+        .brand-vision-section {
+            background: var(--cream);
+            padding: 100px 60px;
+        }
+
+        .brand-vision-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .brand-vision-text h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 3.5vw, 48px);
+            font-weight: 300;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .brand-vision-text p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .brand-vision-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--navy);
+            color: #fff;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .brand-vision-cta:hover {
+            background: var(--navy-light);
+        }
+
+        .brand-vision-cta svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .ambassador-card {
+            background: #111;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .ambassador-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .ambassador-caption {
+            padding: 24px 30px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .ambassador-caption .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .ambassador-caption .title {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* ── Section: USP Cards ────────────────────────────── */
+        .usp-section {
+            background: var(--off-white);
+            padding: 80px 60px;
+        }
+
+        .usp-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .usp-card {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .usp-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .usp-icon {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--rose-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: var(--rose-gold);
+        }
+
+        .usp-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .usp-card.highlighted {
+            background: rgba(201, 168, 124, 0.08);
+            border-radius: 16px;
+            border: 1px solid rgba(201, 168, 124, 0.3);
+        }
+
+        /* ── Section: Services (À La Carte + Premium) ─────── */
+        .services-section {
+            position: relative;
+            padding: 80px 60px;
+            overflow: hidden;
+        }
+
+        .services-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--cream) 0%, #e8e0d6 100%);
+            z-index: 0;
+        }
+
+        .services-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .services-block h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 3vw, 40px);
+            font-weight: 400;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .services-block .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .services-list {
+            list-style: none;
+            padding: 0;
+            columns: 1;
+        }
+
+        .services-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(27, 42, 74, 0.08);
+            font-size: 14px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .services-list li::before {
+            content: '✓';
+            color: var(--rose-gold);
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .services-list li.highlighted {
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        /* ── Section: Wellness Features ───────────────────── */
+        .wellness-section {
+            background: #fff;
+            padding: 80px 60px;
+        }
+
+        .wellness-section .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .wellness-section .section-title h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 400;
+            color: var(--navy);
+        }
+
+        .wellness-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .wellness-card {
+            background: var(--navy);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .wellness-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(27, 42, 74, 0.3);
+        }
+
+        .wellness-card .icon {
+            font-size: 32px;
+            color: var(--rose-gold);
+            margin-bottom: 14px;
+        }
+
+        .wellness-card h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        .wellness-card.highlighted {
+            background: linear-gradient(135deg, var(--navy), #2a3d66);
+            border: 1px solid var(--rose-gold);
+            box-shadow: 0 0 20px rgba(201, 168, 124, 0.2);
+        }
+
+        /* ── Section: Gallery ─────────────────────────────── */
+        .gallery-section {
+            background: #fff;
+            padding: 80px 0;
+        }
+
+        .gallery-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .gallery-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-slide {
+            min-width: 33.333%;
+            padding: 0 8px;
+        }
+
+        .gallery-slide img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .gallery-slide .caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            font-size: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .gallery-nav button {
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--rose-gold);
+            background: transparent;
+            color: var(--rose-gold);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .gallery-nav button:hover {
+            background: var(--rose-gold);
+            color: #fff;
+        }
+
+        .gallery-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .gallery-dots .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .gallery-dots .dot.active {
+            background: var(--rose-gold);
+        }
+
+        /* ── Section: Explore Property ─────────────────────── */
+        .explore-section {
+            background: var(--off-white);
+            padding: 80px 60px;
+        }
+
+        .explore-section .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .explore-section .section-title h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 400;
+            color: var(--navy);
+        }
+
+        .explore-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 30px;
+        }
+
+        .explore-tab {
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .explore-tab:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .explore-tab:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .explore-tab.active {
+            background: var(--rose-gold);
+            color: #fff;
+            border-color: var(--rose-gold);
+        }
+
+        .explore-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .explore-grid img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .explore-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        /* ── Section: Amenities Grid ──────────────────────── */
+        .amenities-section {
+            background: var(--dark-bg);
+            padding: 80px 60px;
+            position: relative;
+        }
+
+        .amenities-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('') center/cover;
+            opacity: 0.05;
+        }
+
+        .amenities-section .section-title {
+            text-align: center;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .amenities-section .section-subtitle {
+            color: var(--rose-gold);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .amenities-section .section-title h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 400;
+            color: #fff;
+        }
+
+        .amenities-grid {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+
+        .amenity-item {
+            background: var(--dark-card);
+            border-radius: 8px;
+            padding: 24px 12px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .amenity-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(201, 168, 124, 0.3);
+        }
+
+        .amenity-item.highlighted {
+            border-color: var(--rose-gold);
+            background: rgba(201, 168, 124, 0.1);
+            box-shadow: 0 0 15px rgba(201, 168, 124, 0.15);
+        }
+
+        .amenity-item .icon {
+            font-size: 28px;
+            color: var(--rose-gold);
+            margin-bottom: 10px;
+        }
+
+        .amenity-item h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.3;
+        }
+
+        /* ── Section: Location & Map ──────────────────────── */
+        .location-section {
+            background: #fff;
+            padding: 80px 60px;
+        }
+
+        .location-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .location-map {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-map iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .location-info h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(24px, 2.5vw, 36px);
+            font-weight: 400;
+            color: var(--navy);
+            margin-bottom: 30px;
+        }
+
+        .proximity-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+
+        .proximity-tab {
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .proximity-tab:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .proximity-tab:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .proximity-tab.active {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        .proximity-list {
+            list-style: none;
+        }
+
+        .proximity-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .proximity-list .name {
+            color: var(--text-primary);
+        }
+
+        .proximity-list .time {
+            color: var(--rose-gold);
+            font-weight: 600;
+        }
+
+        .proximity-list .distance {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* ── Section: Financial / Investment ───────────────── */
+        .financial-section {
+            background: var(--navy);
+            padding: 80px 60px;
+            color: #fff;
+        }
+
+        .financial-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .financial-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .financial-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .financial-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .stat-card .value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--rose-gold);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ── Section: Objection Handler ────────────────────── */
+        .objection-section {
+            background: var(--cream);
+            padding: 80px 60px;
+        }
+
+        .objection-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .objection-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(24px, 2.5vw, 36px);
+            font-weight: 400;
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+
+        .objection-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        /* ── Section: Contact / CTA Footer ────────────────── */
+        .contact-section {
+            background: #fff;
+            padding: 80px 60px;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(24px, 2.5vw, 36px);
+            font-weight: 400;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .contact-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .contact-btn.primary {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .contact-btn.primary:hover {
+            background: var(--navy-light);
+        }
+
+        .contact-btn.whatsapp {
+            background: #25D366;
+            color: #fff;
+        }
+
+        .contact-btn.whatsapp:hover {
+            background: #1fb855;
+        }
+
+        /* ── Footer ───────────────────────────────────────── */
+        .site-footer {
+            background: var(--navy);
+            padding: 40px 60px 24px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .footer-content a {
+            color: var(--rose-gold);
+            text-decoration: none;
+        }
+
+        .footer-separator {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+        }
+
+        /* ── Sticky CTA Bar (Mobile) ──────────────────────── */
+        .sticky-cta-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--navy);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .sticky-cta-bar a {
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sticky-cta-bar .phone-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .sticky-cta-bar .wa-btn {
+            background: #25D366;
+            color: #fff;
+        }
+
+        /* ── Scroll Animations ────────────────────────────── */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Responsive ───────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .usp-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .wellness-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .amenities-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .financial-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .explore-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-header {
+                padding: 10px 20px;
+            }
+
+            .hero-content {
+                padding: 0 24px;
+            }
+
+            .hero-logo {
+                width: 240px;
+            }
+
+            .brand-vision-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .brand-vision-section {
+                padding: 60px 24px;
+            }
+
+            .usp-section {
+                padding: 60px 24px;
+            }
+
+            .usp-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .services-content {
+                grid-template-columns: 1fr;
+            }
+
+            .services-section {
+                padding: 60px 24px;
+            }
+
+            .wellness-section {
+                padding: 60px 24px;
+            }
+
+            .wellness-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-slide {
+                min-width: 80%;
+            }
+
+            .explore-section {
+                padding: 60px 24px;
+            }
+
+            .explore-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amenities-section {
+                padding: 60px 24px;
+            }
+
+            .amenities-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .location-section {
+                padding: 60px 24px;
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .financial-section {
+                padding: 60px 24px;
+            }
+
+            .financial-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .objection-section {
+                padding: 60px 24px;
+            }
+
+            .contact-section {
+                padding: 60px 24px;
+            }
+
+            .site-footer {
+                padding: 24px;
+            }
+
+            body {
+                padding-bottom: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .usp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amenities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if preview %}
+    <div class="preview-banner">🟠 PREVIEW MODE — Engagement tracking is disabled</div>
+    {% endif %}
+
+    <!-- ── Header ──────────────────────────────────────── -->
+    <header class="site-header" id="site-header">
+        <div class="header-logo">
+            {% if broker_logo_url %}
+            <img src="{{ broker_logo_url }}" alt="{{ broker_name }}">
+            {% else %}
+            <span style="color:#fff;font-weight:600;font-size:18px;">{{ broker_name }}</span>
+            {% endif %}
+        </div>
+        <a href="#contact" class="header-cta" data-track="header_cta">
+            {{ enriched.get('cta_text', 'Express Interest') }} →
+        </a>
+    </header>
+
+    <!-- ── Sections rendered in persona order ──────────────── -->
+    {% for section_key in persona_section_order %}
+
+    {% if section_key == 'hero' %}
+    <!-- ── Hero Section ────────────────────────────────── -->
+    <section class="hero-section" id="hero" data-section="hero">
+        {% if property.get('hero_video_url') %}
+        <div class="hero-video-bg" aria-hidden="true">
+            <iframe
+                src="{{ property.get('hero_video_url') }}?controls=0&rel=0&playsinline=1&autoplay=1&mute=1&loop=1&playlist={{ property.get('hero_video_url', '').split('/')[-1] }}"
+                allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe>
+        </div>
+        {% endif %}
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            {% if property.get('hero_logo_url') %}
+            <img src="{{ property.get('hero_logo_url') }}" alt="{{ property.get('name', '') }}" class="hero-logo">
+            {% endif %}
+            <h1 class="hero-headline">
+                {{ enriched.get('hero_headline', property.get('name', 'Exclusive Living')) }}
+            </h1>
+            <p class="hero-subheadline">
+                {{ enriched.get('hero_subheadline', property.get('location', '')) }}
+            </p>
+            <a href="#contact" class="hero-cta" data-track="hero_cta">
+                {{ enriched.get('cta_text', 'Express Interest') }}
+                <svg viewBox="0 0 448 512">
+                    <path
+                        d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
+                </svg>
+            </a>
+        </div>
+        <div class="hero-scroll-indicator">↓</div>
+    </section>
+
+    {% elif section_key == 'brand_vision' %}
+    <!-- ── Brand Vision Section ────────────────────────── -->
+    <section class="brand-vision-section animate-in" id="brand-vision" data-section="brand_vision">
+        <div class="brand-vision-grid">
+            <div class="brand-vision-text">
+                <h2 class="heading-serif">
+                    {{ enriched_sections.get('overview', {}).get('heading', 'A Wellness Home With Resort Living Built
+                    In') }}
+                </h2>
+                {% set overview_content = enriched_sections.get('overview', {}).get('content', '') %}
+                {% if overview_content %}
+                <p>{{ overview_content }}</p>
+                {% else %}
+                {% if property.get('brand_ambassador', {}).get('description') %}
+                <p>{{ property.get('brand_ambassador', {}).get('description') }}</p>
+                {% endif %}
+                <p>More than a collaboration of names, this is a meeting of values, where mindful choices and
+                    intelligent design create environments where performance meets life, defining a smarter, more
+                    thoughtful way of modern living.</p>
+                {% endif %}
+                <a href="#contact" class="brand-vision-cta" data-track="brand_vision_cta">
+                    {{ enriched.get('cta_text', 'Express Interest') }}
+                    <svg viewBox="0 0 448 512">
+                        <path
+                            d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
+                    </svg>
+                </a>
+            </div>
+            {% if property.get('brand_ambassador') %}
+            <div class="ambassador-card">
+                <img src="{{ property.get('brand_ambassador', {}).get('image_url', '') }}"
+                    alt="{{ property.get('brand_ambassador', {}).get('name', '') }}" loading="lazy">
+                <div class="ambassador-caption">
+                    <div class="name">{{ property.get('brand_ambassador', {}).get('name', '') }}</div>
+                    <div class="title">{{ property.get('brand_ambassador', {}).get('title', '') }}</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% elif section_key == 'usp_cards' %}
+    <!-- ── USP Cards Section ──────────────────────────── -->
+    <section class="usp-section animate-in" id="usps" data-section="usp_cards">
+        <div class="usp-grid">
+            {% set usp_icons = {
+            'location': '📍', 'wellness': '🍁', 'furnished': '🏢',
+            'hospitality': '⭐', 'amenities': '💎', 'technology': '👥'
+            } %}
+            {% for card in usp_cards_ordered %}
+            <div class="usp-card {% if card.get('highlighted') %}highlighted{% endif %}">
+                <div class="usp-icon">{{ usp_icons.get(card.get('icon', ''), '✦') }}</div>
+                <h3>{{ card.get('title', '') }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% elif section_key == 'services' %}
+    <!-- ── Services Section ───────────────────────────── -->
+    <section class="services-section animate-in" id="services" data-section="services">
+        <div class="services-content">
+            <div class="services-block">
+                <h2 class="heading-serif">À La Carte Services</h2>
+                <p class="subtitle">Extra services are available when you need them. From transport and boating to home
+                    care and wellness support, you can add help on demand for an easier, worry-free lifestyle.</p>
+                <ul class="services-list">
+                    {% for service in property.get('a_la_carte_services', []) %}
+                    <li {% if service in highlighted_services %}class="highlighted" {% endif %}>{{ service }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="services-block">
+                <h2 class="heading-serif">Premium Living</h2>
+                <p class="subtitle">Treppan Living Privé is fully serviced, with everyday operations handled for you.
+                </p>
+                <ul class="services-list">
+                    {% for service in property.get('premium_living_services', []) %}
+                    <li>{{ service }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    {% elif section_key == 'wellness' %}
+    <!-- ── Wellness Features Section ──────────────────── -->
+    <section class="wellness-section animate-in" id="wellness" data-section="wellness">
+        <div class="section-title">
+            <h2 class="heading-serif">
+                {{ enriched_sections.get('amenities', {}).get('heading', 'Health & Wellness Features') }}
+            </h2>
+        </div>
+        <div class="wellness-grid">
+            {% set wellness_icons = {
+            'smart-home': '🏠', 'air-quality': '🌡️', 'water': '💧',
+            'waste': '♻️', 'greenhouse': '🌿', 'app': '📱',
+            'robot': '🤖', 'service': '🛎️'
+            } %}
+            {% for feature in wellness_features_ordered %}
+            <div class="wellness-card {% if feature.get('highlighted') %}highlighted{% endif %}">
+                <div class="icon">{{ wellness_icons.get(feature.get('icon', ''), '✦') }}</div>
+                <h3>{{ feature.get('title', '') }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% elif section_key == 'gallery' %}
+    <!-- ── Gallery Section ────────────────────────────── -->
+    <section class="gallery-section animate-in" id="gallery" data-section="gallery">
+        <div class="gallery-slider">
+            <div class="gallery-track" id="galleryTrack">
+                {% for asset in assets %}
+                {% if asset.get('type') == 'image' %}
+                <div class="gallery-slide" style="position:relative;">
+                    <img src="{{ asset.get('url', '') }}"
+                        alt="{{ asset.get('contextual_caption', asset.get('description', '')) }}" loading="lazy">
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="gallery-nav">
+            <button onclick="moveGallery(-1)" aria-label="Previous">←</button>
+            <button onclick="moveGallery(1)" aria-label="Next">→</button>
+        </div>
+        <div class="gallery-dots" id="galleryDots"></div>
+    </section>
+
+    {% elif section_key == 'amenities' %}
+    <!-- ── Amenities Grid Section ─────────────────────── -->
+    <section class="amenities-section animate-in" id="amenities" data-section="amenities">
+        <div class="amenities-section section-subtitle">Features & Amenities</div>
+        <div class="section-title">
+            <h2 class="heading-serif">
+                {{ enriched_sections.get('amenities', {}).get('heading', '46+ Amenities for Wellness, Comfort and Ease')
+                }}
+            </h2>
+        </div>
+        <div class="amenities-grid">
+            {% set amenity_icons = {
+            'social': '🏛️', 'work': '💼', 'recreation': '🏊',
+            'family': '👨‍👩‍👧', 'wellness': '🧖', 'fitness': '🏋️'
+            } %}
+            {% for amenity in amenities_ordered %}
+            <div class="amenity-item {% if amenity.get('highlighted') %}highlighted{% endif %}">
+                <div class="icon">{{ amenity_icons.get(amenity.get('category', ''), '✦') }}</div>
+                <h3>{{ amenity.get('name', '') }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% elif section_key == 'location' %}
+    <!-- ── Location & Map Section ─────────────────────── -->
+    <section class="location-section animate-in" id="location" data-section="location">
+        <div class="location-grid">
+            <div class="location-map">
+                {% if property.get('location_map_embed') %}
+                <iframe src="{{ property.get('location_map_embed') }}" allowfullscreen loading="lazy"
+                    title="{{ property.get('name', '') }} Location"></iframe>
+                {% endif %}
+            </div>
+            <div class="location-info">
+                <h2 class="heading-serif">
+                    {{ enriched_sections.get('location', {}).get('heading', 'Beachside Address, City Connections') }}
+                </h2>
+                <div class="proximity-tabs">
+                    {% set proximity = property.get('proximity', {}) %}
+                    {% if proximity.get('landmarks') %}
+                    <div class="proximity-tab active" onclick="showProximity('landmarks', this)">Landmarks</div>
+                    {% endif %}
+                    {% if proximity.get('amenities') %}
+                    <div class="proximity-tab" onclick="showProximity('amenities', this)">Amenities</div>
+                    {% endif %}
+                    {% if proximity.get('transport') %}
+                    <div class="proximity-tab" onclick="showProximity('transport', this)">Transport</div>
+                    {% endif %}
+                </div>
+                {% for tab_key in ['landmarks', 'amenities', 'transport'] %}
+                {% if proximity.get(tab_key) %}
+                <ul class="proximity-list" id="proximity-{{ tab_key }}"
+                    style="{% if tab_key != 'landmarks' %}display:none{% endif %}">
+                    {% for item in proximity.get(tab_key, []) %}
+                    <li>
+                        <span class="name">{{ item.get('name', '') }}</span>
+                        <span>
+                            <span class="time">{{ item.get('time', '') }}</span>
+                            <span class="distance"> ({{ item.get('distance', '') }})</span>
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {% elif section_key == 'financial' %}
+    <!-- ── Financial / Investment Section ──────────────── -->
+    <section class="financial-section animate-in" id="financial" data-section="financial">
+        <div class="financial-content">
+            <h2 class="heading-serif">
+                {{ enriched.get('financial_headline', 'Your Investment, Reimagined') }}
+            </h2>
+            <p>{{ enriched.get('financial_pitch', '') }}</p>
+            <div class="financial-stats">
+                <div class="stat-card">
+                    <div class="value">AED {{ property.get('price_start_aed_in_million', '') }}M+</div>
+                    <div class="label">Starting Price</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">65</div>
+                    <div class="label">Exclusive Residences</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">{{ property.get('payment_plans', '60/40') }}</div>
+                    <div class="label">Payment Plan</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% elif section_key == 'objection' %}
+    <!-- ── Objection Handler Section ───────────────────── -->
+    {% if enriched.get('objection_handler_heading') %}
+    <section class="objection-section animate-in" id="objection" data-section="objection">
+        <div class="objection-content">
+            <h2 class="heading-serif">{{ enriched.get('objection_handler_heading', '') }}</h2>
+            <p>{{ enriched.get('objection_handler_content', '') }}</p>
+        </div>
+    </section>
+    {% endif %}
+
+    {% elif section_key == 'contact' %}
+    <!-- ── Contact / CTA Section ──────────────────────── -->
+    <section class="contact-section animate-in" id="contact" data-section="contact">
+        <div class="contact-content">
+            <h2 class="heading-serif">
+                {{ enriched.get('cta_heading', 'Ready to Explore?') }}
+            </h2>
+            <p>Connect with {{ broker_name }} for personalized details about {{ property.get('name', 'this property')
+                }}.</p>
+            <div class="contact-buttons">
+                {% if broker_phone %}
+                <a href="tel:{{ broker_phone }}" class="contact-btn primary" data-track="contact_call">
+                    📞 Call {{ broker_phone }}
+                </a>
+                {% endif %}
+                <a href="https://wa.me/?text=I'm interested in {{ property.get('name', '') }}"
+                    class="contact-btn whatsapp" target="_blank" data-track="contact_whatsapp">
+                    💬 WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {% endif %}
+    {% endfor %}
+
+    <!-- ── Footer ─────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div>© 2026 {{ broker_name }}. All rights reserved.</div>
+            <div>Powered by <a href="#">SellSmart AI</a></div>
+        </div>
+        <div class="footer-separator"></div>
+        <div class="footer-content" style="font-size:11px;opacity:0.5;">
+            Microsite personalized for you • Tracking ID: {{ tracking_id }}
+        </div>
+    </footer>
+
+    <!-- ── Sticky CTA Bar ─────────────────────────────── -->
+    <div class="sticky-cta-bar">
+        {% if broker_phone %}
+        <a href="tel:{{ broker_phone }}" class="phone-btn" data-track="sticky_call">📞 Call</a>
+        {% endif %}
+        <a href="https://wa.me/?text=I'm interested in {{ property.get('name', '') }}" class="wa-btn" target="_blank"
+            data-track="sticky_whatsapp">💬 WhatsApp</a>
+    </div>
+
+    <!-- ── Tracking ───────────────────────────────────── -->
+    <meta name="tracking-id" content="{{ tracking_id }}">
+    {% if not preview %}
+    <script src="{{ base_url }}/static/tracker.js"></script>
+    {% endif %}
+
+    <!-- ── JavaScript ─────────────────────────────────── -->
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('site-header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+
+        // Gallery slider
+        let galleryPos = 0;
+        const track = document.getElementById('galleryTrack');
+        const slides = track ? track.children : [];
+        const slideCount = slides.length;
+        const slidesVisible = window.innerWidth > 768 ? 3 : 1;
+
+        function moveGallery(dir) {
+            const maxPos = slideCount - slidesVisible;
+            galleryPos = Math.max(0, Math.min(galleryPos + dir, maxPos));
+            const offset = -(galleryPos * (100 / slidesVisible));
+            track.style.transform = `translateX(${offset}%)`;
+            updateDots();
+        }
+
+        // Gallery dots
+        function initDots() {
+            const dotsContainer = document.getElementById('galleryDots');
+            if (!dotsContainer || slideCount === 0) return;
+            const dotCount = slideCount - slidesVisible + 1;
+            for (let i = 0; i < Math.max(dotCount, 1); i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => { galleryPos = i; moveGallery(0); };
+                dotsContainer.appendChild(dot);
+            }
+        }
+        function updateDots() {
+            const dots = document.querySelectorAll('.gallery-dots .dot');
+            dots.forEach((d, i) => d.classList.toggle('active', i === galleryPos));
+        }
+        initDots();
+
+        // Proximity tabs
+        function showProximity(tab, el) {
+            document.querySelectorAll('.proximity-list').forEach(l => l.style.display = 'none');
+            document.querySelectorAll('.proximity-tab').forEach(t => t.classList.remove('active'));
+            const list = document.getElementById('proximity-' + tab);
+            if (list) list.style.display = '';
+            if (el) el.classList.add('active');
+        }
+
+        // Touch swipe for gallery
+        let touchStartX = 0;
+        const galleryEl = document.querySelector('.gallery-slider');
+        if (galleryEl) {
+            galleryEl.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+            galleryEl.addEventListener('touchend', (e) => {
+                const diff = touchStartX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) moveGallery(diff > 0 ? 1 : -1);
+            });
+        }
+    </script>
+
+</body>
+
+</html>

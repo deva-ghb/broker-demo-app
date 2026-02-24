@@ -1,0 +1,5 @@
+v-env/
+.git/
+__pycache__/
+webapp/node_modules/
+.env

@@ -160,7 +160,18 @@ async def seed():
             broker_logo_url=item.get("broker_logo_url"),
             brand_color=item.get("brand_color", "#1a73e8"),
             description_vector=desc_vector,
-            amenities_vector=amenities_vector
+            amenities_vector=amenities_vector,
+            # Clone template structured data (optional)
+            hero_video_url=item.get("hero_video_url"),
+            hero_logo_url=item.get("hero_logo_url"),
+            brand_ambassador=item.get("brand_ambassador"),
+            usp_cards=item.get("usp_cards"),
+            a_la_carte_services=item.get("a_la_carte_services"),
+            wellness_features=item.get("wellness_features"),
+            premium_living_services=item.get("premium_living_services"),
+            amenities_grid=item.get("amenities_grid"),
+            location_map_embed=item.get("location_map_embed"),
+            proximity=item.get("proximity"),
         )
 
         # Upsert

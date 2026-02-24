@@ -1,303 +1,756 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ property.get('name', 'Property') }} | {{ broker_name }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description"
+        content="{{ property.get('name', '') }} — {{ property.get('location', '') }}. {{ persona.get('ai_recommended_angle', '') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --brand: {{ brand_color }};
-            --brand-light: {{ brand_color }}15;
-            --text: #1a1a2e;
-            --text-muted: #6b7280;
-            --bg: #f0f2f5;
+            --brand: {
+                    {
+                    brand_color
+                }
+            }
+
+            ;
+
+            --brand-rgb: {
+                    {
+                    brand_color_rgb | default('30, 136, 229')
+                }
+            }
+
+            ;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --bg: #f8fafc;
             --card: #ffffff;
-            --radius: 16px;
+            --radius: 20px;
+            --radius-sm: 12px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* Sticky CTA Bar */
-        .sticky-cta {
+        /* ── Preview Banner ─────────────────────────── */
+        .preview-banner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-banner .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* ── Top Bar ────────────────────────────────── */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            background: var(--brand);
-            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .sticky-cta a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .top-bar.scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
         }
 
-        .sticky-cta a:hover { opacity: 0.9; }
+        .top-bar-brand {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--brand);
+        }
 
-        .sticky-cta .broker-badge {
-            background: rgba(255,255,255,0.2);
+        .top-bar-badge {
+            background: var(--brand);
             color: #fff;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
+            text-decoration: none;
         }
 
-        /* Content Container */
-        .content {
-            margin-top: 56px;
-            padding: 16px;
-            max-width: 640px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-bottom: 80px;
-        }
-
-        /* Hero Section */
+        /* ── Hero Section ───────────────────────────── */
         .hero {
-            background: linear-gradient(135deg, var(--brand), color-mix(in srgb, var(--brand) 70%, #000));
-            color: #fff;
-            padding: 48px 24px 36px;
-            border-radius: var(--radius);
-            margin-bottom: 16px;
             position: relative;
+            width: 100%;
+            height: 420px;
+            margin-top: 48px;
             overflow: hidden;
         }
 
-        .hero::after {
-            content: '';
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
             position: absolute;
-            top: -50%;
-            right: -30%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 24px 28px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
         }
 
-        .hero h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 8px;
+        .hero-overlay h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
             line-height: 1.2;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .hero .subtitle {
-            opacity: 0.85;
+        .hero-overlay .hero-sub {
             font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .hero .angle {
-            background: rgba(255,255,255,0.15);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.85);
             font-weight: 400;
-            margin-top: 16px;
         }
 
-        /* Cards / Sections */
+        /* ── Sales Angle Pill ───────────────────────── */
+        .angle-pill {
+            margin: -20px 16px 16px;
+            position: relative;
+            z-index: 10;
+            background: rgba(var(--brand-rgb), 0.08);
+            border: 1px solid rgba(var(--brand-rgb), 0.15);
+            backdrop-filter: blur(10px);
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .angle-pill .angle-icon {
+            font-size: 16px;
+            margin-right: 6px;
+        }
+
+        /* ── Trust Badges ───────────────────────────── */
+        .trust-row {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--card);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 7px 14px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ── Content Container ──────────────────────── */
+        .content {
+            padding: 0 16px;
+            max-width: 640px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        /* ── Image Carousel ─────────────────────────── */
+        .carousel-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-slide .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 16px 12px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+            color: #fff;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 0;
+            background: var(--card);
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: var(--brand);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+            transition: opacity 0.2s;
+        }
+
+        .carousel-nav:hover {
+            opacity: 0.8;
+        }
+
+        .carousel-nav.prev {
+            left: 12px;
+        }
+
+        .carousel-nav.next {
+            right: 12px;
+        }
+
+        /* ── Video Assets ───────────────────────────── */
+        .video-section {
+            margin-bottom: 16px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .video-section video {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius);
+        }
+
+        .video-section iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            display: block;
+            border-radius: var(--radius);
+        }
+
+        .video-caption {
+            padding: 10px 16px;
+            background: var(--card);
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ── Cards / Sections ───────────────────────── */
         .section {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 22px;
             margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-            transition: transform 0.2s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-1px);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         .section h2 {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: var(--brand);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .section p {
             font-size: 14px;
-            line-height: 1.7;
+            line-height: 1.8;
             color: var(--text-muted);
         }
 
-        /* Image Assets */
-        .asset-img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            object-fit: cover;
-            max-height: 300px;
+        /* ── Financial Highlight ────────────────────── */
+        .fin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
         }
 
-        .asset-caption {
-            font-size: 13px;
+        .fin-item {
+            background: var(--bg);
+            padding: 14px;
+            border-radius: var(--radius-sm);
+        }
+
+        .fin-item .fin-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             color: var(--text-muted);
-            font-style: italic;
-            padding: 0 4px;
+            margin-bottom: 4px;
+            font-weight: 600;
         }
 
-        /* Tags */
+        .fin-item .fin-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .fin-item.golden {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            grid-column: span 2;
+        }
+
+        .fin-item.golden .fin-value {
+            color: #92400e;
+        }
+
+        /* ── Tags ───────────────────────────────────── */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .tag {
             display: inline-block;
-            background: var(--brand-light);
+            background: rgba(var(--brand-rgb), 0.08);
             color: var(--brand);
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: 24px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* Bottom CTA */
+        /* ── Objection Handler ───────────────────────── */
+        .objection-card {
+            background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.05), rgba(var(--brand-rgb), 0.02));
+            border: 1px solid rgba(var(--brand-rgb), 0.12);
+            border-left: 4px solid var(--brand);
+            border-radius: var(--radius);
+            padding: 22px;
+            margin-bottom: 12px;
+        }
+
+        .objection-card h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--brand);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .objection-card p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        /* ── Bottom Dual CTA ────────────────────────── */
         .bottom-cta {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            padding: 16px 20px;
-            box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 14px 16px;
+            padding-bottom: max(14px, env(safe-area-inset-bottom));
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 10px;
+            max-width: 640px;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
         }
 
-        .bottom-cta a {
-            display: block;
+        .cta-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: transform 0.15s ease, opacity 0.2s;
+        }
+
+        .cta-btn:active {
+            transform: scale(0.97);
+        }
+
+        .cta-primary {
             background: var(--brand);
             color: #fff;
-            text-align: center;
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-            transition: opacity 0.2s;
         }
 
-        .bottom-cta a:hover { opacity: 0.9; }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .cta-secondary {
+            background: #25D366;
+            color: #fff;
         }
 
-        .section, .hero {
-            animation: fadeInUp 0.5s ease forwards;
+        /* ── Animations ─────────────────────────────── */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .section:nth-child(2) { animation-delay: 0.1s; }
-        .section:nth-child(3) { animation-delay: 0.15s; }
-        .section:nth-child(4) { animation-delay: 0.2s; }
+        .animate-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Responsive ─────────────────────────────── */
+        @media (max-width: 480px) {
+            .hero {
+                height: 360px;
+            }
+
+            .hero-overlay h1 {
+                font-size: 24px;
+            }
+
+            .carousel-slide img {
+                height: 220px;
+            }
+
+            .carousel-nav {
+                display: none;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <!-- Sticky Top CTA -->
-    <div class="sticky-cta" data-section="top_cta">
-        <a href="tel:{{ broker_phone }}" id="cta-call-top">
-            <span>📞</span> Talk to {{ broker_name }}
-        </a>
-        <span class="broker-badge">Your Broker</span>
+    <!-- Preview Mode Banner -->
+    <div class="preview-banner" id="previewBanner">
+        <span class="dot"></span>PREVIEW MODE — Engagement tracking is disabled
     </div>
 
-    <div class="content">
-        <!-- Hero -->
-        <div class="hero" data-section="hero">
-            <h1>{{ property.get('name', 'Exclusive Property') }}</h1>
-            <p class="subtitle">
+    <!-- Top Bar -->
+    <div class="top-bar" id="topBar" data-section="top_bar">
+        <span class="top-bar-brand">{{ broker_name }}</span>
+        <a href="tel:{{ broker_phone }}" class="top-bar-badge" id="cta-call-top">📞 Call Broker</a>
+    </div>
+
+    <!-- Hero: First image as background -->
+    <div class="hero" data-section="hero">
+        {% if hero_image_url %}
+        <img src="{{ hero_image_url }}" alt="{{ property.get('name', '') }}" class="hero-img">
+        {% endif %}
+        <div class="hero-overlay">
+            <h1>{{ enriched.get('hero_headline') or property.get('name', 'Exclusive Property') }}</h1>
+            <p class="hero-sub">
+                {% if enriched.get('hero_subheadline') %}
+                {{ enriched['hero_subheadline'] }}
+                {% else %}
                 {% if property.get('location') %}{{ property['location'] }}{% endif %}
                 {% if property.get('developer') %} · {{ property['developer'] }}{% endif %}
                 {% if property.get('property_type') %} · {{ property['property_type'] }}{% endif %}
+                {% endif %}
             </p>
-            {% if persona.get('ai_recommended_angle') %}
-            <div class="angle">💡 {{ persona['ai_recommended_angle'] }}</div>
-            {% endif %}
         </div>
+    </div>
 
-        <!-- Property Assets -->
+    <!-- AI Sales Angle -->
+    {% if persona.get('ai_recommended_angle') %}
+    <div class="angle-pill animate-in" data-section="sales_angle">
+        <span class="angle-icon">💡</span>{{ persona['ai_recommended_angle'] }}
+    </div>
+    {% endif %}
+
+    <!-- Trust Badges -->
+    <div class="trust-row animate-in">
+        {% if property.get('developer') %}
+        <span class="trust-badge">🏗️ {{ property['developer'] }}</span>
+        {% endif %}
+        {% if property.get('golden_visa_eligible') %}
+        <span class="trust-badge" style="background: #fef3c7; border-color: #fde68a; color: #92400e;">🏛️ Golden
+            Visa</span>
+        {% endif %}
+        {% if property.get('property_type') %}
+        <span class="trust-badge">🏠 {{ property['property_type'] }}</span>
+        {% endif %}
+    </div>
+
+    <div class="content">
+        <!-- Image Carousel (remaining images) -->
+        {% set image_assets = [] %}
         {% for asset in assets %}
-        <div class="section" data-section="{{ asset.get('description', 'section') | replace(' ', '_') | lower }}">
-            {% if asset.get('type') == 'image' %}
-                <img src="{{ asset.get('url', '') }}" alt="{{ asset.get('description', '') }}" 
-                     class="asset-img" loading="lazy">
-                <p class="asset-caption">{{ asset.get('contextual_caption', asset.get('description', '')) }}</p>
-            {% else %}
-                <h2>{{ asset.get('description', 'Details') }}</h2>
-                <p>{{ asset.get('content', '') }}</p>
-            {% endif %}
-        </div>
+        {% if asset.get('type') == 'image' %}
+        {% if image_assets.append(asset) %}{% endif %}
+        {% endif %}
         {% endfor %}
 
-        <!-- Key Highlights -->
-        {% if property.get('usps') %}
-        <div class="section" data-section="key_highlights">
-            <h2>✨ Key Highlights</h2>
-            <div class="tags-container">
-                {% for usp in property.get('usps', []) %}
-                <span class="tag">{{ usp }}</span>
+        {% if image_assets | length > 1 %}
+        <div class="carousel-wrapper animate-in" data-section="gallery">
+            <button class="carousel-nav prev" onclick="moveSlide(-1)" aria-label="Previous">‹</button>
+            <button class="carousel-nav next" onclick="moveSlide(1)" aria-label="Next">›</button>
+            <div class="carousel-track" id="carouselTrack">
+                {% for img in image_assets[1:] %}
+                <div class="carousel-slide">
+                    <img src="{{ img.get('url', '') }}" alt="{{ img.get('description', '') }}" loading="lazy">
+                    <div class="slide-caption">{{ img.get('contextual_caption', img.get('description', '')) }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="carousel-dots" id="carouselDots">
+                {% for img in image_assets[1:] %}
+                <button class="carousel-dot{% if loop.first %} active{% endif %}" onclick="goToSlide({{ loop.index0 }})"
+                    aria-label="Slide {{ loop.index }}"></button>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
 
-        <!-- Financial Info -->
-        {% if property.get('price_range') or property.get('projected_roi') or property.get('payment_plans') %}
-        <div class="section" data-section="financials">
-            <h2>📊 Financial Details</h2>
-            {% if property.get('price_range') %}
-            <p><strong>Price Range:</strong> {{ property['price_range'] }}</p>
+        <!-- Video Assets -->
+        {% for asset in assets %}
+        {% if asset.get('type') == 'video' %}
+        <div class="video-section animate-in" data-section="video_{{ loop.index }}">
+            {% if 'youtube' in asset.get('url', '') or 'vimeo' in asset.get('url', '') %}
+            <iframe src="{{ asset.get('url', '') }}" allowfullscreen loading="lazy"
+                data-video-id="video_{{ loop.index }}"></iframe>
+            {% else %}
+            <video controls preload="metadata" poster="" data-video-id="video_{{ loop.index }}">
+                <source src="{{ asset.get('url', '') }}" type="video/mp4">
+            </video>
             {% endif %}
-            {% if property.get('projected_roi') %}
-            <p style="margin-top: 8px;"><strong>Projected ROI:</strong> {{ property['projected_roi'] }}</p>
+            {% if asset.get('description') %}
+            <div class="video-caption">{{ asset.get('contextual_caption', asset.get('description', '')) }}</div>
             {% endif %}
-            {% if property.get('payment_plans') %}
-            <p style="margin-top: 8px;"><strong>Payment Plans:</strong> {{ property['payment_plans'] }}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Content Sections (persona-driven ordering) -->
+        {% set sections_order = persona_section_order | default(['overview', 'amenities', 'pricing', 'roi',
+        'golden_visa']) %}
+
+        {% set section_map = {} %}
+        {% for asset in assets %}
+        {% if asset.get('type') == 'text' %}
+        {% set desc_lower = asset.get('description', '').lower() %}
+        {% if 'overview' in desc_lower %}
+        {% if section_map.update({'overview': asset}) %}{% endif %}
+        {% elif 'amenities' in desc_lower or 'facilities' in desc_lower %}
+        {% if section_map.update({'amenities': asset}) %}{% endif %}
+        {% elif 'pricing' in desc_lower or 'payment' in desc_lower %}
+        {% if section_map.update({'pricing': asset}) %}{% endif %}
+        {% elif 'roi' in desc_lower or 'investment' in desc_lower or 'return' in desc_lower %}
+        {% if section_map.update({'roi': asset}) %}{% endif %}
+        {% elif 'golden visa' in desc_lower or 'visa' in desc_lower %}
+        {% if section_map.update({'golden_visa': asset}) %}{% endif %}
+        {% else %}
+        {% if section_map.update({'other_' + loop.index|string: asset}) %}{% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+
+        {% set section_icons = {'overview': '🏠', 'amenities': '✨', 'pricing': '💰', 'roi': '📊', 'golden_visa': '🏛️'}
+        %}
+
+        {% for key in sections_order %}
+        {% if section_map.get(key) %}
+        {% set asset = section_map[key] %}
+        {% set enriched_sec = enriched_sections.get(key) %}
+        <div class="section animate-in"
+            data-section="{{ asset.get('description', 'section') | replace(' ', '_') | lower }}">
+            <h2>{{ section_icons.get(key, '📋') }} {{ enriched_sec.get('heading', asset.get('description', 'Details'))
+                if enriched_sec else asset.get('description', 'Details') }}</h2>
+            <p>{{ enriched_sec.get('content', asset.get('content', '')) if enriched_sec else asset.get('content', '') }}
+            </p>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Any unmapped text sections -->
+        {% for key, asset in section_map.items() %}
+        {% if key.startswith('other_') %}
+        <div class="section animate-in"
+            data-section="{{ asset.get('description', 'section') | replace(' ', '_') | lower }}">
+            <h2>📋 {{ asset.get('description', 'Details') }}</h2>
+            <p>{{ asset.get('content', '') }}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Objection Handler (AI-generated) -->
+        {% if enriched.get('objection_handler_content') %}
+        <div class="objection-card animate-in" data-section="objection_handler">
+            <h2>🛡️ {{ enriched.get('objection_handler_heading', 'Good to Know') }}</h2>
+            <p>{{ enriched['objection_handler_content'] }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Financial Details Grid -->
+        {% if property.get('price_start_aed_in_million') or property.get('projected_roi') or
+        property.get('payment_plans') %}
+        <div class="section animate-in" data-section="financials">
+            <h2>📊 {{ enriched.get('financial_headline', 'Financial Overview') }}</h2>
+            {% if enriched.get('financial_pitch') %}
+            <p style="margin-bottom: 14px;">{{ enriched['financial_pitch'] }}</p>
             {% endif %}
-            {% if property.get('golden_visa_eligible') %}
-            <p style="margin-top: 8px; color: var(--brand); font-weight: 600;">🏛️ Golden Visa Eligible</p>
-            {% endif %}
+            <div class="fin-grid">
+                {% if property.get('price_start_aed_in_million') %}
+                <div class="fin-item">
+                    <div class="fin-label">Starting From</div>
+                    <div class="fin-value">AED {{ property['price_start_aed_in_million'] }}M</div>
+                </div>
+                {% endif %}
+                {% if property.get('price_end_aed_in_million') %}
+                <div class="fin-item">
+                    <div class="fin-label">Up To</div>
+                    <div class="fin-value">AED {{ property['price_end_aed_in_million'] }}M</div>
+                </div>
+                {% endif %}
+                {% if property.get('payment_plans') %}
+                <div class="fin-item" style="grid-column: span 2;">
+                    <div class="fin-label">Payment Plans</div>
+                    <div class="fin-value" style="font-size: 14px; font-weight: 500;">{{ property['payment_plans'] }}
+                    </div>
+                </div>
+                {% endif %}
+                {% if property.get('golden_visa_eligible') %}
+                <div class="fin-item golden">
+                    <div class="fin-label">🏛️ Golden Visa</div>
+                    <div class="fin-value">Eligible — 10-Year Residency</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Key Highlights (AI-curated USPs) -->
+        {% set display_usps = enriched.get('curated_usps') or property.get('usps', []) %}
+        {% if display_usps %}
+        <div class="section animate-in" data-section="key_highlights">
+            <h2>✨ Why This Property Fits You</h2>
+            <div class="tags-container">
+                {% for usp in display_usps %}
+                <span class="tag">{{ usp }}</span>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
     </div>
 
-    <!-- Bottom CTA -->
+    <!-- Bottom Dual CTA -->
     <div class="bottom-cta" data-section="bottom_cta">
-        <a href="tel:{{ broker_phone }}" id="cta-call-bottom">
-            Schedule a Viewing with {{ broker_name }}
+        <a href="tel:{{ broker_phone }}" class="cta-btn cta-primary" id="cta-call-bottom">
+            📞 Call {{ broker_name | truncate(15, True, '…') }}
+        </a>
+        <a href="https://wa.me/{{ broker_phone | replace('+', '') | replace('-', '') | replace(' ', '') }}?text=Hi%2C%20I'm%20interested%20in%20{{ property.get('name', 'the property') | urlencode }}"
+            target="_blank" class="cta-btn cta-secondary" id="cta-whatsapp">
+            💬 WhatsApp
         </a>
     </div>
 
@@ -307,5 +760,57 @@
 
     <!-- Engagement Tracker Script -->
     <script src="{{ base_url }}/static/tracker.js"></script>
+
+    <!-- Carousel Script -->
+    <script>
+        // Carousel
+        var currentSlide = 0;
+        var track = document.getElementById('carouselTrack');
+        var dots = document.querySelectorAll('.carousel-dot');
+        var totalSlides = dots.length;
+
+        function goToSlide(index) {
+            if (!track || totalSlides === 0) return;
+            currentSlide = Math.max(0, Math.min(index, totalSlides - 1));
+            track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+            dots.forEach(function (d, i) { d.classList.toggle('active', i === currentSlide); });
+        }
+        function moveSlide(dir) { goToSlide(currentSlide + dir); }
+
+        // Touch swipe
+        if (track) {
+            var startX = 0;
+            track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', function (e) {
+                var diff = startX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) moveSlide(diff > 0 ? 1 : -1);
+            }, { passive: true });
+        }
+
+        // Scroll animations
+        var animItems = document.querySelectorAll('.animate-in');
+        var animObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    animObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        animItems.forEach(function (el) { animObserver.observe(el); });
+
+        // Top bar shadow on scroll
+        window.addEventListener('scroll', function () {
+            document.getElementById('topBar').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Preview mode: shift top bar down
+        if (window.location.search.indexOf('preview=true') !== -1) {
+            document.getElementById('previewBanner').style.display = 'block';
+            document.getElementById('topBar').style.top = '38px';
+            document.querySelector('.hero').style.marginTop = '86px';
+        }
+    </script>
 </body>
+
 </html>

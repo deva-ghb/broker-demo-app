@@ -177,8 +177,10 @@ Score based on buying readiness signals:
 - **0-39 (Cold):** Minimal info, no budget clarity, unclear if serious buyer.
 
 ### ai_recommended_persona_type
-Choose the BEST fit from: "investor" | "end_user" | "investor_end_user" | "luxury_lifestyle" | "family" | "expat_relocator" | "corporate"
-Pick based on primary motive, lifestyle signals, and buyer profile — not just what they said about investment vs. living.
+This should describe WHO the buyer IS as a profile — NOT their motive (that's already captured in motivation.primary_goal).
+Choose or combine from: "HNI Investor" | "First-time Buyer" | "Relocating Family" | "Luxury Lifestyle Seeker" | "Young Professional" | "Retiree" | "Corporate Buyer" | "Expat Professional" | "Seasoned Investor" | "HNI Wellness Seeker" | "NRI Buyer" | "Gulf National"
+You can also create a custom descriptive label if none of these fit perfectly.
+⚠️ This must NOT duplicate the motivation field. If motivation is "end-use", don't just say "end_user" here — describe the BUYER PROFILE instead (e.g., "Relocating Family", "Expat Professional", "Luxury Lifestyle Seeker").
 
 ### ai_recommended_angle
 This is the **pitch strategy** the broker should lead with. Be specific and actionable. Examples:

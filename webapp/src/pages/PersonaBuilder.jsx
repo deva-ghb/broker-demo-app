@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
 import VoiceInterface from '../components/VoiceInterface'
 
 export default function PersonaBuilder({ apiBase, onNavigate }) {
@@ -150,12 +151,11 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
 
       {/* Status Badge */}
       <div style={{ marginBottom: '12px' }}>
-        <span className={`badge ${
-          status === 'complete' ? 'badge-success' :
+        <span className={`badge ${status === 'complete' ? 'badge-success' :
           status === 'collecting' ? 'badge-warning' : 'badge-info'
-        }`}>
+          }`}>
           {status === 'complete' ? '✅ Persona Complete' :
-           status === 'collecting' ? '🔄 Collecting Information' : '💬 Ready to Start'}
+            status === 'collecting' ? '🔄 Collecting Information' : '💬 Ready to Start'}
         </span>
         {sessionId && (
           <span style={{ fontSize: '12px', color: 'var(--text-dim)', marginLeft: '12px' }}>
@@ -185,7 +185,13 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
               <div className="sender">
                 {msg.role === 'user' ? 'You (Broker)' : 'SellSmart AI'}
               </div>
-              {msg.content}
+              {msg.role === 'assistant' ? (
+                <div className="markdown-content">
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
+              ) : (
+                msg.content
+              )}
             </div>
           ))}
 
@@ -224,10 +230,15 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
           <div className="persona-header">
             <div className="persona-avatar">👤</div>
             <div>
-              <h2>{persona.persona_type || 'Buyer'} Persona</h2>
+              <h2>{persona.ai_recommended_persona_type || 'Buyer'} Persona</h2>
               <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
                 {persona.persona_id}
               </span>
+              {persona.ai_persona_label && (
+                <div style={{ fontSize: '13px', color: 'var(--primary-light)', marginTop: '4px' }}>
+                  {persona.ai_persona_label}
+                </div>
+              )}
             </div>
             <div style={{ marginLeft: 'auto' }}>
               <div style={{ textAlign: 'right' }}>
@@ -240,31 +251,55 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div className="persona-field">
               <div className="field-label">Primary Motivation</div>
-              <div className="field-value">{persona.primary_motivation || '—'}</div>
+              <div className="field-value">{persona.motivation?.primary_goal || '—'}</div>
             </div>
             <div className="persona-field">
               <div className="field-label">Nationality</div>
-              <div className="field-value">{persona.demographic_context?.nationality || '—'}</div>
+              <div className="field-value">{persona.identity?.nationality || '—'}</div>
             </div>
             <div className="persona-field">
-              <div className="field-label">Key Interests</div>
+              <div className="field-label">Budget</div>
               <div className="field-value">
-                {(persona.key_interests || []).map((k, i) => (
-                  <span key={i} className="badge badge-primary" style={{ marginRight: '4px', marginBottom: '4px' }}>
-                    {k}
-                  </span>
-                ))}
+                {persona.financial?.budget_min || persona.financial?.budget_max
+                  ? `${persona.financial.budget_min?.toLocaleString() || '—'} – ${persona.financial.budget_max?.toLocaleString() || '—'} AED`
+                  : '—'}
               </div>
             </div>
             <div className="persona-field">
-              <div className="field-label">Ignored Features</div>
+              <div className="field-label">Urgency</div>
+              <div className="field-value">{persona.motivation?.urgency || '—'}</div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">Lifestyle & Interests</div>
               <div className="field-value">
-                {(persona.ignored_features || []).map((k, i) => (
-                  <span key={i} className="badge badge-danger" style={{ marginRight: '4px', marginBottom: '4px' }}>
-                    {k}
-                  </span>
-                ))}
+                {(persona.lifestyle?.lifestyle_tags || []).length > 0
+                  ? persona.lifestyle.lifestyle_tags.map((k, i) => (
+                    <span key={i} className="badge badge-primary" style={{ marginRight: '4px', marginBottom: '4px' }}>
+                      {k}
+                    </span>
+                  ))
+                  : '—'}
               </div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">Deal Breakers</div>
+              <div className="field-value">
+                {(persona.lifestyle?.deal_breaker_features || []).length > 0
+                  ? persona.lifestyle.deal_breaker_features.map((k, i) => (
+                    <span key={i} className="badge badge-danger" style={{ marginRight: '4px', marginBottom: '4px' }}>
+                      {k}
+                    </span>
+                  ))
+                  : '—'}
+              </div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">Property Type</div>
+              <div className="field-value">{persona.property_fit?.unit_type || '—'}</div>
+            </div>
+            <div className="persona-field">
+              <div className="field-label">View Preference</div>
+              <div className="field-value">{persona.property_fit?.view_preference || '—'}</div>
             </div>
           </div>
 

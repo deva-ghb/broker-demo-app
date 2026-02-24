@@ -73,7 +73,7 @@ async def _extract_filters(persona_data: Dict[str, Any]) -> Dict[str, Any]:
         return {
             "budget_min_aed_million": None,
             "budget_max_aed_million": None,
-            "semantic_query": persona_data.get("primary_motivation", "luxury real estate")
+            "semantic_query": persona_data.get("motivation", {}).get("primary_goal", "luxury real estate")
         }
 
 
@@ -146,13 +146,36 @@ async def recommend_properties(persona_id: str = None, persona_json: Dict[str, A
         async for prop in cursor:
             scored_props.append((prop["property_id"], prop.get("score", 0)))
     except Exception as e:
-        print(f"Atlas Vector Search failed: {e}. Ensure you are using mongodb-atlas-local and the 'description_vector_index' is created.")
+        print(f"Atlas Vector Search failed: {e}")
+
+    # Fallback: if vectorSearch returned no results, use pure cosine similarity
+    if not scored_props:
+        print("vectorSearch returned 0 results. Falling back to cosine similarity.")
+        all_props = []
+        async for doc in collection.find({}):
+            doc.pop("_id", None)
+            all_props.append(doc)
         
-    # Sort and return
+        for prop in all_props:
+            # Budget filter
+            if budget_max is not None and prop.get("price_start_aed_in_million", 0) > budget_max:
+                continue
+            if budget_min is not None and prop.get("price_end_aed_in_million", 0) < budget_min:
+                continue
+            
+            desc_vec = prop.get("description_vector", [])
+            if desc_vec and query_vector:
+                score = cosine_similarity(query_vector, desc_vec)
+                scored_props.append((prop["property_id"], score))
+        
+        # Sort by score descending
+        scored_props.sort(key=lambda x: x[1], reverse=True)
+        
+    # Return results
     recommended_ids = [p[0] for p in scored_props if p[1] > 0.0]
     
     if not recommended_ids:
-        print(f"No properties matched filters/semantics natively, falling back.")
+        print(f"No properties matched filters/semantics, falling back to default.")
         return [DEFAULT_PROPERTY_ID], filters
         
     return recommended_ids, filters

@@ -90,7 +90,7 @@ export default function MicrositeBuilder({ apiBase }) {
               <option value="">— Choose a completed persona —</option>
               {personas.map(p => (
                 <option key={p.persona_id} value={p.persona_id}>
-                  {p.persona_id} — {p.persona_type || 'Unknown'} ({p.primary_motivation || '—'})
+                  {p.persona_id} — {p.ai_recommended_persona_type || 'Unknown'} ({p.motivation?.primary_goal || '—'})
                 </option>
               ))}
             </select>
@@ -184,13 +184,13 @@ export default function MicrositeBuilder({ apiBase }) {
 
               <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
                 <a
-                  href={result.microsite_url}
+                  href={`${result.microsite_url}?preview=true`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary"
                   style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }}
                 >
-                  🔗 Open Microsite
+                  🔗 Open Microsite (Preview)
                 </a>
               </div>
             </div>
@@ -214,31 +214,35 @@ export default function MicrositeBuilder({ apiBase }) {
               <div className="persona-field">
                 <div className="field-label">Type</div>
                 <div className="field-value">
-                  <span className="badge badge-primary">{p.persona_type || '—'}</span>
+                  <span className="badge badge-primary">{p.ai_recommended_persona_type || '—'}</span>
                 </div>
               </div>
               <div className="persona-field">
                 <div className="field-label">Motivation</div>
-                <div className="field-value">{p.primary_motivation || '—'}</div>
+                <div className="field-value">{p.motivation?.primary_goal || '—'}</div>
               </div>
               <div className="persona-field">
                 <div className="field-label">Trust Score</div>
                 <div className="field-value">{p.trust_level_score}</div>
               </div>
               <div className="persona-field" style={{ gridColumn: 'span 2' }}>
-                <div className="field-label">Key Interests</div>
+                <div className="field-label">Lifestyle & Interests</div>
                 <div className="field-value">
-                  {(p.key_interests || []).map((k, i) => (
-                    <span key={i} className="badge badge-primary" style={{ marginRight: '4px' }}>{k}</span>
-                  ))}
+                  {(p.lifestyle?.lifestyle_tags || []).length > 0
+                    ? p.lifestyle.lifestyle_tags.map((k, i) => (
+                      <span key={i} className="badge badge-primary" style={{ marginRight: '4px' }}>{k}</span>
+                    ))
+                    : '—'}
                 </div>
               </div>
               <div className="persona-field">
-                <div className="field-label">Ignored Features</div>
+                <div className="field-label">Deal Breakers</div>
                 <div className="field-value">
-                  {(p.ignored_features || []).map((k, i) => (
-                    <span key={i} className="badge badge-danger" style={{ marginRight: '4px' }}>{k}</span>
-                  ))}
+                  {(p.lifestyle?.deal_breaker_features || []).length > 0
+                    ? p.lifestyle.deal_breaker_features.map((k, i) => (
+                      <span key={i} className="badge badge-danger" style={{ marginRight: '4px' }}>{k}</span>
+                    ))
+                    : '—'}
                 </div>
               </div>
             </div>

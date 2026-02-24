@@ -13,6 +13,13 @@
     const DWELL_THRESHOLD_MS = 1000; // Minimum dwell time to record (1 second)
     const API_BASE = window.location.origin;
 
+    // Preview Mode Detection — broker previews should NOT send tracking data
+    const isPreviewMode = window.location.search.indexOf('preview=true') !== -1;
+    if (isPreviewMode) {
+        console.log('[SellSmart Tracker] Preview mode detected. Tracking DISABLED.');
+        return;
+    }
+
     // Extract tracking metadata from page
     const trackingId = document.querySelector('meta[name="tracking-id"]')?.content || '';
     const personaId = document.querySelector('meta[name="persona-id"]')?.content || '';

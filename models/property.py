@@ -2,7 +2,7 @@
 Property MongoDB document model.
 """
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
 
@@ -44,6 +44,18 @@ class PropertyDocument(BaseModel):
     broker_phone: Optional[str] = None
     broker_email: Optional[str] = None
     brand_color: str = "#1a73e8"
+
+    # ── Clone template structured data (optional) ──
+    hero_video_url: Optional[str] = None
+    hero_logo_url: Optional[str] = None
+    brand_ambassador: Optional[Dict[str, Any]] = None
+    usp_cards: Optional[List[Dict[str, Any]]] = None
+    a_la_carte_services: Optional[List[str]] = None
+    wellness_features: Optional[List[Dict[str, Any]]] = None
+    premium_living_services: Optional[List[str]] = None
+    amenities_grid: Optional[List[Dict[str, Any]]] = None
+    location_map_embed: Optional[str] = None
+    proximity: Optional[Dict[str, Any]] = None
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)

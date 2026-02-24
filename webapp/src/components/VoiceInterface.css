@@ -298,6 +298,52 @@
   color: var(--text);
 }
 
+.message-content p {
+  margin: 0 0 8px 0;
+}
+
+.message-content p:last-child {
+  margin-bottom: 0;
+}
+
+.message-content ul,
+.message-content ol {
+  margin: 4px 0 8px 0;
+  padding-left: 20px;
+}
+
+.message-content li {
+  margin-bottom: 4px;
+}
+
+.message-content strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.message-content code {
+  background: rgba(99, 102, 241, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.message-content h1,
+.message-content h2,
+.message-content h3 {
+  margin: 8px 0 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.message-content blockquote {
+  border-left: 3px solid var(--primary);
+  padding-left: 12px;
+  margin: 8px 0;
+  color: var(--text-muted);
+}
+
 /* Persona Preview */
 .persona-preview {
   background: var(--bg-card);

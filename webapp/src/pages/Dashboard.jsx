@@ -121,8 +121,8 @@ export default function Dashboard({ apiBase, onNavigate }) {
               {personas.slice(0, 10).map(p => (
                 <tr key={p.persona_id}>
                   <td style={{ fontFamily: 'monospace', fontSize: '13px' }}>{p.persona_id}</td>
-                  <td><span className="badge badge-primary">{p.persona_type || '—'}</span></td>
-                  <td>{p.primary_motivation || '—'}</td>
+                  <td><span className="badge badge-primary">{p.ai_recommended_persona_type || '—'}</span></td>
+                  <td>{p.motivation?.primary_goal || '—'}</td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <div className="progress-bar" style={{ width: '80px' }}>
@@ -150,10 +150,9 @@ export default function Dashboard({ apiBase, onNavigate }) {
           {triggers.slice(0, 5).map(t => (
             <div key={t.trigger_id} className={`trigger-card ${t.trigger_type}`}>
               <div className="trigger-header">
-                <span className={`badge ${
-                  t.trigger_type === 'high_intent' ? 'badge-danger' :
+                <span className={`badge ${t.trigger_type === 'high_intent' ? 'badge-danger' :
                   t.trigger_type === 'specific_interest' ? 'badge-warning' : 'badge-success'
-                }`}>
+                  }`}>
                   {t.trigger_type.replace('_', ' ')}
                 </span>
                 <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>{t.timing}</span>

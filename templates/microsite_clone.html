@@ -61,51 +61,10 @@
             --text-light: rgba(255, 255, 255, 0.9);
         }
 
-        /* ── Preview Banner ───────────────────────────────── */
-            {
-            % if preview %
-        }
-
-        .preview-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            color: #fff;
-            text-align: center;
-            padding: 6px 20px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        body {
-            padding-top: 30px;
-        }
-
-            {
-            % endif %
-        }
-
         /* ── Header / Navbar ──────────────────────────────── */
         .site-header {
             position: fixed;
-
-            top: {
-                % if preview %
-            }
-
-            30px {
-                % else %
-            }
-
-            0 {
-                % endif %
-            }
-
-            ;
+            top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
@@ -1218,6 +1177,32 @@
             }
         }
     </style>
+    {% if preview %}
+    <style>
+        .preview-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: #fff;
+            text-align: center;
+            padding: 6px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        body {
+            padding-top: 30px;
+        }
+
+        .site-header {
+            top: 30px;
+        }
+    </style>
+    {% endif %}
 </head>
 
 <body>
@@ -1457,8 +1442,8 @@
                 </div>
                 {% for tab_key in ['landmarks', 'amenities', 'transport'] %}
                 {% if proximity.get(tab_key) %}
-                <ul class="proximity-list" id="proximity-{{ tab_key }}"
-                    style="{% if tab_key != 'landmarks' %}display:none{% endif %}">
+                <ul class="proximity-list" id="proximity-{{ tab_key }}" {% if tab_key !='landmarks'
+                    %}style="display:none" {% endif %}>
                     {% for item in proximity.get(tab_key, []) %}
                     <li>
                         <span class="name">{{ item.get('name', '') }}</span>

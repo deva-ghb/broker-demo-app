@@ -13,6 +13,8 @@ class PropertyAsset(BaseModel):
     content: str  # The text content or image filename
     description: str  # Description of the asset
     url: Optional[str] = None  # URL if the asset is an image
+    category: Optional[str] = None  # Gallery category: Exteriors, Amenities, Interiors, Views
+    title: Optional[str] = None  # Short display title for gallery overlay
 
 
 class PropertyDocument(BaseModel):

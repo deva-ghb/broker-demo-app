@@ -119,7 +119,9 @@ async def seed():
                 type=asset_data["type"],
                 content=asset_data["content"],
                 description=asset_data["description"],
-                url=asset_data.get("url")
+                url=asset_data.get("url"),
+                category=asset_data.get("category"),
+                title=asset_data.get("title"),
             )
             assets.append(asset)
             

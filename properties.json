@@ -354,139 +354,185 @@
                 "type": "image",
                 "content": "prive_general_view.webp",
                 "description": "Treppan Living Privé waterfront tower general view with coastal architecture on Dubai Islands",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView.webp",
+                "category": "Exteriors",
+                "title": "Waterfront Tower"
             },
             {
                 "type": "image",
                 "content": "prive_general_view_dusk.webp",
                 "description": "Treppan Living Privé tower at dusk with illuminated facade and blue hour sky",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView05-Bluehour-1-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView05-Bluehour-1-480x300.webp",
+                "category": "Exteriors",
+                "title": "Tower at Dusk"
             },
             {
                 "type": "image",
                 "content": "prive_general_view_03.webp",
                 "description": "Treppan Living Privé aerial view showing the tower and surrounding Dubai Islands landscape",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-GeneralView03-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-GeneralView03-480x300.webp",
+                "category": "Exteriors",
+                "title": "Aerial View"
             },
             {
                 "type": "image",
                 "content": "prive_general_view_04.webp",
                 "description": "Treppan Living Privé exterior view showcasing curved architecture and landscape design",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView04-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-GeneralView04-480x300.webp",
+                "category": "Exteriors",
+                "title": "Curved Architecture"
             },
             {
                 "type": "image",
                 "content": "prive_portrait_general.webp",
                 "description": "Treppan Living Privé portrait view of the residential tower",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-PORTRAIL-GENERAL-02-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-PORTRAIL-GENERAL-02-480x300.webp",
+                "category": "Exteriors",
+                "title": "Tower Portrait"
             },
             {
                 "type": "image",
                 "content": "prive_rooftop_pool.webp",
                 "description": "Rooftop infinity pool with panoramic sea views and sun loungers",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-RoofTop-Pool03.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-RoofTop-Pool03.webp",
+                "category": "Amenities",
+                "title": "Rooftop Infinity Pool"
             },
             {
                 "type": "image",
                 "content": "prive_aqua_gym.webp",
                 "description": "Aqua gym facility with pool-based fitness equipment",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-AquaGym.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-AquaGym.webp",
+                "category": "Amenities",
+                "title": "Aqua Gym"
             },
             {
                 "type": "image",
                 "content": "prive_indoor_gym.webp",
                 "description": "State-of-the-art indoor gym with modern fitness equipment",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Indorr-Gym1.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Indorr-Gym1.webp",
+                "category": "Amenities",
+                "title": "Indoor Gym"
             },
             {
                 "type": "image",
                 "content": "prive_outdoor_gym.webp",
                 "description": "Outdoor gym area with beachfront views for open-air workouts",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-OutdoorGym.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-OutdoorGym.webp",
+                "category": "Amenities",
+                "title": "Outdoor Gym"
             },
             {
                 "type": "image",
                 "content": "prive_pool_lounge.webp",
                 "description": "Pool lounge area with cabanas and water features",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Pool_Lounge.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Pool_Lounge.webp",
+                "category": "Amenities",
+                "title": "Pool Lounge"
             },
             {
                 "type": "image",
                 "content": "prive_kids_area.webp",
                 "description": "Kids play area with adventure wall and recreational features",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsArea01.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsArea01.webp",
+                "category": "Amenities",
+                "title": "Kids Play Area"
             },
             {
                 "type": "image",
                 "content": "prive_kids_pool.webp",
                 "description": "Dedicated kids pool with water play features",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsPool.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsPool.webp",
+                "category": "Amenities",
+                "title": "Kids Pool"
             },
             {
                 "type": "image",
                 "content": "prive_lounge_pods.webp",
                 "description": "Working pods and lounge areas for remote work and relaxation",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Lounge-Pods.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Lounge-Pods.webp",
+                "category": "Amenities",
+                "title": "Working Pods"
             },
             {
                 "type": "image",
                 "content": "prive_green_cafe.webp",
                 "description": "Greenhouse cafe with lush greenery and casual dining area",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-greencafe01.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-greencafe01.webp",
+                "category": "Amenities",
+                "title": "Green House Cafe"
             },
             {
                 "type": "image",
                 "content": "prive_treatment_room.webp",
                 "description": "Wellness treatment room for cryotherapy, red light therapy, and hyperbaric chamber",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Public-Area-Treatment-room.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Public-Area-Treatment-room.webp",
+                "category": "Amenities",
+                "title": "Wellness Treatment Room"
             },
             {
                 "type": "image",
                 "content": "prive_penthouse_living_01.webp",
                 "description": "Penthouse living room with panoramic sea views and luxury furnishings",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Living-room-view-01-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Living-room-view-01-480x300.webp",
+                "category": "Interiors",
+                "title": "Penthouse Living Room"
             },
             {
                 "type": "image",
                 "content": "prive_penthouse_living_02.webp",
                 "description": "Penthouse living room alternate view with floor-to-ceiling windows",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Living-room-view-02-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Living-room-view-02-480x300.webp",
+                "category": "Interiors",
+                "title": "Living Room — Sea View"
             },
             {
                 "type": "image",
                 "content": "prive_penthouse_kitchen.webp",
                 "description": "Penthouse kitchen with premium finishes and modern appliances",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Kitchen-view-01-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-Penthouse-Kitchen-view-01-480x300.webp",
+                "category": "Interiors",
+                "title": "Designer Kitchen"
             },
             {
                 "type": "image",
                 "content": "prive_master_bedroom.webp",
                 "description": "2BR apartment master bedroom with sea views and contemporary design",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-2BR-Apartment-Master-bedroom-view-01-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Apartment-units-2BR-Apartment-Master-bedroom-view-01-480x300.webp",
+                "category": "Interiors",
+                "title": "Master Bedroom"
             },
             {
                 "type": "image",
                 "content": "prive_standard_bedroom.webp",
                 "description": "Penthouse standard bedroom with elegant furnishings and natural light",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/PRIVE-Apartment-units-Penthouse-Standard-bedroom-view-01-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/PRIVE-Apartment-units-Penthouse-Standard-bedroom-view-01-480x300.webp",
+                "category": "Interiors",
+                "title": "Guest Bedroom"
             },
             {
                 "type": "image",
                 "content": "prive_balcony_dusk.webp",
                 "description": "Private balcony at dusk with stunning sunset views over the Gulf",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-BalconyDusk02.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-BalconyDusk02.webp",
+                "category": "Views",
+                "title": "Sunset from Balcony"
             },
             {
                 "type": "image",
                 "content": "prive_beach_view_wide.webp",
                 "description": "Wide panoramic view of Dubai Islands Beach from the property",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-BEACH-VIEW_WIDE-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-BEACH-VIEW_WIDE-480x300.webp",
+                "category": "Views",
+                "title": "Beachfront Panorama"
             },
             {
                 "type": "image",
                 "content": "prive_beach_view_portrait.webp",
                 "description": "Portrait view of the beachfront with the tower in background",
-                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TN-PRIVE-BEACH-VIEW_PORTRAIT-480x300.webp"
+                "url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TN-PRIVE-BEACH-VIEW_PORTRAIT-480x300.webp",
+                "category": "Views",
+                "title": "Beach & Tower"
             },
             {
                 "type": "text",
@@ -521,7 +567,7 @@
         ],
         "brand_color": "#1e88e5",
         "broker_email": "info@fakhruddinproperties.com",
-        "broker_logo_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/treppan-living-prive-logo.png",
+        "broker_logo_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2021/10/fkh_logo_rosegold_250.png",
         "broker_name": "Fakhruddin Properties",
         "broker_phone": "800 5253",
         "created_at": {
@@ -661,127 +707,158 @@
         "amenities_grid": [
             {
                 "name": "Club House",
-                "category": "social"
+                "category": "social",
+                "image_url": null
             },
             {
                 "name": "Hangout Area/Seating Area",
-                "category": "social"
+                "category": "social",
+                "image_url": null
             },
             {
                 "name": "Working Pods",
-                "category": "work"
+                "category": "work",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Lounge-Pods.webp"
             },
             {
                 "name": "Green House Cafe",
-                "category": "social"
+                "category": "social",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-greencafe01.webp"
             },
             {
                 "name": "BBQ Seating",
-                "category": "social"
+                "category": "social",
+                "image_url": null
             },
             {
                 "name": "Misting Majlis",
-                "category": "social"
+                "category": "social",
+                "image_url": null
             },
             {
                 "name": "Infinity Pool",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/01/Treppan-Living-PRIVE-RoofTop-Pool03.webp"
             },
             {
                 "name": "Pool",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Pool_Lounge.webp"
             },
             {
                 "name": "Kids Pool",
-                "category": "family"
+                "category": "family",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsPool.webp"
             },
             {
                 "name": "Endless Pool",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": null
             },
             {
                 "name": "Water Loungers",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": null
             },
             {
                 "name": "Rooftop Water Lounger",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": null
             },
             {
                 "name": "Hot Plunge",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": null
             },
             {
                 "name": "Sauna",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": null
             },
             {
                 "name": "Steam",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": null
             },
             {
                 "name": "Cryotherapy",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Public-Area-Treatment-room.webp"
             },
             {
                 "name": "Red Light Therapy",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Public-Area-Treatment-room.webp"
             },
             {
                 "name": "Hyperbaric Chamber",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Public-Area-Treatment-room.webp"
             },
             {
                 "name": "Open Shower",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": null
             },
             {
                 "name": "Common Massage Bed",
-                "category": "wellness"
+                "category": "wellness",
+                "image_url": null
             },
             {
                 "name": "Gym",
-                "category": "fitness"
+                "category": "fitness",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-Indorr-Gym1.webp"
             },
             {
                 "name": "Outdoor Gym",
-                "category": "fitness"
+                "category": "fitness",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-OutdoorGym.webp"
             },
             {
                 "name": "Aqua Gym",
-                "category": "fitness"
+                "category": "fitness",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-AquaGym.webp"
             },
             {
                 "name": "Sun Beds",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": null
             },
             {
                 "name": "Roof Deck Sun Beds",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": null
             },
             {
                 "name": "Cabanas",
-                "category": "recreation"
+                "category": "recreation",
+                "image_url": null
             },
             {
                 "name": "Kids Play Area",
-                "category": "family"
+                "category": "family",
+                "image_url": "https://www.fakhruddinproperties.com/wp-content/uploads/2026/02/TL-PRIVE-KidsArea01.webp"
             },
             {
                 "name": "Sand Pit",
-                "category": "family"
+                "category": "family",
+                "image_url": null
             },
             {
                 "name": "Playground",
-                "category": "family"
+                "category": "family",
+                "image_url": null
             },
             {
                 "name": "Kids Adventure Wall",
-                "category": "family"
+                "category": "family",
+                "image_url": null
             },
             {
                 "name": "Zip Lines",
-                "category": "family"
+                "category": "family",
+                "image_url": null
             }
         ],
         "location_map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2545.7010023971175!2d55.295560599999995!3d25.2987926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f45908dbc6bbf%3A0xe060b60b7d7d8fcd!2sTreppan%20Living%20Prive!5e1!3m2!1sen!2sin!4v1770724804985!5m2!1sen!2sin",

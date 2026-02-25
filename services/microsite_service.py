@@ -36,6 +36,10 @@ class EnrichedSection(BaseModel):
     heading: str           # rewritten heading
     content: str           # rewritten body copy
 
+class EnrichedAmenity(BaseModel):
+    name: str              # amenity name (must match a name from the amenities list)
+    description: str       # 1-2 sentence persona-tailored description
+
 class EnrichedMicrositeContent(BaseModel):
     hero_headline: str              # persona-specific tagline (max 10 words)
     hero_subheadline: str           # one-line supporting text (max 15 words)
@@ -48,6 +52,7 @@ class EnrichedMicrositeContent(BaseModel):
     cta_text: str = "Express Interest"          # persona-specific CTA button text (max 4 words)
     cta_heading: str = "Ready to Explore?"      # persona-specific CTA section heading
     highlighted_amenity_categories: List[str] = []  # categories to highlight: wellness, family, fitness, etc.
+    top_amenities: List[EnrichedAmenity] = []   # top 4-6 amenities for showcase cards
 
 
 # ── Enrichment Prompt ───────────────────────────────────────────
@@ -112,6 +117,18 @@ making them feel understood and excited — like a trusted friend showing them t
    - Investor → ["recreation", "social"]
    - Family → ["family", "recreation"]
    - Wellness → ["wellness", "fitness"]
+
+10. **top_amenities**: Pick 4 to 6 amenities from this list that would matter MOST to THIS buyer.
+   IMPORTANT: Only pick amenities that have images (marked with ✓ below).
+   Available amenities with images: Working Pods ✓, Green House Cafe ✓, Infinity Pool ✓, Pool ✓,
+   Kids Pool ✓, Cryotherapy ✓, Red Light Therapy ✓, Hyperbaric Chamber ✓, Gym ✓, Outdoor Gym ✓,
+   Aqua Gym ✓, Kids Play Area ✓.
+   For each, write a 1-2 sentence description tailored to this persona:
+   - Investor → highlight amenities that drive rental premiums and tenant appeal
+   - Family → highlight safe, fun, kid-friendly spaces
+   - Wellness → highlight recovery, biohacking, and fitness amenities
+   - General → highlight unique and premium experiences
+   Return as list of objects: [{{"name": "exact amenity name", "description": "tailored text"}}]
 
 ## TONE RULES
 - Sound like a thoughtful friend, never a brochure
@@ -300,6 +317,7 @@ async def _enrich_content(persona: Dict, prop: Dict, assets: List[Dict]) -> Dict
             "cta_text": "Express Interest",
             "cta_heading": "Ready to Explore?",
             "highlighted_amenity_categories": [],
+            "top_amenities": [],
         }
 
 
@@ -437,6 +455,76 @@ def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enrich
     # Determine which services to highlight based on persona
     highlighted_services = _get_highlighted_services(persona) if use_clone else []
 
+    # Build top amenities with images for the showcase carousel
+    top_amenities_with_images = []
+    if use_clone:
+        amenities_lookup = {a.get('name', '').lower(): a for a in prop.get('amenities_grid', [])}
+        used_images = set()  # Deduplicate by image URL
+        for ai_amenity in enriched.get('top_amenities', []):
+            key = ai_amenity.get('name', '').lower()
+            match = amenities_lookup.get(key)
+            img_url = match.get('image_url', '') if match else ''
+            if match and img_url and img_url not in used_images:
+                top_amenities_with_images.append({
+                    'name': ai_amenity.get('name', ''),
+                    'description': ai_amenity.get('description', ''),
+                    'image_url': img_url,
+                    'category': match.get('category', ''),
+                })
+                used_images.add(img_url)
+        # Fallback: if AI didn't pick enough, fill from amenities that have unique images
+        if len(top_amenities_with_images) < 4:
+            used_names = {a.get('name', '').lower() for a in top_amenities_with_images}
+            for amenity in amenities_ordered:
+                if len(top_amenities_with_images) >= 6:
+                    break
+                img_url = amenity.get('image_url', '')
+                if img_url and img_url not in used_images and amenity.get('name', '').lower() not in used_names:
+                    top_amenities_with_images.append({
+                        'name': amenity.get('name', ''),
+                        'description': '',
+                        'image_url': img_url,
+                        'category': amenity.get('category', ''),
+                    })
+                    used_names.add(amenity.get('name', '').lower())
+                    used_images.add(img_url)
+
+    # Build gallery categories from image assets for tabbed gallery
+    gallery_categories = []
+    if use_clone:
+        # Group images by category
+        cat_map = {}
+        for asset in assets:
+            if asset.get('type') == 'image' and asset.get('category'):
+                cat = asset['category']
+                if cat not in cat_map:
+                    cat_map[cat] = []
+                cat_map[cat].append(asset)
+
+        # Persona-driven tab order
+        motivation = str(persona.get("motivation", "")).lower()
+        if "invest" in motivation or "rental" in motivation:
+            preferred_order = ["Interiors", "Amenities", "Views", "Exteriors"]
+        elif "family" in motivation or "end" in motivation:
+            preferred_order = ["Interiors", "Amenities", "Exteriors", "Views"]
+        elif "wellness" in motivation or "health" in motivation:
+            preferred_order = ["Amenities", "Interiors", "Views", "Exteriors"]
+        else:
+            preferred_order = ["Amenities", "Interiors", "Exteriors", "Views"]
+
+        for cat_name in preferred_order:
+            if cat_name in cat_map:
+                gallery_categories.append({
+                    'name': cat_name,
+                    'images': cat_map[cat_name],
+                })
+        # Add any remaining categories not in preferred_order
+        for cat_name, imgs in cat_map.items():
+            if cat_name not in preferred_order:
+                gallery_categories.append({'name': cat_name, 'images': imgs})
+
+    gallery_tab_names = [c['name'] for c in gallery_categories]
+
     return template.render(
         persona=persona,
         property=prop,
@@ -452,6 +540,9 @@ def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enrich
         amenities_ordered=amenities_ordered,
         wellness_features_ordered=wellness_features_ordered,
         highlighted_services=highlighted_services,
+        top_amenities_with_images=top_amenities_with_images,
+        gallery_categories=gallery_categories,
+        gallery_tab_names=gallery_tab_names,
         # Common
         broker_name=prop.get("broker_name", "Your Broker"),
         broker_phone=prop.get("broker_phone", ""),

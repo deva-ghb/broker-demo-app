@@ -46,7 +46,6 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
 
       if (data.session_status === 'complete' && data.persona_id) {
         setPersonaId(data.persona_id)
-        // Fetch the full persona
         const personaRes = await fetch(`${apiBase}/api/v1/persona/${data.persona_id}`)
         if (personaRes.ok) {
           setPersona(await personaRes.json())
@@ -55,7 +54,7 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
     } catch (e) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: '⚠️ Failed to connect. Make sure the API server is running on port 8000.',
+        content: 'Failed to connect. Please ensure the API server is running.',
       }])
     }
     setLoading(false)
@@ -76,21 +75,16 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
     setPersona(null)
   }
 
-  // If in voice mode, render VoiceInterface
   if (mode === 'voice') {
     return (
       <div>
-        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <h1>🎙️ Persona Builder</h1>
-            <p>Conversational AI-driven lead profiling — speak or type to build personas</p>
+            <h1>Persona Builder</h1>
+            <p>Conversational AI-driven lead profiling — speak or type to build buyer personas</p>
           </div>
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={() => setMode('text')}
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            ⌨️ Switch to Text
+          <button className="btn btn-secondary btn-sm" onClick={() => setMode('text')}>
+            Switch to Text
           </button>
         </div>
         <VoiceInterface apiBase={apiBase} onNavigate={onNavigate} />
@@ -98,30 +92,25 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
     )
   }
 
-  // Text mode UI
   return (
     <div>
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <h1>🧠 Persona Builder</h1>
-          <p>Conversational AI-driven lead profiling — describe your buyer and we'll build the persona</p>
+          <h1>Persona Builder</h1>
+          <p>Describe your buyer and SellSmart AI will build a structured intelligence profile</p>
         </div>
-        <button
-          className="btn btn-secondary btn-sm"
-          onClick={() => setMode('voice')}
-          style={{ whiteSpace: 'nowrap' }}
-        >
-          🎙️ Switch to Voice
+        <button className="btn btn-secondary btn-sm" onClick={() => setMode('voice')}>
+          Switch to Voice
         </button>
       </div>
 
       {/* Config Row */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', alignItems: 'flex-end' }}>
         <div className="form-group" style={{ marginBottom: 0, flex: 1 }}>
-          <label>Property ID (optional)</label>
+          <label>Property Context (optional)</label>
           <input
             className="input"
-            placeholder="e.g. prop_dubai_creek"
+            placeholder="Property ID"
             value={propertyId}
             onChange={e => setPropertyId(e.target.value)}
             disabled={status !== 'idle'}
@@ -131,7 +120,7 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
           <label>Broker ID (optional)</label>
           <input
             className="input"
-            placeholder="e.g. brk_5501"
+            placeholder="Broker ID"
             value={brokerId}
             onChange={e => setBrokerId(e.target.value)}
             disabled={status !== 'idle'}
@@ -139,27 +128,26 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
         </div>
         {status !== 'idle' && (
           <button className="btn btn-secondary btn-sm" onClick={startNew}>
-            🔄 New Session
+            New Session
           </button>
         )}
         {status === 'complete' && (
           <button className="btn btn-primary btn-sm" onClick={() => onNavigate('microsite')}>
-            🌐 Build Microsite
+            Build Microsite
           </button>
         )}
       </div>
 
       {/* Status Badge */}
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <span className={`badge ${status === 'complete' ? 'badge-success' :
-          status === 'collecting' ? 'badge-warning' : 'badge-info'
-          }`}>
-          {status === 'complete' ? '✅ Persona Complete' :
-            status === 'collecting' ? '🔄 Collecting Information' : '💬 Ready to Start'}
+          status === 'collecting' ? 'badge-warning' : 'badge-info'}`}>
+          {status === 'complete' ? 'Persona Complete' :
+            status === 'collecting' ? 'Collecting Information' : 'Ready to Start'}
         </span>
         {sessionId && (
-          <span style={{ fontSize: '12px', color: 'var(--text-dim)', marginLeft: '12px' }}>
-            Session: {sessionId}
+          <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontFamily: 'monospace' }}>
+            {sessionId}
           </span>
         )}
       </div>
@@ -168,14 +156,21 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
       <div className="chat-container">
         <div className="chat-messages">
           {messages.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>💬</div>
-              <h3>Start the conversation</h3>
-              <p style={{ fontSize: '14px', marginTop: '8px' }}>
-                Tell the AI about your buyer — their nationality, interests, budget, motivation...
-              </p>
-              <p style={{ fontSize: '13px', marginTop: '12px', color: 'var(--text-dim)' }}>
-                Example: "I have an Indian investor looking for a 2-bed in Dubai for Golden Visa eligibility"
+            <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-dim)' }}>
+              <div style={{
+                width: 48, height: 48, margin: '0 auto 20px',
+                border: '1px solid var(--border-card)',
+                borderRadius: 14,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'rgba(204,152,65,0.08)'
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="1.5">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
+              <h3 style={{ marginBottom: '8px', fontSize: '15px' }}>Begin the conversation</h3>
+              <p style={{ fontSize: '13px', color: 'var(--text-dim)', maxWidth: '300px', margin: '0 auto', lineHeight: 1.7 }}>
+                Describe your buyer — nationality, budget, motivation, lifestyle preferences
               </p>
             </div>
           )}
@@ -183,7 +178,7 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
           {messages.map((msg, i) => (
             <div key={i} className={`chat-bubble ${msg.role}`}>
               <div className="sender">
-                {msg.role === 'user' ? 'You (Broker)' : 'SellSmart AI'}
+                {msg.role === 'user' ? 'Broker' : 'SellSmart AI'}
               </div>
               {msg.role === 'assistant' ? (
                 <div className="markdown-content">
@@ -208,7 +203,7 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
         <div className="chat-input-bar">
           <input
             className="input"
-            placeholder={status === 'complete' ? 'Persona complete! Click "Build Microsite" to continue.' : 'Describe your buyer...'}
+            placeholder={status === 'complete' ? 'Persona complete — build a microsite to continue' : 'Describe your buyer...'}
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -228,27 +223,33 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
       {persona && (
         <div className="persona-preview">
           <div className="persona-header">
-            <div className="persona-avatar">👤</div>
+            <div className="persona-avatar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
             <div>
-              <h2>{persona.ai_recommended_persona_type || 'Buyer'} Persona</h2>
-              <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
+              <h2 style={{ fontFamily: 'Instrument Sans', fontSize: '15px' }}>
+                {persona.ai_recommended_persona_type || 'Buyer'} Persona
+              </h2>
+              <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontFamily: 'monospace' }}>
                 {persona.persona_id}
               </span>
               {persona.ai_persona_label && (
-                <div style={{ fontSize: '13px', color: 'var(--primary-light)', marginTop: '4px' }}>
+                <div style={{ fontSize: '12px', color: 'var(--gold)', marginTop: '3px' }}>
                   {persona.ai_persona_label}
                 </div>
               )}
             </div>
-            <div style={{ marginLeft: 'auto' }}>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '24px', fontWeight: '700' }}>{persona.trust_level_score}</div>
-                <div style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Trust Score</div>
+            <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+              <div style={{ fontFamily: 'Instrument Sans', fontSize: '28px', fontWeight: 600, color: 'var(--text)' }}>
+                {persona.trust_level_score}
               </div>
+              <div style={{ fontSize: '10px', color: 'var(--text-dim)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Trust Score</div>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
             <div className="persona-field">
               <div className="field-label">Primary Motivation</div>
               <div className="field-value">{persona.motivation?.primary_goal || '—'}</div>
@@ -270,13 +271,11 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
               <div className="field-value">{persona.motivation?.urgency || '—'}</div>
             </div>
             <div className="persona-field">
-              <div className="field-label">Lifestyle & Interests</div>
+              <div className="field-label">Lifestyle</div>
               <div className="field-value">
                 {(persona.lifestyle?.lifestyle_tags || []).length > 0
                   ? persona.lifestyle.lifestyle_tags.map((k, i) => (
-                    <span key={i} className="badge badge-primary" style={{ marginRight: '4px', marginBottom: '4px' }}>
-                      {k}
-                    </span>
+                    <span key={i} className="badge badge-primary" style={{ marginRight: '4px', marginBottom: '4px' }}>{k}</span>
                   ))
                   : '—'}
               </div>
@@ -286,39 +285,22 @@ export default function PersonaBuilder({ apiBase, onNavigate }) {
               <div className="field-value">
                 {(persona.lifestyle?.deal_breaker_features || []).length > 0
                   ? persona.lifestyle.deal_breaker_features.map((k, i) => (
-                    <span key={i} className="badge badge-danger" style={{ marginRight: '4px', marginBottom: '4px' }}>
-                      {k}
-                    </span>
+                    <span key={i} className="badge badge-danger" style={{ marginRight: '4px', marginBottom: '4px' }}>{k}</span>
                   ))
                   : '—'}
               </div>
             </div>
-            <div className="persona-field">
-              <div className="field-label">Property Type</div>
-              <div className="field-value">{persona.property_fit?.unit_type || '—'}</div>
-            </div>
-            <div className="persona-field">
-              <div className="field-label">View Preference</div>
-              <div className="field-value">{persona.property_fit?.view_preference || '—'}</div>
-            </div>
           </div>
 
           {persona.ai_recommended_angle && (
-            <div className="persona-field" style={{ marginTop: '12px' }}>
-              <div className="field-label">AI Recommended Sales Angle</div>
-              <div className="field-value" style={{
-                padding: '12px',
-                background: 'var(--bg)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: '3px solid var(--primary)',
-              }}>
-                💡 {persona.ai_recommended_angle}
-              </div>
+            <div className="persona-field" style={{ marginTop: '14px' }}>
+              <div className="field-label">AI Sales Angle</div>
+              <div className="gold-block">{persona.ai_recommended_angle}</div>
             </div>
           )}
 
           {persona.next_best_action && (
-            <div className="persona-field" style={{ marginTop: '8px' }}>
+            <div className="persona-field" style={{ marginTop: '10px' }}>
               <div className="field-label">Next Best Action</div>
               <div className="field-value">{persona.next_best_action}</div>
             </div>

@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import HTMLResponse
 
 from schemas.microsite_schemas import MicrositeBuildRequest, MicrositeBuildResponse
-from services.microsite_service import build_microsite, get_microsite_html
+from services.microsite_service import build_microsite, build_storycard_microsite, get_microsite_html
 from services.recommendation_service import recommend_properties
 
 router = APIRouter(tags=["Microsite Builder"])
@@ -23,7 +23,7 @@ async def build_microsite_endpoint(request: MicrositeBuildRequest):
         if not prop_id:
             recommended_ids, _ = await recommend_properties(persona_id=request.persona_id)
             prop_id = recommended_ids[0]
-            
+
         result = await build_microsite(
             persona_id=request.persona_id,
             property_id=prop_id,
@@ -36,13 +36,51 @@ async def build_microsite_endpoint(request: MicrositeBuildRequest):
         raise HTTPException(status_code=500, detail=f"Failed to build microsite: {str(e)}")
 
 
+@router.post("/api/v1/storycard/build", response_model=MicrositeBuildResponse)
+async def build_storycard_endpoint(request: MicrositeBuildRequest):
+    """
+    Generate a V2 Storycard microsite — 8-card narrative pitch experience.
+    If property_id is None, uses Recommendation Service to find best match.
+    Returns the unique URL served at /m/s/{persona_id}
+    """
+    try:
+        prop_id = request.property_id
+        if not prop_id:
+            recommended_ids, _ = await recommend_properties(persona_id=request.persona_id)
+            prop_id = recommended_ids[0]
+
+        result = await build_storycard_microsite(
+            persona_id=request.persona_id,
+            property_id=prop_id,
+        )
+        return MicrositeBuildResponse(**result)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to build storycard: {str(e)}")
+
+
 @router.get("/m/{persona_id}", response_class=HTMLResponse)
 async def serve_microsite(persona_id: str):
     """
-    Serve the rendered microsite HTML.
+    Serve the rendered microsite HTML (v1 clone template).
     This is the public-facing URL shared with buyers.
     """
     html = await get_microsite_html(persona_id)
     if not html:
         raise HTTPException(status_code=404, detail="Microsite not found")
     return HTMLResponse(content=html)
+
+
+@router.get("/m/s/{persona_id}", response_class=HTMLResponse)
+async def serve_storycard(persona_id: str):
+    """
+    Serve the V2 Storycard microsite HTML.
+    """
+    storycard_slug = f"s/{persona_id}"
+    html = await get_microsite_html(storycard_slug)
+    if not html:
+        raise HTTPException(status_code=404, detail="Storycard not found")
+    return HTMLResponse(content=html)
+

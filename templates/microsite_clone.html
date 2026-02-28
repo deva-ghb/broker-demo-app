@@ -3,1924 +3,1132 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ property.get('name', 'Property') }} | {{ broker_name }}</title>
-    <meta name="description"
-        content="{{ enriched.get('hero_subheadline', property.get('name', '') + ' - ' + property.get('location', '')) }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{ property.get('name', 'Property') }} — {{ broker_name }}</title>
+    <meta name="description" content="{{ property.get('name', '') }}. {{ persona.get('ai_recommended_angle', '') }}">
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
         rel="stylesheet">
     <style>
-        /* ── Reset & Base ─────────────────────────────────── */
-        *,
-        *::before,
-        *::after {
+        /* ── Design Tokens ──────────────────────────────────── */
+        :root {
+            --gold: #CC9841;
+            --gold-dim: rgba(204, 152, 65, 0.18);
+            --gold-glow: rgba(204, 152, 65, 0.35);
+            --bg: #000000;
+            --text: #FDFDFD;
+            --text-muted: #BDBDBD;
+            --text-dim: #888888;
+            --text-body: #FEFAE0;
+            --border: rgba(255, 255, 255, 0.10);
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --card-gradient: linear-gradient(-43.78deg, rgba(255, 255, 255, 0.44) 7.57%, rgba(0, 0, 0, 0.44) 93.52%);
+            --radius-card: 32px;
+            --radius: 20px;
+            --radius-sm: 16px;
+            --radius-xs: 12px;
+        }
+
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #333;
-            background: #fff;
-            line-height: 1.6;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
-        /* ── Typography ───────────────────────────────────── */
-        .heading-serif {
-            font-family: 'Cormorant Garamond', 'Georgia', serif;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-        }
-
-        .heading-sans {
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-        }
-
-        /* ── Color Palette ────────────────────────────────── */
-        :root {
-            --navy: #1B2A4A;
-            --navy-light: #2a3d66;
-            --rose-gold: #C9A87C;
-            --rose-gold-light: #d4b88f;
-            --cream: #F5F0EB;
-            --off-white: #FAFAF8;
-            --dark-bg: #1a1a2e;
-            --dark-card: #252540;
-            --text-primary: #1B2A4A;
-            --text-secondary: #5a6a85;
-            --text-light: rgba(255, 255, 255, 0.9);
-        }
-
-        /* ── Header / Navbar ──────────────────────────────── */
-        .site-header {
+        /* ── Top Bar ── */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            background: var(--navy);
-            padding: 12px 40px;
+            z-index: 100;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: background 0.3s;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
         }
 
-        .site-header.scrolled {
-            background: rgba(27, 42, 74, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .header-logo img {
+        .top-bar-logo {
             height: 28px;
-            filter: brightness(0) invert(1);
+            object-fit: contain;
         }
 
-        .header-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--rose-gold);
-            color: #fff;
-            padding: 10px 24px;
-            border-radius: 4px;
+        .top-bar-brand {
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .top-bar-cta {
+            background: var(--gold);
+            color: #000;
+            padding: 8px 18px;
+            border-radius: 999px;
             font-size: 13px;
             font-weight: 600;
+            font-family: 'Instrument Sans', sans-serif;
             text-decoration: none;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
+            white-space: nowrap;
         }
 
-        .header-cta:hover {
-            background: var(--rose-gold-light);
-            transform: translateY(-1px);
-        }
-
-        /* ── Section: Hero ─────────────────────────────────── */
-        .hero-section {
+        /* ── Hero ── */
+        .hero {
             position: relative;
-            height: 100vh;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
+            width: 100%;
+            height: 440px;
             overflow: hidden;
         }
 
-        .hero-video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .hero-img {
             width: 100%;
             height: 100%;
-            z-index: 0;
-        }
-
-        .hero-video-bg iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+            object-fit: cover;
         }
 
         .hero-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(27, 42, 74, 0.7) 0%, rgba(27, 42, 74, 0.3) 100%);
-            z-index: 1;
+            inset: 0;
+            background: linear-gradient(180.37deg, rgba(0, 0, 0, 0) 7.84%, rgb(0, 0, 0) 48.22%);
         }
 
         .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 0 60px;
-            max-width: 700px;
-        }
-
-        .hero-logo {
-            width: 380px;
-            max-width: 80vw;
-            margin-bottom: 20px;
-            filter: brightness(0) saturate(100%) invert(76%) sepia(30%) saturate(500%) hue-rotate(5deg) brightness(95%) contrast(90%);
-        }
-
-        .hero-headline {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(20px, 2.5vw, 32px);
-            font-weight: 300;
-            color: #fff;
-            line-height: 1.3;
-            margin-bottom: 8px;
-        }
-
-        .hero-subheadline {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.75);
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--rose-gold);
-            color: #fff;
-            padding: 14px 32px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
-        }
-
-        .hero-cta:hover {
-            background: var(--rose-gold-light);
-            transform: translateY(-2px);
-        }
-
-        .hero-cta svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        .hero-scroll-indicator {
             position: absolute;
-            bottom: 40px;
-            right: 60px;
-            z-index: 2;
-            color: rgba(255, 255, 255, 0.7);
-            animation: bounce 2s infinite;
-            font-size: 28px;
+            bottom: 32px;
+            left: 20px;
+            right: 20px;
         }
 
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(10px);
-            }
-        }
-
-        /* ── Section: Brand Vision ────────────────────────── */
-        .brand-vision-section {
-            background: var(--cream);
-            padding: 100px 60px;
-        }
-
-        .brand-vision-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .brand-vision-text h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(32px, 3.5vw, 48px);
-            font-weight: 300;
-            color: var(--navy);
-            line-height: 1.2;
-            margin-bottom: 30px;
-        }
-
-        .brand-vision-text p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 16px;
-        }
-
-        .brand-vision-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--navy);
-            color: #fff;
-            padding: 14px 32px;
-            font-size: 14px;
+        .hero-content h1 {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 26px;
             font-weight: 600;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 20px;
-            transition: all 0.3s;
+            color: var(--text);
+            line-height: 1.25;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
         }
 
-        .brand-vision-cta:hover {
-            background: var(--navy-light);
+        .hero-sub {
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
-        .brand-vision-cta svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
+        /* ── Sales Angle ── */
+        .angle-block {
+            margin: 24px 20px 4px;
+            background: linear-gradient(99.72deg, rgba(255, 255, 255, 0.05) 0%, rgba(153, 153, 153, 0.05) 100%);
+            border: 0.587px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
         }
 
-        .ambassador-card {
-            background: #111;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-        }
-
-        .ambassador-card img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .ambassador-caption {
-            padding: 24px 30px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .ambassador-caption .name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-        }
-
-        .ambassador-caption .title {
+        .angle-block p {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
+            color: var(--text-body);
+            line-height: 1.75;
         }
 
-        /* ── Section: USP Cards ────────────────────────────── */
-        .usp-section {
-            background: var(--off-white);
-            padding: 80px 60px;
-        }
-
-        .usp-grid {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-        }
-
-        .usp-card {
-            text-align: center;
-            padding: 20px;
-            transition: transform 0.3s;
-        }
-
-        .usp-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .usp-icon {
-            width: 80px;
-            height: 80px;
-            border: 2px solid var(--rose-gold);
-            border-radius: 50%;
+        /* ── Trust Badges ── */
+        .trust-row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 28px;
-            color: var(--rose-gold);
-        }
-
-        .usp-card h3 {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-primary);
-            line-height: 1.4;
-        }
-
-        .usp-card.highlighted {
-            background: rgba(201, 168, 124, 0.08);
-            border-radius: 16px;
-            border: 1px solid rgba(201, 168, 124, 0.3);
-        }
-
-        /* ── Section: Services (À La Carte + Premium) ─────── */
-        .services-section {
-            position: relative;
-            padding: 80px 60px;
-            overflow: hidden;
-        }
-
-        .services-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--cream) 0%, #e8e0d6 100%);
-            z-index: 0;
-        }
-
-        .services-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-        }
-
-        .services-block h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(28px, 3vw, 40px);
-            font-weight: 400;
-            color: var(--navy);
-            margin-bottom: 12px;
-        }
-
-        .services-block .subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 28px;
-        }
-
-        .services-list {
-            list-style: none;
-            padding: 0;
-            columns: 1;
-        }
-
-        .services-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(27, 42, 74, 0.08);
-            font-size: 14px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .services-list li::before {
-            content: '✓';
-            color: var(--rose-gold);
-            font-weight: 700;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .services-list li.highlighted {
-            font-weight: 600;
-            color: var(--navy);
-        }
-
-        /* ── Section: Wellness Features ───────────────────── */
-        .wellness-section {
-            background: #fff;
-            padding: 80px 60px;
-        }
-
-        .wellness-section .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .wellness-section .section-title h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(28px, 3vw, 42px);
-            font-weight: 400;
-            color: var(--navy);
-        }
-
-        .wellness-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .wellness-card {
-            background: var(--navy);
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .wellness-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(27, 42, 74, 0.3);
-        }
-
-        .wellness-card .icon {
-            font-size: 32px;
-            color: var(--rose-gold);
-            margin-bottom: 14px;
-        }
-
-        .wellness-card h3 {
-            font-size: 14px;
-            font-weight: 500;
-            color: #fff;
-            line-height: 1.4;
-        }
-
-        .wellness-card.highlighted {
-            background: linear-gradient(135deg, var(--navy), #2a3d66);
-            border: 1px solid var(--rose-gold);
-            box-shadow: 0 0 20px rgba(201, 168, 124, 0.2);
-        }
-
-        /* ── Section: Tabbed Gallery ──────────────────────── */
-        .gallery-section {
-            background: #fff;
-            padding: 80px 60px;
-        }
-
-        .gallery-section .section-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .gallery-section .section-subtitle {
-            color: var(--rose-gold);
-            font-size: 13px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .gallery-section .section-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(28px, 3vw, 42px);
-            font-weight: 400;
-            color: var(--dark-bg);
-        }
-
-        /* Tab bar */
-        .gallery-tabs {
-            display: flex;
-            justify-content: center;
             gap: 8px;
-            margin-bottom: 36px;
+            padding: 16px 20px 8px;
             flex-wrap: wrap;
         }
 
-        .gallery-tab {
-            padding: 10px 28px;
-            border-radius: 30px;
-            border: 1px solid rgba(27, 42, 74, 0.15);
-            background: transparent;
-            color: var(--dark-bg);
-            font-size: 14px;
+        .trust-badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 5px 14px;
+            border: 0.587px solid var(--border);
+            border-radius: 999px;
+        }
+
+        .trust-badge.gold {
+            color: var(--gold);
+            border-color: rgba(204, 152, 65, 0.3);
+            background: var(--gold-dim);
+        }
+
+        /* ── Section Header ── */
+        .section-label {
+            padDing: 0 20px;
+            margin: 28px 0 16px;
+        }
+
+        .section-label h2 {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 22px;
             font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
+            color: var(--text-muted);
         }
 
-        .gallery-tab:hover {
-            border-color: var(--rose-gold);
-            color: var(--rose-gold);
-        }
-
-        .gallery-tab.active {
-            background: var(--dark-bg);
-            color: #fff;
-            border-color: var(--dark-bg);
-        }
-
-        /* Tab panels */
-        .gallery-tab-panel {
-            display: none;
-            animation: galleryFadeIn 0.4s ease;
-        }
-
-        .gallery-tab-panel.active {
-            display: block;
-        }
-
-        @keyframes galleryFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Image grid */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .gallery-card {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            aspect-ratio: 16 / 11;
-        }
-
-        .gallery-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .gallery-card:hover img {
-            transform: scale(1.08);
-        }
-
-        /* Overlay — always visible title, hover reveals description */
-        .gallery-card-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-            transition: all 0.3s;
-        }
-
-        .gallery-card-overlay h4 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
-            font-weight: 500;
-            color: #fff;
-            margin: 0;
-        }
-
-        .gallery-card-overlay p {
+        .section-label p {
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            margin: 6px 0 0;
-            line-height: 1.4;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.3s;
+            color: var(--text-body);
+            margin-top: 6px;
+            line-height: 1.7;
+            max-width: 340px;
         }
 
-        .gallery-card:hover .gallery-card-overlay p {
-            max-height: 60px;
-            opacity: 1;
-        }
-
-        .gallery-card:hover .gallery-card-overlay {
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-        }
-
-        /* ── Section: Explore Property ─────────────────────── */
-        .explore-section {
-            background: var(--off-white);
-            padding: 80px 60px;
-        }
-
-        .explore-section .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .explore-section .section-title h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(28px, 3vw, 42px);
-            font-weight: 400;
-            color: var(--navy);
-        }
-
-        .explore-tabs {
+        /* ── Horizontal Card Track ── */
+        .cards-track {
             display: flex;
-            justify-content: center;
-            gap: 0;
-            margin-bottom: 30px;
-        }
-
-        .explore-tab {
-            padding: 12px 32px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            background: #fff;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-
-        .explore-tab:first-child {
-            border-radius: 4px 0 0 4px;
-        }
-
-        .explore-tab:last-child {
-            border-radius: 0 4px 4px 0;
-        }
-
-        .explore-tab.active {
-            background: var(--rose-gold);
-            color: #fff;
-            border-color: var(--rose-gold);
-        }
-
-        .explore-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .explore-grid img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: transform 0.3s;
-        }
-
-        .explore-grid img:hover {
-            transform: scale(1.03);
-        }
-
-        /* ── Section: Amenities Showcase Carousel ──────────── */
-        .amenities-section {
-            background: var(--dark-bg);
-            padding: 80px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .amenities-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at 20% 50%, rgba(201, 168, 124, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(27, 42, 74, 0.3) 0%, transparent 60%);
-            z-index: 0;
-        }
-
-        .amenities-section .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding: 0 60px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .amenities-section .section-subtitle {
-            color: var(--rose-gold);
-            font-size: 13px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .amenities-section .section-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(28px, 3vw, 42px);
-            font-weight: 400;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .amenities-section .section-header p {
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Carousel container */
-        .amenity-carousel {
-            position: relative;
-            z-index: 1;
-            padding: 0 40px;
-        }
-
-        .amenity-carousel-track {
-            display: flex;
-            gap: 24px;
+            gap: 12px;
+            padding: 0 20px 8px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding: 20px 20px 40px;
-            cursor: grab;
             scrollbar-width: none;
         }
 
-        .amenity-carousel-track::-webkit-scrollbar {
+        .cards-track::-webkit-scrollbar {
             display: none;
         }
 
-        .amenity-carousel-track.dragging {
-            scroll-behavior: auto;
-            cursor: grabbing;
-        }
-
-        /* Individual amenity card */
-        .amenity-card {
-            flex: 0 0 340px;
-            scroll-snap-align: center;
-            border-radius: 16px;
-            overflow: hidden;
-            background: var(--dark-card);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                box-shadow 0.4s ease;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .amenity-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .amenity-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-                0 0 30px rgba(201, 168, 124, 0.1);
-        }
-
-        .amenity-card-image {
+        /* ── Story Card ── */
+        .story-card {
+            min-width: 258px;
+            height: 380px;
+            border-radius: var(--radius-card);
+            background: var(--card-gradient);
+            border: 0.587px solid var(--border);
             position: relative;
-            height: 220px;
+            overflow: hidden;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        .story-card.wide {
+            min-width: 280px;
+            height: 400px;
+        }
+
+        .story-card-inner {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
-        .amenity-card-image img {
+        .card-img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: inherit;
         }
 
-        .amenity-card:hover .amenity-card-image img {
-            transform: scale(1.1);
-        }
-
-        .amenity-card-image .category-badge {
+        .card-img-overlay {
             position: absolute;
-            top: 14px;
-            right: 14px;
-            background: rgba(27, 42, 74, 0.75);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: var(--rose-gold);
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(201, 168, 124, 0.2);
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.88) 100%);
+            border-radius: inherit;
         }
 
-        .amenity-card-image .card-number {
+        .card-body {
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+        }
+
+        .card-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .card-title {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 19px;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .card-title.xl {
+            font-size: 46px;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1.1;
+        }
+
+        .card-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-body);
+            line-height: 1.75;
+            margin-top: 6px;
+        }
+
+        /* Amenity overlay panel */
+        .amenity-panel {
             position: absolute;
             bottom: 14px;
             left: 14px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 48px;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.15);
-            line-height: 1;
+            right: 14px;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.52);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-xs);
+            padding: 14px;
         }
 
-        .amenity-card-body {
-            padding: 24px;
-        }
-
-        .amenity-card-body h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            font-weight: 500;
-            color: #fff;
+        .amenity-panel-desc {
+            font-size: 11px;
+            color: var(--text-body);
+            line-height: 1.7;
             margin-bottom: 8px;
         }
 
-        .amenity-card-body p {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.6;
+        .amenity-meta {
+            display: flex;
+            justify-content: space-between;
         }
 
-        /* Carousel navigation */
-        .amenity-carousel-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
+        .amenity-meta span {
+            font-size: 9px;
+        }
+
+        .am-label {
+            color: var(--text-dim);
+        }
+
+        .am-val {
+            color: var(--text-body);
+        }
+
+        /* Fact table inside cards */
+        .fact-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 10px;
-            position: relative;
-            z-index: 1;
         }
 
-        .amenity-nav-btn {
-            width: 44px;
-            height: 44px;
-            border: 1px solid rgba(201, 168, 124, 0.4);
-            background: transparent;
-            color: var(--rose-gold);
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s;
+        .fact-table tr {
+            border-bottom: 0.587px solid var(--border-subtle);
+        }
+
+        .fact-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .fact-table td {
+            padding: 6px 0;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .fact-table td:first-child {
+            color: var(--text-dim);
+            width: 44%;
+        }
+
+        .fact-table td:last-child {
+            color: var(--text-body);
+        }
+
+        /* Dot indicators */
+        .dot-row {
             display: flex;
-            align-items: center;
             justify-content: center;
+            gap: 4px;
+            padding: 10px 0 20px;
         }
 
-        .amenity-nav-btn:hover {
-            background: var(--rose-gold);
-            color: #fff;
-            border-color: var(--rose-gold);
+        .dot {
+            width: 20px;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.22);
+            border: none;
+            cursor: pointer;
+            transition: background .3s, width .3s;
         }
 
-        .amenity-counter {
-            font-family: 'Cormorant Garamond', serif;
+        .dot.active {
+            background: var(--text);
+        }
+
+        /* ── Ambassador Card ── */
+        .ambassador-section {
+            padding: 0 20px 28px;
+        }
+
+        .ambassador-card {
+            border-radius: var(--radius-sm);
+            background: linear-gradient(99.72deg, rgba(255, 255, 255, 0.05) 0%, rgba(153, 153, 153, 0.05) 100%);
+            border: 0.587px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .ambassador-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .ambassador-body {
+            padding: 18px 20px;
+        }
+
+        .ambassador-name {
+            font-family: 'Instrument Sans', sans-serif;
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 2px;
-        }
-
-        .amenity-counter .current {
-            color: #fff;
             font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
         }
 
-        .amenity-dots {
-            display: flex;
+        .ambassador-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 0.04em;
+            margin-bottom: 10px;
+        }
+
+        .ambassador-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-body);
+            line-height: 1.75;
+        }
+
+        /* ── Services Grid ── */
+        .services-section {
+            padding: 0 20px 28px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
         }
 
-        .amenity-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.3s;
-            cursor: pointer;
+        .service-item {
+            padding: 12px 14px;
+            border-radius: var(--radius-xs);
+            background: rgba(255, 255, 255, 0.04);
+            border: 0.587px solid var(--border);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .service-item.highlighted {
+            border-color: rgba(204, 152, 65, 0.3);
+            background: var(--gold-dim);
+            color: var(--gold);
+        }
+
+        /* ── Gallery Section ── */
+        .gallery-section {
+            padding: 0 20px 28px;
+        }
+
+        .gallery-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 999px;
             border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--text-muted);
+            transition: all .25s;
         }
 
-        .amenity-dot.active {
-            background: var(--rose-gold);
-            width: 24px;
-            border-radius: 4px;
+        .tab-btn.active {
+            background: var(--text);
+            color: #000;
         }
 
-        /* ── Section: Location & Map ──────────────────────── */
-        .location-section {
-            background: #fff;
-            padding: 80px 60px;
+        .gallery-panel {
+            display: none;
         }
 
-        .location-grid {
-            max-width: 1200px;
-            margin: 0 auto;
+        .gallery-panel.active {
+            display: block;
+        }
+
+        .gallery-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 8px;
         }
 
-        .location-map {
-            border-radius: 12px;
+        .gallery-item {
+            border-radius: var(--radius-xs);
             overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1;
         }
 
-        .location-map iframe {
+        .gallery-item img {
             width: 100%;
-            height: 400px;
-            border: none;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .location-info h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(24px, 2.5vw, 36px);
-            font-weight: 400;
-            color: var(--navy);
-            margin-bottom: 30px;
+        .gallery-item.wide {
+            grid-column: span 2;
+            aspect-ratio: 16/9;
         }
 
-        .proximity-tabs {
+        /* ── Location proximity ── */
+        .location-section {
+            padding: 0 20px 28px;
+        }
+
+        .loc-list {
             display: flex;
-            gap: 0;
-            margin-bottom: 24px;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .proximity-tab {
-            padding: 10px 20px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            background: #fff;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-
-        .proximity-tab:first-child {
-            border-radius: 4px 0 0 4px;
-        }
-
-        .proximity-tab:last-child {
-            border-radius: 0 4px 4px 0;
-        }
-
-        .proximity-tab.active {
-            background: var(--navy);
-            color: #fff;
-            border-color: var(--navy);
-        }
-
-        .proximity-list {
-            list-style: none;
-        }
-
-        .proximity-list li {
+        .loc-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: var(--radius-xs);
+            background: rgba(255, 255, 255, 0.04);
+            border: 0.587px solid var(--border);
         }
 
-        .proximity-list .name {
-            color: var(--text-primary);
+        .loc-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
-        .proximity-list .time {
-            color: var(--rose-gold);
-            font-weight: 600;
-        }
-
-        .proximity-list .distance {
-            color: var(--text-secondary);
+        .loc-time {
+            font-family: 'Instrument Sans', sans-serif;
             font-size: 13px;
-        }
-
-        /* ── Section: Financial / Investment ───────────────── */
-        .financial-section {
-            background: var(--navy);
-            padding: 80px 60px;
-            color: #fff;
-        }
-
-        .financial-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .financial-content h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(28px, 3vw, 42px);
-            font-weight: 400;
-            margin-bottom: 20px;
-        }
-
-        .financial-content p {
-            font-size: 16px;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 30px;
-        }
-
-        .financial-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 30px;
-        }
-
-        .stat-card .value {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 36px;
             font-weight: 600;
-            color: var(--rose-gold);
-            margin-bottom: 8px;
+            color: var(--text);
         }
 
-        .stat-card .label {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* ── Section: Objection Handler ────────────────────── */
-        .objection-section {
-            background: var(--cream);
-            padding: 80px 60px;
-        }
-
-        .objection-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .objection-content h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(24px, 2.5vw, 36px);
-            font-weight: 400;
-            color: var(--navy);
-            margin-bottom: 20px;
-        }
-
-        .objection-content p {
-            font-size: 16px;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-
-        /* ── Section: Contact / CTA Footer ────────────────── */
-        .contact-section {
-            background: #fff;
-            padding: 80px 60px;
-        }
-
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .contact-content h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(24px, 2.5vw, 36px);
-            font-weight: 400;
-            color: var(--navy);
-            margin-bottom: 16px;
-        }
-
-        .contact-content p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-        }
-
-        .contact-buttons {
+        /* ── USP row ── */
+        .usp-row {
             display: flex;
-            gap: 16px;
-            justify-content: center;
             flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 20px 28px;
         }
 
-        .contact-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: all 0.3s;
+        .usp-chip {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 6px 16px;
+            border: 0.587px solid var(--border);
+            border-radius: 999px;
         }
 
-        .contact-btn.primary {
-            background: var(--navy);
-            color: #fff;
+        .usp-chip.gold {
+            color: var(--gold);
+            border-color: rgba(204, 152, 65, 0.3);
+            background: var(--gold-dim);
         }
 
-        .contact-btn.primary:hover {
-            background: var(--navy-light);
+        /* ── Objection handler ── */
+        .objection-section {
+            padding: 0 20px 28px;
         }
 
-        .contact-btn.whatsapp {
-            background: #25D366;
-            color: #fff;
+        .objection-card {
+            border-radius: var(--radius-sm);
+            background: linear-gradient(99.72deg, rgba(255, 255, 255, 0.05) 0%, rgba(153, 153, 153, 0.05) 100%);
+            border: 0.587px solid rgba(255, 255, 255, 0.1);
+            padding: 22px 20px;
         }
 
-        .contact-btn.whatsapp:hover {
-            background: #1fb855;
+        .objection-card h3 {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 10px;
         }
 
-        /* ── Footer ───────────────────────────────────────── */
-        .site-footer {
-            background: var(--navy);
-            padding: 40px 60px 24px;
-            color: rgba(255, 255, 255, 0.6);
+        .objection-card p {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-body);
+            line-height: 1.75;
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-
-        .footer-content a {
-            color: var(--rose-gold);
-            text-decoration: none;
-        }
-
-        .footer-separator {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 20px 0;
-        }
-
-        /* ── Sticky CTA Bar (Mobile) ──────────────────────── */
-        .sticky-cta-bar {
+        /* ── Bottom CTA Bar ── */
+        .bottom-cta {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            background: var(--navy);
-            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 14px 20px;
+            padding-bottom: max(14px, env(safe-area-inset-bottom));
             display: flex;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            gap: 10px;
         }
 
-        .sticky-cta-bar a {
+        .cta-btn {
             flex: 1;
-            max-width: 200px;
-            text-align: center;
-            padding: 12px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            padding: 13px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.01em;
+            transition: opacity .2s;
         }
 
-        .sticky-cta-bar .phone-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
+        .cta-btn:active {
+            opacity: .82;
         }
 
-        .sticky-cta-bar .wa-btn {
-            background: #25D366;
-            color: #fff;
+        .cta-primary {
+            background: var(--gold);
+            color: #000;
         }
 
-        /* ── Scroll Animations ────────────────────────────── */
-        .animate-in {
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* ── Utility ── */
+        .bottom-pad {
+            height: 90px;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 0 20px 28px;
+        }
+
+        .label-eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(14px);
+            transition: opacity .5s, transform .5s;
         }
 
-        .animate-in.visible {
+        .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* ── Responsive ───────────────────────────────────── */
-        @media (max-width: 1024px) {
-            .usp-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .wellness-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .amenities-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            .financial-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .explore-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .site-header {
-                padding: 10px 20px;
-            }
-
-            .hero-content {
-                padding: 0 24px;
-            }
-
-            .hero-logo {
-                width: 240px;
-            }
-
-            .brand-vision-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .brand-vision-section {
-                padding: 60px 24px;
-            }
-
-            .usp-section {
-                padding: 60px 24px;
-            }
-
-            .usp-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .services-content {
-                grid-template-columns: 1fr;
-            }
-
-            .services-section {
-                padding: 60px 24px;
-            }
-
-            .wellness-section {
-                padding: 60px 24px;
-            }
-
-            .wellness-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .gallery-section {
-                padding: 60px 24px;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .explore-section {
-                padding: 60px 24px;
-            }
-
-            .explore-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .amenities-section {
-                padding: 60px 0;
-            }
-
-            .amenities-section .section-header {
-                padding: 0 24px;
-            }
-
-            .amenity-carousel {
-                padding: 0 16px;
-            }
-
-            .amenity-card {
-                flex: 0 0 280px;
-            }
-
-            .amenity-card-image {
-                height: 180px;
-            }
-
-            .location-section {
-                padding: 60px 24px;
-            }
-
-            .location-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .financial-section {
-                padding: 60px 24px;
-            }
-
-            .financial-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .objection-section {
-                padding: 60px 24px;
-            }
-
-            .contact-section {
-                padding: 60px 24px;
-            }
-
-            .site-footer {
-                padding: 24px;
-            }
-
-            body {
-                padding-bottom: 70px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .usp-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .amenities-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
     </style>
-    {% if preview %}
-    <style>
-        .preview-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            color: #fff;
-            text-align: center;
-            padding: 6px 20px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        body {
-            padding-top: 30px;
-        }
-
-        .site-header {
-            top: 30px;
-        }
-    </style>
-    {% endif %}
 </head>
 
 <body>
 
-    {% if preview %}
-    <div class="preview-banner">🟠 PREVIEW MODE — Engagement tracking is disabled</div>
-    {% endif %}
+    <!-- Top Bar -->
+    <div class="top-bar" id="topBar">
+        {% if broker_logo_url %}
+        <img src="{{ broker_logo_url }}" alt="{{ broker_name }}" class="top-bar-logo">
+        {% else %}
+        <span class="top-bar-brand">{{ broker_name }}</span>
+        {% endif %}
+        <a href="tel:{{ broker_phone }}" class="top-bar-cta" id="cta-call-top">{{ enriched.get('cta_text', 'Call
+            Broker') }}</a>
+    </div>
 
-    <!-- ── Header ──────────────────────────────────────── -->
-    <header class="site-header" id="site-header">
-        <div class="header-logo">
-            {% if broker_logo_url %}
-            <img src="{{ broker_logo_url }}" alt="{{ broker_name }}">
-            {% else %}
-            <span style="color:#fff;font-weight:600;font-size:18px;">{{ broker_name }}</span>
-            {% endif %}
-        </div>
-    </header>
-
-    <!-- ── Sections rendered in persona order ──────────────── -->
-    {% for section_key in persona_section_order %}
-
-    {% if section_key == 'hero' %}
-    <!-- ── Hero Section ────────────────────────────────── -->
-    <section class="hero-section" id="hero" data-section="hero">
-        {% if property.get('hero_video_url') %}
-        <div class="hero-video-bg" aria-hidden="true">
-            <iframe
-                src="{{ property.get('hero_video_url') }}?controls=0&rel=0&playsinline=1&autoplay=1&mute=1&loop=1&playlist={{ property.get('hero_video_url', '').split('/')[-1] }}"
-                allow="autoplay; encrypted-media" allowfullscreen frameborder="0"></iframe>
-        </div>
+    <!-- Hero -->
+    <div class="hero" data-section="hero">
+        {% if hero_image_url %}
+        <img src="{{ hero_image_url }}" alt="{{ property.get('name','') }}" class="hero-img">
+        {% else %}
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0a0a0a,#1a1a1a);"></div>
         {% endif %}
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            {% if property.get('hero_logo_url') %}
-            <img src="{{ property.get('hero_logo_url') }}" alt="{{ property.get('name', '') }}" class="hero-logo">
-            {% endif %}
-            <h1 class="hero-headline">
-                {{ enriched.get('hero_headline', property.get('name', 'Exclusive Living')) }}
-            </h1>
-            <p class="hero-subheadline">
-                {{ enriched.get('hero_subheadline', property.get('location', '')) }}
+            <h1>{{ enriched.get('hero_headline') or property.get('name','Exclusive Property') }}</h1>
+            <p class="hero-sub">
+                {% if enriched.get('hero_subheadline') %}
+                {{ enriched['hero_subheadline'] }}
+                {% else %}
+                {% if property.get('location') %}{{ property['location'] }}{% endif %}
+                {% if property.get('developer') %} &middot; {{ property['developer'] }}{% endif %}
+                {% endif %}
             </p>
         </div>
-        <div class="hero-scroll-indicator">↓</div>
-    </section>
+    </div>
 
-    {% elif section_key == 'brand_vision' %}
-    <!-- ── Brand Vision Section ────────────────────────── -->
-    <section class="brand-vision-section animate-in" id="brand-vision" data-section="brand_vision">
-        <div class="brand-vision-grid">
-            <div class="brand-vision-text">
-                <h2 class="heading-serif">
-                    {{ enriched_sections.get('overview', {}).get('heading', 'A Wellness Home With Resort Living Built
-                    In') }}
-                </h2>
-                {% set overview_content = enriched_sections.get('overview', {}).get('content', '') %}
-                {% if overview_content %}
-                <p>{{ overview_content }}</p>
-                {% else %}
-                {% if property.get('brand_ambassador', {}).get('description') %}
-                <p>{{ property.get('brand_ambassador', {}).get('description') }}</p>
-                {% endif %}
-                <p>More than a collaboration of names, this is a meeting of values, where mindful choices and
-                    intelligent design create environments where performance meets life, defining a smarter, more
-                    thoughtful way of modern living.</p>
-                {% endif %}
-                <a href="#contact" class="brand-vision-cta" data-track="brand_vision_cta">
-                    {{ enriched.get('cta_text', 'Express Interest') }}
-                    <svg viewBox="0 0 448 512">
-                        <path
-                            d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
-                    </svg>
-                </a>
-            </div>
-            {% if property.get('brand_ambassador') %}
-            <div class="ambassador-card">
-                <img src="{{ property.get('brand_ambassador', {}).get('image_url', '') }}"
-                    alt="{{ property.get('brand_ambassador', {}).get('name', '') }}" loading="lazy">
-                <div class="ambassador-caption">
-                    <div class="name">{{ property.get('brand_ambassador', {}).get('name', '') }}</div>
-                    <div class="title">{{ property.get('brand_ambassador', {}).get('title', '') }}</div>
+    <!-- Sales Angle -->
+    {% if persona.get('ai_recommended_angle') %}
+    <div class="angle-block fade-in" data-section="sales_angle">
+        <p>{{ persona['ai_recommended_angle'] }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Trust Badges -->
+    <div class="trust-row fade-in">
+        {% if property.get('developer') %}<span class="trust-badge">{{ property['developer'] }}</span>{% endif %}
+        {% if property.get('golden_visa_eligible') %}<span class="trust-badge gold">Golden Visa Eligible</span>{% endif
+        %}
+        {% if property.get('property_type') %}<span class="trust-badge">{{ property['property_type'] }}</span>{% endif
+        %}
+        {% if property.get('handover_date') %}<span class="trust-badge">{{ property['handover_date'] }}</span>{% endif
+        %}
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 1 — Property + Financial Cards
+     ═══════════════════════════════════════════════════════════════ -->
+    <div class="fade-in" data-section="property_cards">
+        <div style="padding:0 20px;margin:28px 0 16px;">
+            <div class="label-eyebrow">Property</div>
+            <h2
+                style="font-family:'Instrument Sans',sans-serif;font-size:22px;font-weight:500;color:var(--text-muted);">
+                {{ property.get('name','') }}
+            </h2>
+            {% set overview_sec = enriched_sections.get('overview') %}
+            {% if overview_sec %}
+            <p
+                style="font-family:'Inter',sans-serif;font-size:12px;color:var(--text-body);margin-top:8px;line-height:1.7;max-width:340px;">
+                {{ overview_sec.get('content','') | truncate(160, True,'...') }}
+            </p>
+            {% endif %}
+        </div>
+
+        <div class="cards-track" id="propCardsTrack">
+
+            <!-- Image card -->
+            {% set image_assets = [] %}
+            {% for a in assets %}{% if a.get('type')=='image' %}{% if image_assets.append(a) %}{% endif %}{% endif %}{%
+            endfor %}
+            {% if image_assets %}
+            <div class="story-card wide">
+                <img src="{{ image_assets[0].get('url','') }}" alt="{{ property.get('name','') }}" class="card-img">
+                <div class="card-img-overlay"></div>
+                <div class="story-card-inner">
+                    <div class="card-body">
+                        <div class="card-tag">{{ property.get('location','') }}</div>
+                        <div class="card-title">{{ property.get('name','') }}</div>
+                    </div>
                 </div>
             </div>
             {% endif %}
-        </div>
-    </section>
 
-    {% elif section_key == 'usp_cards' %}
-    <!-- ── USP Cards Section ──────────────────────────── -->
-    <section class="usp-section animate-in" id="usps" data-section="usp_cards">
-        <div class="usp-grid">
-            {% set usp_icons = {
-            'location': '📍', 'wellness': '🍁', 'furnished': '🏢',
-            'hospitality': '⭐', 'amenities': '💎', 'technology': '👥'
-            } %}
-            {% for card in usp_cards_ordered %}
-            <div class="usp-card {% if card.get('highlighted') %}highlighted{% endif %}">
-                <div class="usp-icon">{{ usp_icons.get(card.get('icon', ''), '✦') }}</div>
-                <h3>{{ card.get('title', '') }}</h3>
+            <!-- Financial card -->
+            {% if property.get('price_start_aed_in_million') %}
+            <div class="story-card">
+                <div class="story-card-inner" style="background:rgba(0,0,0,0.12);">
+                    <div
+                        style="font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text-muted);">
+                        {{ enriched.get('financial_headline','Investment Overview') }}
+                    </div>
+                    <div class="card-title xl" style="margin-top:auto;margin-bottom:8px;">
+                        AED {{ property['price_start_aed_in_million'] }}M
+                    </div>
+                    {% if enriched.get('financial_pitch') %}
+                    <div class="card-desc">{{ enriched['financial_pitch'] }}</div>
+                    {% endif %}
+                    <table class="fact-table" style="margin-top:14px;">
+                        {% if property.get('price_end_aed_in_million') %}
+                        <tr>
+                            <td>Up to</td>
+                            <td>AED {{ property['price_end_aed_in_million'] }}M</td>
+                        </tr>
+                        {% endif %}
+                        {% if property.get('payment_plans') %}
+                        <tr>
+                            <td>Payment</td>
+                            <td>{{ property['payment_plans'] }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if property.get('projected_roi') %}
+                        <tr>
+                            <td>Est. ROI</td>
+                            <td>{{ property['projected_roi'] }}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Golden Visa card -->
+            {% if property.get('golden_visa_eligible') %}
+            <div class="story-card">
+                <div class="story-card-inner" style="background:rgba(0,0,0,0.12);">
+                    <div
+                        style="font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:500;color:var(--text);">
+                        10-Year Residency</div>
+                    <div class="card-title xl" style="margin-top:auto;margin-bottom:8px;">Golden<br>Visa</div>
+                    <div class="card-desc">Ownership above AED 2M qualifies for the UAE Golden Visa for investors and
+                        their family.</div>
+                    <table class="fact-table" style="margin-top:14px;">
+                        <tr>
+                            <td>Market</td>
+                            <td>Dubai Residential</td>
+                        </tr>
+                        <tr>
+                            <td>Tenure</td>
+                            <td>100% Freehold</td>
+                        </tr>
+                        <tr>
+                            <td>Units</td>
+                            <td>Only 65 Exclusive</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="dot-row" id="propDots"></div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 2 — Top Amenity Showcase Cards (persona-ordered)
+     ═══════════════════════════════════════════════════════════════ -->
+    {% if top_amenities_with_images %}
+    <div class="section-divider"></div>
+    <div class="fade-in" data-section="amenities_showcase">
+        <div style="padding:0 20px;margin:0 0 16px;">
+            <div class="label-eyebrow">Amenities</div>
+            <h2
+                style="font-family:'Instrument Sans',sans-serif;font-size:22px;font-weight:500;color:var(--text-muted);">
+                {% if enriched_sections.get('amenities') %}{{ enriched_sections['amenities'].get('heading','46+
+                World-Class Amenities') }}
+                {% else %}46+ World-Class Amenities{% endif %}
+            </h2>
+            {% if enriched_sections.get('amenities') %}
+            <p
+                style="font-family:'Inter',sans-serif;font-size:12px;color:var(--text-body);margin-top:8px;line-height:1.7;max-width:340px;">
+                {{ enriched_sections['amenities'].get('content','') | truncate(140,True,'...') }}
+            </p>
+            {% endif %}
+        </div>
+
+        <div class="cards-track" id="amenTrack">
+            {% for amenity in top_amenities_with_images %}
+            <div class="story-card">
+                <img src="{{ amenity['image_url'] }}" alt="{{ amenity['name'] }}" class="card-img">
+                <div class="card-img-overlay"></div>
+                <div class="amenity-panel">
+                    <div class="amenity-panel-desc">{{ amenity.get('description', amenity['name']) }}</div>
+                    <div class="amenity-meta">
+                        <div><span class="am-label">Access &nbsp;</span><span class="am-val">Residents Only</span></div>
+                        <div><span class="am-label">Category &nbsp;</span><span class="am-val">{{
+                                amenity.get('category','') | capitalize }}</span></div>
+                    </div>
+                </div>
+                <div class="story-card-inner">
+                    <div class="card-body" style="padding-bottom:110px;">
+                        <div class="card-tag">{{ amenity.get('category','') | upper }}</div>
+                        <div class="card-title" style="font-size:17px;">{{ amenity['name'] }}</div>
+                    </div>
+                </div>
             </div>
             {% endfor %}
-        </div>
-    </section>
 
-    {% elif section_key == 'services' %}
-    <!-- ── Services Section ───────────────────────────── -->
-    <section class="services-section animate-in" id="services" data-section="services">
-        <div class="services-content">
-            <div class="services-block">
-                <h2 class="heading-serif">À La Carte Services</h2>
-                <p class="subtitle">Extra services are available when you need them. From transport and boating to home
-                    care and wellness support, you can add help on demand for an easier, worry-free lifestyle.</p>
-                <ul class="services-list">
-                    {% for service in property.get('a_la_carte_services', []) %}
-                    <li {% if service in highlighted_services %}class="highlighted" {% endif %}>{{ service }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="services-block">
-                <h2 class="heading-serif">Premium Living</h2>
-                <p class="subtitle">Treppan Living Privé is fully serviced, with everyday operations handled for you.
-                </p>
-                <ul class="services-list">
-                    {% for service in property.get('premium_living_services', []) %}
-                    <li>{{ service }}</li>
-                    {% endfor %}
-                </ul>
+            <!-- Biohacking / Wellness stat card -->
+            <div class="story-card">
+                <div class="story-card-inner" style="background:rgba(0,0,0,0.12);">
+                    <div
+                        style="font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text-muted);">
+                        Biohacking Suite</div>
+                    <div class="card-title xl" style="margin-top:auto;margin-bottom:8px;">46+</div>
+                    <div class="card-desc">Clinical-grade recovery and performance amenities — Cryotherapy, Red Light
+                        Therapy, Hyperbaric Chamber, and more.</div>
+                </div>
             </div>
         </div>
-    </section>
+        <div class="dot-row" id="amenDots"></div>
+    </div>
+    {% endif %}
 
-    {% elif section_key == 'wellness' %}
-    <!-- ── Wellness Features Section ──────────────────── -->
-    <section class="wellness-section animate-in" id="wellness" data-section="wellness">
-        <div class="section-title">
-            <h2 class="heading-serif">
-                {{ enriched_sections.get('amenities', {}).get('heading', 'Health & Wellness Features') }}
-            </h2>
-        </div>
-        <div class="wellness-grid">
-            {% set wellness_icons = {
-            'smart-home': '🏠', 'air-quality': '🌡️', 'water': '💧',
-            'waste': '♻️', 'greenhouse': '🌿', 'app': '📱',
-            'robot': '🤖', 'service': '🛎️'
-            } %}
-            {% for feature in wellness_features_ordered %}
-            <div class="wellness-card {% if feature.get('highlighted') %}highlighted{% endif %}">
-                <div class="icon">{{ wellness_icons.get(feature.get('icon', ''), '✦') }}</div>
-                <h3>{{ feature.get('title', '') }}</h3>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 3 — Brand Ambassador
+     ═══════════════════════════════════════════════════════════════ -->
+    {% set ambassador = property.get('brand_ambassador') %}
+    {% if ambassador %}
+    <div class="section-divider"></div>
+    <div class="ambassador-section fade-in" data-section="brand_ambassador">
+        <div class="label-eyebrow">{{ ambassador.get('title','Brand Ambassador') }}</div>
+        <div class="ambassador-card">
+            {% if ambassador.get('image_url') %}
+            <img src="{{ ambassador['image_url'] }}" alt="{{ ambassador.get('name','') }}" class="ambassador-img">
+            {% endif %}
+            <div class="ambassador-body">
+                <div class="ambassador-name">{{ ambassador.get('name','') }}</div>
+                <div class="ambassador-title">{{ ambassador.get('title','') }}</div>
+                <div class="ambassador-desc">{{ ambassador_desc or ambassador.get('description','') }}</div>
             </div>
-            {% endfor %}
         </div>
-    </section>
+    </div>
+    {% endif %}
 
-    {% elif section_key == 'gallery' %}
-    <!-- ── Tabbed Gallery Section ─────────────────────── -->
-    <section class="gallery-section animate-in" id="gallery" data-section="gallery">
-        <div class="section-header">
-            <div class="section-subtitle">Gallery</div>
-            <h2 class="heading-serif">
-                {{ enriched_sections.get('gallery', {}).get('heading', 'Explore the Residence') }}
-            </h2>
-        </div>
 
-        {% if gallery_categories %}
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 4 — Gallery
+     ═══════════════════════════════════════════════════════════════ -->
+    {% if gallery_categories %}
+    <div class="section-divider"></div>
+    <div class="gallery-section fade-in" data-section="gallery">
+        <div class="label-eyebrow">Gallery</div>
         <div class="gallery-tabs" id="galleryTabs">
             {% for cat in gallery_categories %}
-            <button class="gallery-tab{% if loop.first %} active{% endif %}"
-                onclick="switchGalleryTab('{{ cat.name }}', this)">{{ cat.name }}</button>
+            <button class="tab-btn {% if loop.first %}active{% endif %}"
+                data-tab="{{ cat['name'] | replace(' ','_') | lower }}"
+                onclick="switchTab(this,'{{ cat['name'] | replace(' ','_') | lower }}')">
+                {{ cat['name'] }}
+            </button>
             {% endfor %}
         </div>
-
         {% for cat in gallery_categories %}
-        <div class="gallery-tab-panel{% if loop.first %} active{% endif %}" id="gallery-panel-{{ cat.name }}">
+        <div class="gallery-panel {% if loop.first %}active{% endif %}"
+            id="tab-{{ cat['name'] | replace(' ','_') | lower }}">
             <div class="gallery-grid">
-                {% for img in cat.images %}
-                <div class="gallery-card">
-                    <img src="{{ img.get('url', '') }}" alt="{{ img.get('title', '') }}" loading="lazy">
-                    <div class="gallery-card-overlay">
-                        <h4>{{ img.get('title', '') }}</h4>
-                        {% if img.get('contextual_caption') or img.get('description') %}
-                        <p>{{ img.get('contextual_caption', img.get('description', '')) | truncate(100) }}</p>
-                        {% endif %}
-                    </div>
+                {% for img in cat['images'][:6] %}
+                <div class="gallery-item {% if loop.first %}wide{% endif %}">
+                    <img src="{{ img.get('url','') }}" alt="{{ img.get('description','') }}" loading="lazy">
                 </div>
                 {% endfor %}
             </div>
         </div>
         {% endfor %}
-        {% endif %}
-    </section>
-
-    {% elif section_key == 'amenities' %}
-    <!-- ── Amenities Showcase Carousel ─────────────────── -->
-    <section class="amenities-section animate-in" id="amenities" data-section="amenities">
-        <div class="section-header">
-            <div class="section-subtitle">Features & Amenities</div>
-            <h2 class="heading-serif">
-                {{ enriched_sections.get('amenities', {}).get('heading', 'Curated for Your Lifestyle') }}
-            </h2>
-            <p>{{ enriched_sections.get('amenities', {}).get('content', 'Hand-picked amenities that matter most to you')
-                | truncate(80) }}</p>
-        </div>
-
-        {% if top_amenities_with_images %}
-        <div class="amenity-carousel">
-            <div class="amenity-carousel-track" id="amenityTrack">
-                {% for amenity in top_amenities_with_images %}
-                <div class="amenity-card" style="transition-delay: {{ loop.index0 * 0.1 }}s">
-                    <div class="amenity-card-image">
-                        <img src="{{ amenity.image_url }}" alt="{{ amenity.name }}" loading="lazy">
-                        <span class="category-badge">{{ amenity.category | title }}</span>
-                        <span class="card-number">{{ '%02d' | format(loop.index) }}</span>
-                    </div>
-                    <div class="amenity-card-body">
-                        <h3>{{ amenity.name }}</h3>
-                        {% if amenity.description %}
-                        <p>{{ amenity.description }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="amenity-carousel-nav">
-                <button class="amenity-nav-btn" onclick="scrollAmenityCarousel(-1)" aria-label="Previous">←</button>
-                <div class="amenity-dots" id="amenityDots">
-                    {% for amenity in top_amenities_with_images %}
-                    <button class="amenity-dot{% if loop.first %} active{% endif %}"
-                        onclick="scrollToAmenity({{ loop.index0 }})" aria-label="Amenity {{ loop.index }}"></button>
-                    {% endfor %}
-                </div>
-                <span class="amenity-counter"><span class="current" id="amenityCounter">01</span> / {{ '%02d' |
-                    format(top_amenities_with_images | length) }}</span>
-                <button class="amenity-nav-btn" onclick="scrollAmenityCarousel(1)" aria-label="Next">→</button>
-            </div>
-        </div>
-        {% endif %}
-    </section>
-
-    {% elif section_key == 'location' %}
-    <!-- ── Location & Map Section ─────────────────────── -->
-    <section class="location-section animate-in" id="location" data-section="location">
-        <div class="location-grid">
-            <div class="location-map">
-                {% if property.get('location_map_embed') %}
-                <iframe src="{{ property.get('location_map_embed') }}" allowfullscreen loading="lazy"
-                    title="{{ property.get('name', '') }} Location"></iframe>
-                {% endif %}
-            </div>
-            <div class="location-info">
-                <h2 class="heading-serif">
-                    {{ enriched_sections.get('location', {}).get('heading', 'Beachside Address, City Connections') }}
-                </h2>
-                <div class="proximity-tabs">
-                    {% set proximity = property.get('proximity', {}) %}
-                    {% if proximity.get('landmarks') %}
-                    <div class="proximity-tab active" onclick="showProximity('landmarks', this)">Landmarks</div>
-                    {% endif %}
-                    {% if proximity.get('amenities') %}
-                    <div class="proximity-tab" onclick="showProximity('amenities', this)">Amenities</div>
-                    {% endif %}
-                    {% if proximity.get('transport') %}
-                    <div class="proximity-tab" onclick="showProximity('transport', this)">Transport</div>
-                    {% endif %}
-                </div>
-                {% for tab_key in ['landmarks', 'amenities', 'transport'] %}
-                {% if proximity.get(tab_key) %}
-                <ul class="proximity-list" id="proximity-{{ tab_key }}" {% if tab_key !='landmarks'
-                    %}style="display:none" {% endif %}>
-                    {% for item in proximity.get(tab_key, []) %}
-                    <li>
-                        <span class="name">{{ item.get('name', '') }}</span>
-                        <span>
-                            <span class="time">{{ item.get('time', '') }}</span>
-                            <span class="distance"> ({{ item.get('distance', '') }})</span>
-                        </span>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    {% elif section_key == 'financial' %}
-    <!-- ── Financial / Investment Section ──────────────── -->
-    <section class="financial-section animate-in" id="financial" data-section="financial">
-        <div class="financial-content">
-            <h2 class="heading-serif">
-                {{ enriched.get('financial_headline', 'Your Investment, Reimagined') }}
-            </h2>
-            <p>{{ enriched.get('financial_pitch', '') }}</p>
-            <div class="financial-stats">
-                <div class="stat-card">
-                    <div class="value">AED {{ property.get('price_start_aed_in_million', '') }}M+</div>
-                    <div class="label">Starting Price</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value">65</div>
-                    <div class="label">Exclusive Residences</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value">{{ property.get('payment_plans', '60/40') }}</div>
-                    <div class="label">Payment Plan</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {% elif section_key == 'objection' %}
-    <!-- ── Objection Handler Section ───────────────────── -->
-    {% if enriched.get('objection_handler_heading') %}
-    <section class="objection-section animate-in" id="objection" data-section="objection">
-        <div class="objection-content">
-            <h2 class="heading-serif">{{ enriched.get('objection_handler_heading', '') }}</h2>
-            <p>{{ enriched.get('objection_handler_content', '') }}</p>
-        </div>
-    </section>
+    </div>
     {% endif %}
 
-    {% elif section_key == 'contact' %}
-    <!-- ── Contact / CTA Section ──────────────────────── -->
-    <section class="contact-section animate-in" id="contact" data-section="contact">
-        <div class="contact-content">
-            <h2 class="heading-serif">
-                {{ enriched.get('cta_heading', 'Ready to Explore?') }}
-            </h2>
-            <p>Connect with {{ broker_name }} for personalized details about {{ property.get('name', 'this property')
-                }}.</p>
-            <div class="contact-buttons">
-                {% if broker_phone %}
-                <a href="tel:{{ broker_phone }}" class="contact-btn primary" data-track="contact_call">
-                    📞 Call {{ broker_phone }}
-                </a>
-                {% endif %}
-                <a href="https://wa.me/?text=I'm interested in {{ property.get('name', '') }}"
-                    class="contact-btn whatsapp" target="_blank" data-track="contact_whatsapp">
-                    💬 WhatsApp
-                </a>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 5 — A La Carte Services
+     ═══════════════════════════════════════════════════════════════ -->
+    {% set services = property.get('a_la_carte_services', []) %}
+    {% if services %}
+    <div class="section-divider"></div>
+    <div class="services-section fade-in" data-section="services">
+        <div class="label-eyebrow">A La Carte Services</div>
+        <h2
+            style="font-family:'Instrument Sans',sans-serif;font-size:22px;font-weight:500;color:var(--text-muted);margin-bottom:14px;">
+            {% if enriched_sections.get('a_la_carte_services') %}{{
+            enriched_sections['a_la_carte_services'].get('heading','On-Demand Hospitality') }}
+            {% else %}On-Demand Hospitality{% endif %}
+        </h2>
+        {% if enriched_sections.get('a_la_carte_services') %}
+        <p
+            style="font-family:'Inter',sans-serif;font-size:12px;color:var(--text-body);line-height:1.7;margin-bottom:14px;">
+            {{ enriched_sections['a_la_carte_services'].get('content','') }}
+        </p>
+        {% endif %}
+        <div class="services-grid">
+            {% for svc in services %}
+            <div class="service-item {% if svc in highlighted_services %}highlighted{% endif %}">
+                {{ svc }}
             </div>
+            {% endfor %}
         </div>
-    </section>
-
+    </div>
     {% endif %}
-    {% endfor %}
 
-    <!-- ── Footer ─────────────────────────────────────── -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div>© 2026 {{ broker_name }}. All rights reserved.</div>
-            <div>Powered by <a href="#">SellSmart AI</a></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 6 — Location Proximity
+     ═══════════════════════════════════════════════════════════════ -->
+    {% set loc_sec = enriched_sections.get('location') %}
+    {% if loc_sec or property.get('location') %}
+    <div class="section-divider"></div>
+    <div class="location-section fade-in" data-section="location">
+        <div class="label-eyebrow">Location</div>
+        <h2
+            style="font-family:'Instrument Sans',sans-serif;font-size:22px;font-weight:500;color:var(--text-muted);margin-bottom:14px;">
+            {% if loc_sec %}{{ loc_sec.get('heading','Connected to the City') }}
+            {% else %}Connected to the City{% endif %}
+        </h2>
+        {% if loc_sec %}
+        <p
+            style="font-family:'Inter',sans-serif;font-size:12px;color:var(--text-body);line-height:1.7;margin-bottom:14px;">
+            {{ loc_sec.get('content','') | truncate(200,True,'...') }}
+        </p>
+        {% endif %}
+        <!-- Quick proximity pills from text -->
+        <div class="loc-list">
+            <div class="loc-item"><span class="loc-name">Dubai Islands Beach</span><span class="loc-time">90 sec</span>
+            </div>
+            <div class="loc-item"><span class="loc-name">Waterfront Market</span><span class="loc-time">2 min</span>
+            </div>
+            <div class="loc-item"><span class="loc-name">Dubai Islands Mall</span><span class="loc-time">5 min</span>
+            </div>
+            <div class="loc-item"><span class="loc-name">Downtown Dubai</span><span class="loc-time">20 min</span></div>
+            <div class="loc-item"><span class="loc-name">DXB Airport</span><span class="loc-time">23 min</span></div>
         </div>
-        <div class="footer-separator"></div>
-        <div class="footer-content" style="font-size:11px;opacity:0.5;">
-            Microsite personalized for you • Tracking ID: {{ tracking_id }}
+    </div>
+    {% endif %}
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 7 — USPs
+     ═══════════════════════════════════════════════════════════════ -->
+    {% set display_usps = enriched.get('curated_usps') or property.get('usps', []) %}
+    {% if display_usps %}
+    <div class="section-divider"></div>
+    <div class="fade-in" data-section="usps">
+        <div style="padding:0 20px;">
+            <div class="label-eyebrow">Why It Fits</div>
         </div>
-    </footer>
+        <div class="usp-row">
+            {% for usp in display_usps %}
+            <span class="usp-chip {% if loop.index <= 2 %}gold{% endif %}">{{ usp }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 
 
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 8 — Objection Handler
+     ═══════════════════════════════════════════════════════════════ -->
+    {% if enriched.get('objection_handler_content') %}
+    <div class="section-divider"></div>
+    <div class="objection-section fade-in" data-section="objection">
+        <div class="label-eyebrow">Good to Know</div>
+        <div class="objection-card">
+            <h3>{{ enriched.get('objection_handler_heading','Clearing the Air') }}</h3>
+            <p>{{ enriched['objection_handler_content'] }}</p>
+        </div>
+    </div>
+    {% endif %}
 
-    <!-- ── Tracking ───────────────────────────────────── -->
+
+    <!-- ═══════════════════════════════════════════════════════════════
+     SECTION 9 — CTA card
+     ═══════════════════════════════════════════════════════════════ -->
+    <div class="section-divider"></div>
+    <div class="fade-in" style="padding:0 20px 28px;" data-section="contact">
+        <div class="label-eyebrow">Next Step</div>
+        <div class="objection-card" style="text-align:center;padding:28px 20px;">
+            <h3 style="margin-bottom:12px;">{{ enriched.get('cta_heading','Request Private Briefing') }}</h3>
+            <p style="margin-bottom:20px;">A matched shortlist and detailed financial breakdown are prepared. Private
+                viewings are available.</p>
+            <a href="tel:{{ broker_phone }}" class="top-bar-cta" id="cta-card-call"
+                style="display:inline-block;padding:13px 36px;font-size:14px;">
+                {{ enriched.get('cta_text','Call the Broker') }}
+            </a>
+        </div>
+    </div>
+
+
+    <div class="bottom-pad"></div>
+
+    <!-- Bottom CTA Bar -->
+    <div class="bottom-cta" data-section="bottom_cta">
+        <a href="tel:{{ broker_phone }}" class="cta-btn cta-primary" id="cta-call-bottom">
+            Call {{ broker_name | truncate(16,True,'...') }}
+        </a>
+        <a href="https://wa.me/{{ broker_phone | replace('+','') | replace('-','') | replace(' ','') }}?text=Hi%2C%20I%27m%20interested%20in%20{{ property.get('name','this property') | urlencode }}"
+            target="_blank" class="cta-btn cta-secondary" id="cta-whatsapp">
+            WhatsApp
+        </a>
+    </div>
+
+    <!-- Tracking meta -->
     <meta name="tracking-id" content="{{ tracking_id }}">
-    {% if not preview %}
+    <meta name="persona-id" content="{{ persona.get('persona_id','') }}">
     <script src="{{ base_url }}/static/tracker.js"></script>
-    {% endif %}
 
-    <!-- ── JavaScript ─────────────────────────────────── -->
     <script>
-        // Header scroll effect
-        const header = document.getElementById('site-header');
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
-
-        // ── Amenity Carousel ──────────────────────────────
-        const amenityTrack = document.getElementById('amenityTrack');
-        if (amenityTrack) {
-            const amenityCards = amenityTrack.querySelectorAll('.amenity-card');
-            const amenityDots = document.querySelectorAll('.amenity-dot');
-            const amenityCounter = document.getElementById('amenityCounter');
-            let currentAmenity = 0;
-
-            // Staggered entrance animation
-            const cardObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const cards = entry.target.querySelectorAll('.amenity-card');
-                        cards.forEach((card, i) => {
-                            setTimeout(() => card.classList.add('visible'), i * 120);
-                        });
-                        cardObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.2 });
-            const amenitySection = document.getElementById('amenities');
-            if (amenitySection) cardObserver.observe(amenitySection);
-
-            // Track scroll position and update dots/counter
-            amenityTrack.addEventListener('scroll', () => {
-                const scrollLeft = amenityTrack.scrollLeft;
-                const cardWidth = amenityCards[0] ? amenityCards[0].offsetWidth + 24 : 364;
-                const idx = Math.round(scrollLeft / cardWidth);
-                if (idx !== currentAmenity && idx >= 0 && idx < amenityCards.length) {
-                    currentAmenity = idx;
-                    amenityDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-                    if (amenityCounter) amenityCounter.textContent = String(idx + 1).padStart(2, '0');
-                }
-            });
-
-            // Drag to scroll (desktop)
-            let isDragging = false, dragStartX = 0, scrollStart = 0;
-            amenityTrack.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                dragStartX = e.pageX;
-                scrollStart = amenityTrack.scrollLeft;
-                amenityTrack.classList.add('dragging');
-                e.preventDefault();
-            });
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                amenityTrack.scrollLeft = scrollStart - (e.pageX - dragStartX);
-            });
-            document.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    amenityTrack.classList.remove('dragging');
-                }
-            });
-        }
-
-        function scrollAmenityCarousel(dir) {
-            const track = document.getElementById('amenityTrack');
-            if (!track) return;
-            const cards = track.querySelectorAll('.amenity-card');
-            const cardWidth = cards[0] ? cards[0].offsetWidth + 24 : 364;
-            track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
-        }
-
-        function scrollToAmenity(idx) {
-            const track = document.getElementById('amenityTrack');
-            if (!track) return;
-            const cards = track.querySelectorAll('.amenity-card');
-            if (cards[idx]) {
-                cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }
-        }
-
-        // Gallery tab switching
-        function switchGalleryTab(tabName, btnEl) {
-            // Hide all panels
-            document.querySelectorAll('.gallery-tab-panel').forEach(p => {
-                p.classList.remove('active');
-            });
-            // Deactivate all tab buttons
-            document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-            // Show selected panel
-            const panel = document.getElementById('gallery-panel-' + tabName);
+        /* ── Gallery tab switching ── */
+        function switchTab(btn, tabId) {
+            document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+            document.querySelectorAll('.gallery-panel').forEach(function (p) { p.classList.remove('active'); });
+            btn.classList.add('active');
+            var panel = document.getElementById('tab-' + tabId);
             if (panel) panel.classList.add('active');
-            // Activate button
-            if (btnEl) btnEl.classList.add('active');
         }
 
-        // Proximity tabs
-        function showProximity(tab, el) {
-            document.querySelectorAll('.proximity-list').forEach(l => l.style.display = 'none');
-            document.querySelectorAll('.proximity-tab').forEach(t => t.classList.remove('active'));
-            const list = document.getElementById('proximity-' + tab);
-            if (list) list.style.display = '';
-            if (el) el.classList.add('active');
+        /* ── Generic dot-indicator factory ── */
+        function initDots(trackId, dotRowId) {
+            var track = document.getElementById(trackId);
+            var dotRow = document.getElementById(dotRowId);
+            if (!track || !dotRow) return;
+            var cards = track.querySelectorAll('.story-card');
+            var dots = [];
+            cards.forEach(function (_, i) {
+                var d = document.createElement('button');
+                d.className = 'dot' + (i === 0 ? ' active' : '');
+                d.addEventListener('click', function () {
+                    track.scrollTo({ left: cards[i].offsetLeft - 20, behavior: 'smooth' });
+                });
+                dotRow.appendChild(d);
+                dots.push(d);
+            });
+            track.addEventListener('scroll', function () {
+                var sl = track.scrollLeft + 20;
+                var idx = 0;
+                cards.forEach(function (c, i) { if (c.offsetLeft <= sl + 10) idx = i; });
+                dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+            }, { passive: true });
         }
+        initDots('propCardsTrack', 'propDots');
+        initDots('amenTrack', 'amenDots');
+
+        /* ── Scroll fade-in ── */
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(function (el) { obs.observe(el); });
     </script>
-
 </body>
 
 </html>

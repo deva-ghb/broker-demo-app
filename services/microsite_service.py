@@ -53,6 +53,8 @@ class EnrichedMicrositeContent(BaseModel):
     cta_heading: str = "Ready to Explore?"      # persona-specific CTA section heading
     highlighted_amenity_categories: List[str] = []  # categories to highlight: wellness, family, fitness, etc.
     top_amenities: List[EnrichedAmenity] = []   # top 4-6 amenities for showcase cards
+    ambassador_desc: str = ""       # persona-tailored rewrite of brand ambassador blurb (same length as original)
+    services_intro: str = ""        # persona-tailored 1-2 sentence intro for a-la-carte services
 
 
 # ── Enrichment Prompt ───────────────────────────────────────────
@@ -130,6 +132,17 @@ making them feel understood and excited — like a trusted friend showing them t
    - General → highlight unique and premium experiences
    Return as list of objects: [{{"name": "exact amenity name", "description": "tailored text"}}]
 
+11. **ambassador_desc**: Rewrite the brand ambassador description so it resonates with THIS buyer persona.
+    - Keep the same approximate length as the original (3-4 sentences).
+    - Draw a connection between the ambassador's values/background and what this buyer cares about.
+    - Original ambassador description: {ambassador_description}
+
+12. **services_intro**: Write a 1-2 sentence intro for the à la carte services section that speaks to THIS buyer:
+    - For a wellness buyer → frame as "your personal wellness concierge"
+    - For a family → frame around convenience and childcare peace of mind
+    - For an investor/HNI → frame around premium living standards that justify premium rents
+    - Available services: {services_list}
+
 ## TONE RULES
 - Sound like a thoughtful friend, never a brochure
 - No exclamation marks overload. One per section max
@@ -158,19 +171,18 @@ async def build_microsite(persona_id: str, property_id: str) -> Dict[str, Any]:
         raise ValueError(f"Property {property_id} not found")
     prop.pop("_id", None)
 
-    # 3. Filter assets based on persona interests
-    filtered_assets = _filter_assets(prop.get("assets", []), persona)
+    # 3. Collect amenities that have images (for nested card generation)
+    amenities_with_images = [
+        a for a in (prop.get("amenities_grid") or []) if a.get("image_url")
+    ]
 
-    # 4. AI Content Enrichment (single LLM call)
-    enriched = await _enrich_content(persona, prop, filtered_assets)
+    # 4. Generate 8-card story via LLM
+    story_cards = await _generate_storycard_content(persona, prop, amenities_with_images)
 
-    # 5. Generate persona-specific captions for images
-    captioned_assets = await _contextualize_assets(filtered_assets, persona)
+    # 5. Render HTML with enriched content using the new card renderer
+    html_content = _render_microsite_card_html(persona, prop, story_cards)
 
-    # 6. Render HTML with enriched content
-    html_content = _render_microsite_html(persona, prop, captioned_assets, enriched)
-
-    # 7. Deactivate any existing microsites for this persona, then create new one
+    # 6. Deactivate any existing microsites for this persona, then create new one
     ms_col = get_collection(MICROSITE_COLLECTION)
     await ms_col.update_many(
         {"url_slug": persona_id, "is_active": True},
@@ -278,6 +290,13 @@ async def _enrich_content(persona: Dict, prop: Dict, assets: List[Dict]) -> Dict
         "sales_angle": persona.get("ai_recommended_angle", ""),
     }
 
+    # Brand ambassador description for persona-tailored rewrite
+    ambassador = prop.get("brand_ambassador", {})
+    ambassador_description = ambassador.get("description", "") if ambassador else ""
+
+    # A la carte services list
+    services_list = ", ".join(prop.get("a_la_carte_services") or [])
+
     prompt = ENRICHMENT_PROMPT.format(
         persona_json=json.dumps(persona_summary, indent=2, default=str),
         property_name=prop.get("name", ""),
@@ -286,8 +305,10 @@ async def _enrich_content(persona: Dict, prop: Dict, assets: List[Dict]) -> Dict
         property_type=prop.get("property_type", ""),
         price_start=prop.get("price_start_aed_in_million", ""),
         price_end=prop.get("price_end_aed_in_million", ""),
-        usps=", ".join(prop.get("usps", [])),
+        usps=", ".join(prop.get("usps") or []),
         sections_json=json.dumps(text_sections, indent=2),
+        ambassador_description=ambassador_description,
+        services_list=services_list,
     )
 
     try:
@@ -318,6 +339,8 @@ async def _enrich_content(persona: Dict, prop: Dict, assets: List[Dict]) -> Dict
             "cta_heading": "Ready to Explore?",
             "highlighted_amenity_categories": [],
             "top_amenities": [],
+            "ambassador_desc": "",
+            "services_intro": "",
         }
 
 
@@ -402,6 +425,25 @@ def _order_items_by_persona(items: List[Dict], persona: Dict, enriched: Dict,
     return [item for _, item in scored]
 
 
+def _render_microsite_card_html(persona: Dict, prop: Dict, story_cards: List[Dict]) -> str:
+    """Render the microsite HTML from the V2 storycard template."""
+    template_path = Path(__file__).parent.parent / "templates" / "microsite_storycard.html"
+    template_str = template_path.read_text() if template_path.exists() else ""
+    template = Template(template_str)
+
+    return template.render(
+        persona=persona,
+        property=prop,
+        story_cards=story_cards,
+        broker_name=prop.get("broker_name", "Your Broker"),
+        broker_phone=prop.get("broker_phone", ""),
+        broker_email=prop.get("broker_email", ""),
+        broker_logo_url=prop.get("broker_logo_url", ""),
+        tracking_id=persona.get("persona_id", ""),
+        base_url=settings.APP_BASE_URL,
+    )
+
+
 def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enriched: Dict = None) -> str:
     """Render the microsite HTML from the appropriate template."""
     enriched = enriched or {}
@@ -410,6 +452,8 @@ def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enrich
     use_clone = bool(prop.get("usp_cards") or prop.get("amenities_grid"))
 
     if use_clone:
+        print
+        return ""
         template_path = Path(__file__).parent.parent / "templates" / "microsite_clone.html"
     else:
         template_path = Path(__file__).parent.parent / "templates" / "microsite.html"
@@ -436,6 +480,18 @@ def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enrich
     for sec in enriched.get("sections", []):
         enriched_sections[sec.get("section_key", "")] = sec
 
+    # Inject AI-generated services intro as a virtual section
+    if enriched.get("services_intro"):
+        enriched_sections["a_la_carte_services"] = {
+            "section_key": "a_la_carte_services",
+            "heading": "On-Demand Hospitality",
+            "content": enriched["services_intro"],
+        }
+
+    # Resolve brand ambassador description (AI-personalized or fallback to original)
+    ambassador = prop.get("brand_ambassador", {})
+    ambassador_desc = enriched.get("ambassador_desc") or (ambassador.get("description", "") if ambassador else "")
+
     # Persona-ordered items for the clone template
     usp_cards_ordered = _order_items_by_persona(
         prop.get("usp_cards", []), persona, enriched,
@@ -443,7 +499,7 @@ def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enrich
     ) if use_clone else []
 
     amenities_ordered = _order_items_by_persona(
-        prop.get("amenities_grid", []), persona, enriched,
+        prop.get("amenities_grid") or [], persona, enriched,
         name_key='name', category_key='category'
     ) if use_clone else []
 
@@ -543,6 +599,8 @@ def _render_microsite_html(persona: Dict, prop: Dict, assets: List[Dict], enrich
         top_amenities_with_images=top_amenities_with_images,
         gallery_categories=gallery_categories,
         gallery_tab_names=gallery_tab_names,
+        # New: ambassador + services
+        ambassador_desc=ambassador_desc,
         # Common
         broker_name=prop.get("broker_name", "Your Broker"),
         broker_phone=prop.get("broker_phone", ""),
@@ -645,3 +703,282 @@ def _get_fallback_template() -> str:
     <script src="{{ base_url }}/static/tracker.js"></script>
 </body>
 </html>"""
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# V2 — STORYCARD MICROSITE
+# A pure 8-card narrative pitch experience.
+# Each card is a beat in a persuasive story arc.
+# ════════════════════════════════════════════════════════════════════════════
+
+class NestedCardItem(BaseModel):
+    image_url: str = ""
+    title: str = ""
+    description: str        # 1-2 sentences, persona-tailored
+
+class TableRow(BaseModel):
+    label: str
+    value: str
+
+class StoryCard(BaseModel):
+    card_id: str            # e.g. "card_1_problem"
+    step_label: str         # e.g. "1 of 8  •  Observation"
+    title: str              # Large heading on the card
+    subtitle: str = ""      # Optional sub-heading
+    main: str = ""          # Big gold stat / single line
+    supporting: str = ""    # Body copy below main
+    bullets: List[str] = [] # Optional bullet points (card 5 — differentiators)
+    detail_type: str = "simple"  # 'simple' | 'table' | 'nested' | 'none'
+    detail_text: str = ""
+    table_details: List[TableRow] = []
+    nested_cards: List[NestedCardItem] = []
+
+class StorycardContent(BaseModel):
+    cards: List[StoryCard]  # Exactly 8 cards
+
+
+STORYCARD_PROMPT = """You are a world-class property sales strategist and copywriter.
+Your task: generate a premium 8-card story pitch that guides THIS specific buyer persona through
+a powerful, emotionally resonant narrative arc — from problem recognition to confident action.
+
+## BUYER PERSONA
+{persona_json}
+
+## PROPERTY
+- Name: {property_name}
+- Location: {property_location}
+- Developer: {developer}
+- Type: {property_type}
+- Price: AED {price_start}M - {price_end}M
+- USPs: {usps}
+- Key amenities available with images: {amenity_image_names}
+- A la carte services: {services_list}
+- Brand ambassador: {ambassador_name}
+- Sales angle for this persona: {sales_angle}
+
+## THE 8-CARD STORY ARC — generate exactly 8 StoryCard objects:
+
+### CARD 1 — Problem Statement (Tension)
+- card_id: "card_1_problem"
+- step_label: "1 of 8  •  Observation"
+- title: A short relatable observation the buyer already agrees with (max 10 words, neutral question or fact)
+- supporting: 2 sentences that expand the tension. Make them feel seen.
+- main: Leave empty
+- detail_type: "simple"
+- detail_text: 2-3 sentences deepening the context around this tension
+
+### CARD 2 — Cost of Status Quo (Reality Check)
+- card_id: "card_2_cost"
+- step_label: "2 of 8  •  The Cost"
+- title: 1 headline naming the hidden cost (financial or strategic)
+- main: A striking number or stat (e.g., "AED 600K+")
+- supporting: 1 sentence contextualizing the stat
+- detail_type: "table"
+- table_details: 3-4 rows with real comparisons (Rent vs Own monthly, 5-year cost, equity built)
+
+### CARD 3 — The Shift (Reframe)
+- card_id: "card_3_shift"
+- step_label: "3 of 8  •  A Different Angle"
+- title: A simple perspective change (max 8 words, not pushy)
+- supporting: 2 sentences opening up a new way to see the situation
+- main: Leave empty
+- detail_type: "simple"
+- detail_text: 2 sentences expanding the reframe
+
+### CARD 4 — Property as the Answer (Fit)
+- card_id: "card_4_fit"
+- step_label: "4 of 8  •  The Match"
+- title: Introduce {property_name} as a resolution, not a product (max 10 words)
+- subtitle: Location + developer line
+- supporting: 2 sentences showing alignment between buyer situation and this property
+- main: Leave empty
+- detail_type: "table"
+- table_details: 4 key property facts (Price range, Type, Developer, Handover)
+
+### CARD 5 — Key Differentiators (Why This Works)
+- card_id: "card_5_why"
+- step_label: "5 of 8  •  Why This"
+- title: What makes it different — persona-framed (max 8 words)
+- bullets: 4-5 short bullet points, each max 8 words, persona-specific differentiators
+- detail_type: "nested"
+- nested_cards: Pick 4-5 amenities from the amenity image list that matter MOST to this persona.
+  Each nested card: image_url (use the real URL from amenity list), title (amenity name), description (1-2 sentences persona-tailored)
+
+### CARD 6 — Proof (Rational Validation)
+- card_id: "card_6_proof"
+- step_label: "6 of 8  •  The Numbers"
+- title: A financial headline framed for this buyer (max 8 words)
+- main: The key number (e.g., "~AED 9,400/mo" or "7.2% ROI")
+- supporting: 1 line contextualizing why that number makes sense
+- detail_type: "table"
+- table_details: 4-5 financial facts (monthly cost, price range, ROI estimate, payment plan, golden visa)
+
+### CARD 7 — Reward (Outcome)
+- card_id: "card_7_reward"
+- step_label: "7 of 8  •  What Changes"
+- title: What actually changes for the buyer (max 8 words, emotional closure)
+- supporting: 2 sentences painting the picture of their life after this decision. Warm, specific.
+- main: Leave empty
+- detail_type: "simple"
+- detail_text: 2-3 sentences deepening the emotional outcome
+
+### CARD 8 — Call to Action (Next Step)
+- card_id: "card_8_cta"
+- step_label: "8 of 8  •  Next Step"
+- title: Simple low-friction CTA heading (max 8 words)
+- supporting: 2 lines describing what happens next. Concrete, no pressure.
+- main: Leave empty
+- detail_type: "table"
+- table_details: 3 rows: what the buyer gets and how long / cost
+
+## TONE RULES
+- Sound like a brilliant, empathetic friend who knows the market — not a salesperson
+- No exclamation marks more than once across all 8 cards
+- Avoid: "nestled", "boasts", "unparalleled", "redefine", "luxury living"
+- Be specific. "53 wellness amenities" beats "world-class facilities"
+- Each card must feel like a natural progression from the previous — it is a story, not a list
+"""
+
+
+async def _generate_storycard_content(
+    persona: Dict, prop: Dict, amenities_with_images: List[Dict]
+) -> List[Dict]:
+    """Call the LLM to generate the 8-card story arc for this persona x property."""
+
+    persona_summary = {
+        "persona_type": persona.get("ai_recommended_persona_type", ""),
+        "persona_label": persona.get("ai_persona_label", ""),
+        "primary_goal": persona.get("motivation", {}).get("primary_goal", ""),
+        "buying_motivation": persona.get("motivation", {}).get("buying_motivation", ""),
+        "lifestyle_tags": persona.get("lifestyle", {}).get("lifestyle_tags", []),
+        "must_have_amenities": persona.get("lifestyle", {}).get("must_have_amenities", []),
+        "budget": persona.get("financial", {}),
+        "identity": persona.get("identity", {}),
+        "sales_angle": persona.get("ai_recommended_angle", ""),
+    }
+
+    ambassador = prop.get("brand_ambassador", {}) or {}
+    amenity_image_names = ", ".join(
+        f"{a.get('name','')} (url: {a.get('image_url','')})"
+        for a in amenities_with_images
+        if a.get("image_url")
+    )
+
+    prompt = STORYCARD_PROMPT.format(
+        persona_json=json.dumps(persona_summary, indent=2, default=str),
+        property_name=prop.get("name", ""),
+        property_location=prop.get("location", ""),
+        developer=prop.get("developer", ""),
+        property_type=prop.get("property_type", ""),
+        price_start=prop.get("price_start_aed_in_million", ""),
+        price_end=prop.get("price_end_aed_in_million", ""),
+        usps=", ".join(prop.get("usps") or []),
+        amenity_image_names=amenity_image_names,
+        services_list=", ".join(prop.get("a_la_carte_services") or []),
+        ambassador_name=ambassador.get("name", ""),
+        sales_angle=persona.get("ai_recommended_angle", ""),
+    )
+
+    try:
+        result_text = ai_client.structured_completion(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a premium real estate sales strategist. Return valid JSON matching the requested structure exactly.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            response_structure=StorycardContent,
+        )
+        data = json.loads(result_text)
+        cards = data.get("cards", [])
+        print(f"Storycard generated: {len(cards)} cards for persona {persona.get('persona_id', '')}")
+        return cards
+    except Exception as e:
+        print(f"Storycard generation failed: {e}")
+        return [
+            {
+                "card_id": "card_1_problem",
+                "step_label": "1 of 8  \u2022  Observation",
+                "title": "You have built a life here. Is this home truly yours?",
+                "supporting": "Many buyers in your position are paying rent with nothing to show for it. There is a better path.",
+                "detail_type": "simple",
+                "detail_text": "Every year of renting is a year of building someone else's equity. This is a question worth sitting with.",
+            },
+            {
+                "card_id": "card_8_cta",
+                "step_label": "8 of 8  \u2022  Next Step",
+                "title": "Review a shortlist — 20 minutes, no obligation",
+                "supporting": "A private briefing with financials and a curated shortlist. Available this week.",
+                "detail_type": "none",
+            },
+        ]
+
+
+async def build_storycard_microsite(persona_id: str, property_id: str) -> Dict[str, Any]:
+    """
+    Build a V2 storycard microsite — pure 8-card narrative pitch experience.
+    Returns: { microsite_url, tracking_id, microsite_id }
+    Served at /m/s/{persona_id}
+    """
+    # 1. Fetch persona
+    persona_col = get_collection(PERSONA_COLLECTION)
+    persona = await persona_col.find_one({"persona_id": persona_id})
+    if not persona:
+        raise ValueError(f"Persona {persona_id} not found")
+    persona.pop("_id", None)
+
+    # 2. Fetch property
+    property_col = get_collection(PROPERTY_COLLECTION)
+    prop = await property_col.find_one({"property_id": property_id})
+    if not prop:
+        raise ValueError(f"Property {property_id} not found")
+    prop.pop("_id", None)
+
+    # 3. Collect amenities that have images (for nested card generation)
+    amenities_with_images = [
+        a for a in (prop.get("amenities_grid") or []) if a.get("image_url")
+    ]
+
+    # 4. Generate 8-card story via LLM
+    story_cards = await _generate_storycard_content(persona, prop, amenities_with_images)
+
+    # 5. Render HTML from template
+    template_path = Path(__file__).parent.parent / "templates" / "microsite_storycard.html"
+    template_str = template_path.read_text() if template_path.exists() else ""
+    template_obj = Template(template_str)
+
+    html_content = template_obj.render(
+        persona=persona,
+        property=prop,
+        story_cards=story_cards,
+        broker_name=prop.get("broker_name", "Your Broker"),
+        broker_phone=prop.get("broker_phone", ""),
+        broker_email=prop.get("broker_email", ""),
+        broker_logo_url=prop.get("broker_logo_url", ""),
+        tracking_id=persona.get("persona_id", ""),
+        base_url=settings.APP_BASE_URL,
+    )
+
+    # 6. Deactivate old storycard microsites for this persona, then persist
+    ms_col = get_collection(MICROSITE_COLLECTION)
+    storycard_slug = f"s/{persona_id}"
+    await ms_col.update_many(
+        {"url_slug": storycard_slug, "is_active": True},
+        {"$set": {"is_active": False}},
+    )
+
+    microsite = MicrositeDocument(
+        persona_id=persona_id,
+        property_id=property_id,
+        html_content=html_content,
+        url_slug=storycard_slug,
+    )
+    await ms_col.insert_one(microsite.model_dump())
+
+    microsite_url = f"{settings.APP_BASE_URL}/m/{storycard_slug}"
+    return {
+        "microsite_url": microsite_url,
+        "tracking_id": microsite.tracking_id,
+        "microsite_id": microsite.microsite_id,
+    }

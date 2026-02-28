@@ -9,17 +9,16 @@ import TriggerPanel from './pages/TriggerPanel'
 const API_BASE = 'http://localhost:8000'
 
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-  { id: 'persona', label: 'Persona Builder', icon: '🧠' },
-  { id: 'microsite', label: 'Microsite Builder', icon: '🌐' },
-  { id: 'engagement', label: 'Engagement', icon: '📈' },
-  { id: 'triggers', label: 'Triggers', icon: '🔔' },
+  { id: 'dashboard',   label: 'Dashboard' },
+  { id: 'persona',     label: 'Persona Builder' },
+  { id: 'microsite',   label: 'Microsite Builder' },
+  { id: 'engagement',  label: 'Engagement' },
+  { id: 'triggers',    label: 'Triggers' },
 ]
 
 export default function App() {
   const [activePage, setActivePage] = useState('dashboard')
 
-  // Simple hash-based routing
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.slice(1) || 'dashboard'
@@ -37,12 +36,12 @@ export default function App() {
 
   const renderPage = () => {
     switch (activePage) {
-      case 'dashboard': return <Dashboard apiBase={API_BASE} onNavigate={navigate} />
-      case 'persona': return <PersonaBuilder apiBase={API_BASE} onNavigate={navigate} />
-      case 'microsite': return <MicrositeBuilder apiBase={API_BASE} />
+      case 'dashboard':  return <Dashboard apiBase={API_BASE} onNavigate={navigate} />
+      case 'persona':    return <PersonaBuilder apiBase={API_BASE} onNavigate={navigate} />
+      case 'microsite':  return <MicrositeBuilder apiBase={API_BASE} />
       case 'engagement': return <EngagementDashboard apiBase={API_BASE} />
-      case 'triggers': return <TriggerPanel apiBase={API_BASE} />
-      default: return <Dashboard apiBase={API_BASE} onNavigate={navigate} />
+      case 'triggers':   return <TriggerPanel apiBase={API_BASE} />
+      default:           return <Dashboard apiBase={API_BASE} onNavigate={navigate} />
     }
   }
 
@@ -51,9 +50,18 @@ export default function App() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <div className="logo-icon">🚀</div>
-          <h1>SellSmart</h1>
+          <div className="logo-mark">
+            {/* Gold diamond mark */}
+            <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 1L17 6.5V11.5L9 17L1 11.5V6.5L9 1Z" fill="#000" fillOpacity="0.9"/>
+            </svg>
+          </div>
+          <div>
+            <h1>SellSmart</h1>
+            <div className="logo-sub">AI Sales Intelligence</div>
+          </div>
         </div>
+
         <nav className="sidebar-nav">
           {NAV_ITEMS.map(item => (
             <button
@@ -61,14 +69,14 @@ export default function App() {
               className={`nav-item ${activePage === item.id ? 'active' : ''}`}
               onClick={() => navigate(item.id)}
             >
-              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-dot" />
               {item.label}
             </button>
           ))}
         </nav>
-        <div style={{ padding: '0 24px', borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
-          <div style={{ fontSize: '12px', color: 'var(--text-dim)' }}>SellSmart v1.0</div>
-          <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>AI-Powered Sales Intelligence</div>
+
+        <div style={{ padding: '0 24px', borderTop: '1px solid var(--border-card)', paddingTop: '16px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-dim)', letterSpacing: '0.03em' }}>v1.0 · Treppan Group</div>
         </div>
       </aside>
 
